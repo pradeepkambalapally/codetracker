@@ -1,20 +1,36 @@
 # CodeTracker
 
-CodeTracker is a full-stack web application to track coding progress across multiple competitive programming platforms like LeetCode and Codeforces.
+CodeTracker is a full-stack web application that helps users track their competitive programming progress across platforms like Codeforces and LeetCode.
 
 ## Features
+
 - User Authentication
 - JWT Authorization
-- Connect LeetCode & Codeforces Profiles
-- Track coding progress
 - Protected Routes
+- Connect Codeforces Profile
+- Track Solved Problems
+- Dashboard Analytics
+- Recent Solved Problems Section
+- Contest Activity Section
+- Responsive Dashboard UI
 
 ## Tech Stack
+
+### Frontend
+- React
+- Tailwind CSS
+- Axios
+- React Router DOM
+
+### Backend
 - Node.js
 - Express.js
 - MongoDB
-- JWT
+- JWT Authentication
 - bcryptjs
 
-## Project Status
-Backend authentication and profile integration completed.
+## Folder Structure
+
+```txt
+client/
+server/
