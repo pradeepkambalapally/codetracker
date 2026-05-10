@@ -107,49 +107,8 @@ const updateProfiles = async (req, res) => {
     }
 }
 
-const getCodeforcesData = async (req, res) => {
-    const userId = req.user.userId;
-    try{
-        const user = await User.findById(userId);
-        if(!user){
-            return res.status(401).json({
-                message : "User not found!",
-                success : false
-            })
-        }
-        const codeforcesusername = user.codeforcesUsername;
-        if(!codeforcesusername){
-            return res.status(400).json({
-                message : "Codeforces username not set!",
-                success : false
-            })
-        }
-
-        const response = await axios.get(`https://codeforces.com/api/user.status?handle=${codeforcesusername}`);
-        const submissions = response.data.result.map((submission) => ({
-              contestId: submission.contestId,
-              problemName: submission.problem.name,
-              verdict: submission.verdict,
-              programmingLanguage: submission.programmingLanguage,
-              rating: submission.problem.rating,
-              tags: submission.problem.tags,
-              solvedAt: submission.creationTimeSeconds
-        }));
-
-        res.status(200).json({
-            message : "Codeforces data fetched successfully",
-            success : true,
-            submissions
-        });
-
-    }catch(error){
-        console.error('Error fetching codeforces data:', error);
-        res.status(500).json({message: 'Internal server error'});
-    }
-}
 module.exports = {
     registerUser,
     loginUser,
-    updateProfiles,
-    getCodeforcesData
+    updateProfiles
 }

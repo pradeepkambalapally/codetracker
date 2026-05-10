@@ -1,7 +1,8 @@
 const express = require('express');
 
 const router = express.Router();
-const {registerUser, loginUser, updateProfiles, getCodeforcesData} = require('../controllers/user-controller');
+const {registerUser, loginUser, updateProfiles} = require('../controllers/user-controller');
+const {getCodeforcesData} = require('../controllers/codeforces-controller');
 const authMiddleware = require('../middleWare/authMiddleware');
 
 
