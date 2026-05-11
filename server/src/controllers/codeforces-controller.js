@@ -31,15 +31,25 @@ const getCodeforcesData = async (req, res) => {
 
             if(submission.verdict === "OK" && !solvedProblems.has(problemKey)){
                 solvedProblems.add(problemKey);
-                submissions.push({
-                    problemName : submission.problem.name,
-                    problemLink : `https://codeforces.com/problemset/problem/${submission.problem.contestId}/${submission.problem.index}`,
-                    submissionTime : new Date(submission.creationTimeSeconds * 1000).toLocaleString(),
-                    programmingLanguage : submission.programmingLanguage,
-                    rating : submission.problem.rating || "Unrated",
-                    tags : submission.problem.tags,
+               submissions.push({
+    problemName : submission.problem.name,
 
-                })
+    problemLink : `https://codeforces.com/problemset/problem/${submission.problem.contestId}/${submission.problem.index}`,
+
+    submissionTime : new Date(
+        submission.creationTimeSeconds * 1000
+    ).toLocaleString(),
+
+    programmingLanguage : submission.programmingLanguage,
+
+    rating : submission.problem.rating || "Unrated",
+
+    tags : submission.problem.tags,
+
+    contestId : submission.problem.contestId,
+
+    problemIndex : submission.problem.index,
+})
             }
         })
         res.status(200).json({
