@@ -2,6 +2,7 @@ import axios from "axios";
 import Loading from "./Loading";
 import { useState, useEffect } from "react";
 import ContestActivity from "./ContestActivity";
+import ContestCard from "./ContestCards";
 
 const Contests = () => {
     const [contestData, setConstestData] = useState([]);
@@ -53,7 +54,9 @@ const Contests = () => {
             </p>
 
            </div>
-           <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 mb-6">
+
+           <ContestCard contests = {contestData}/>
+           <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 mt-6 mb-6">   
 
                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
