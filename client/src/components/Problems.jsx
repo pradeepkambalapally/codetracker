@@ -75,7 +75,7 @@ const Problems = () =>{
         <input
             type="text"
             placeholder="Search problems..."
-            className="w-full md:w-150 border border-slate-200 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full md:max-w-xl border border-slate-200 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-blue-500"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
         />

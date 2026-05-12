@@ -5,6 +5,7 @@ import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";  
 import Problems from "./components/Problems"; 
 import Contests from "./components/Contests";
+import Profile from "./components/Profile";
 function App() {
   return (
     <>
@@ -33,6 +34,13 @@ function App() {
          <div className="flex">
          <Sidebar />
          <Contests />
+         </div>
+       } />
+
+       <Route path="/profile" element={
+         <div className="flex">
+         <Sidebar />
+         <Profile />
          </div>
        } />
 
