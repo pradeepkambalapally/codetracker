@@ -4,6 +4,7 @@ import Register from "./components/Register";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./components/Dashboard";  
 import Problems from "./components/Problems"; 
+import Contests from "./components/Contests";
 function App() {
   return (
     <>
@@ -20,7 +21,24 @@ function App() {
       <Route path="/login" element={<Login />} />
 
       <Route path="/register" element={<Register />} />
-       <Route path="/problems" element={<Problems />} />
+
+      <Route path="/problems" element={
+         <div className="flex">
+         <Sidebar />
+         <Problems />
+         </div>
+       } />
+
+       <Route path="/contests" element={
+         <div className="flex">
+         <Sidebar />
+         <Contests />
+         </div>
+       } />
+
+
+
+
 
     </Routes>
     </>

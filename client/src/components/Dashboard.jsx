@@ -109,7 +109,7 @@ const Dashboard = () => {
                     />
 
                     <RatingCharts
-                        contests={contests}
+                        contests={contests.slice(0, 5)}
                     />
 
                 </div>
@@ -119,7 +119,7 @@ const Dashboard = () => {
                 <div className="mt-6 w-full">
 
                     <SolvedProblems
-                        problems={problems}
+                        problems={problems.slice(0, 8)}
                     />
 
                 </div>

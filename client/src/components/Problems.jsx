@@ -1,9 +1,15 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import SolvedProblems from "./SolvedProblems";
+import Loading from "./Loading";
 const Problems = () =>{
     const [problems, setProblems] = useState([]);
     const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+    const problemsPerPage = 10;
+    const indexOfLastProblem = currentPage * problemsPerPage;
+    const indexOfFirstProblem = indexOfLastProblem - problemsPerPage;
 
     useEffect(()=>{
         const fetchProblems = async () => {
@@ -21,7 +27,9 @@ const Problems = () =>{
 
                 console.error("Error fetching dashboard data:", error);
 
-            }
+        }finally{
+            setLoading(false);
+        }
         }
         
         fetchProblems();
@@ -33,9 +41,14 @@ const Problems = () =>{
         .includes(search.toLowerCase())
     );
 
-    return (
+    const currentProblems = filteredProblems.slice(
+        indexOfFirstProblem,
+        indexOfLastProblem
+    );
 
-    <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
+    return (
+    loading ? <Loading /> : (
+        <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
 
         {/* Header */}
 
@@ -88,10 +101,46 @@ const Problems = () =>{
         {/* Problems Table */}
 
         <SolvedProblems
-            problems={filteredProblems}
+            problems={currentProblems}
         />
+        {/* Pagination */}
+
+<div className="flex items-center justify-center gap-3 mt-6">
+
+    <button
+        onClick={() =>
+            setCurrentPage(currentPage - 1)
+        }
+        disabled={currentPage === 1}
+        className="px-4 py-2 rounded-xl bg-white border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 transition-colors"
+    >
+        Previous
+    </button>
+
+    <span className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold">
+
+        {currentPage}
+
+    </span>
+
+    <button
+        onClick={() =>
+            setCurrentPage(currentPage + 1)
+        }
+        disabled={
+            indexOfLastProblem >=
+            filteredProblems.length
+        }
+        className="px-4 py-2 rounded-xl bg-white border border-slate-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-slate-100 transition-colors"
+    >
+        Next
+    </button>
+
+</div>
 
     </div>
+    )
+    
 )
 }
 

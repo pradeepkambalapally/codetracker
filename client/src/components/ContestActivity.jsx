@@ -57,7 +57,7 @@ const ContestActivity = ({ contests }) => {
             <div className="space-y-4">
 
                 {
-                    contests.slice(0, 5).map((contest, index) => (
+                    contests.map((contest, index) => (
 
                         <div
                             key={index}

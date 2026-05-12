@@ -104,7 +104,7 @@ const SolvedProblems = ({ problems }) => {
                     <tbody>
 
                         {
-                            problems.slice(0, 8).map((problem, index) => (
+                            problems.map((problem, index) => (
 
                                 <tr
                                     key={index}
