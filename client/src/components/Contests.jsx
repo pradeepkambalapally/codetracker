@@ -3,6 +3,7 @@ import Loading from "./Loading";
 import { useState, useEffect } from "react";
 import ContestActivity from "./ContestActivity";
 import ContestCard from "./ContestCards";
+import RatingCharts from "./RatingCharts";
 
 const Contests = () => {
     const [contestData, setConstestData] = useState([]);
@@ -56,6 +57,12 @@ const Contests = () => {
            </div>
 
            <ContestCard contests = {contestData}/>
+
+           <div className="grid grid-cols-1 gap-4 mt-6">
+
+                    <RatingCharts contests={contestData} />
+
+            </div>
            <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 mt-6 mb-6">   
 
                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
