@@ -9,13 +9,13 @@ import SearchBar from "../components/ui/SearchBar";
 import Pagination from "../components/ui/Pagination";
 import useSearch from "../hooks/useSearch";
 import usePagination from "../hooks/usePagination";
-
+import ErrorMessage from "../components/ErrorMessage";
 
 const Contests = () => {
     
     const [search, setSearch] = useState("");
 
-    const { contests, loading } = useContests();
+    const { contests, loading, error } = useContests();
     
 
     const filteredContests = useSearch(
@@ -33,8 +33,14 @@ const {
     filteredContests,
     10
 );
+    if (loading) return <Loading />;
+
+    if (error) {
+
+       return <ErrorMessage error={error}/>
+    }
     return (
-    loading ? < Loading /> : (
+    
         <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
              <div className="mb-6">
 
@@ -76,7 +82,7 @@ const {
 />
         </div>
     )
-)
+
 }
 
 

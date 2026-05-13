@@ -8,7 +8,6 @@ const Register = () => {
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = async (e) => {
@@ -21,7 +20,6 @@ const Register = () => {
                 "http://localhost:3000/api/users/register",
                 {
                     username,
-                    email,
                     password
                 }
             );

@@ -4,14 +4,14 @@ import SolvedProblems from "../components/tables/SolvedProblems";
 import Loading from "../components/ui/Loading";
 import SearchBar from "../components/ui/SearchBar";
 import Pagination from "../components/ui/Pagination";
-
+import ErrorMessage from "../components/ErrorMessage";
 import useProblems from "../hooks/useProblems";
 import useSearch from "../hooks/useSearch";
 import usePagination from "../hooks/usePagination";
 
 const Problems = () => {
 
-    const { problems, loading } = useProblems();
+    const { problems, loading, error } = useProblems();
 
     const [search, setSearch] = useState("");
 
@@ -34,63 +34,62 @@ const Problems = () => {
         filteredProblems,
         10
     );
+    if (loading) return <Loading />;
 
-    return (
+    if (error) {
 
-        loading ? (
+       return <ErrorMessage error={error}/>
+    }
 
-            <Loading />
+return (
 
-        ) : (
+    <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
 
-            <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
+        {/* Header */}
 
-                {/* Header */}
+        <div className="mb-6">
 
-                <div className="mb-6">
+            <h1 className="text-3xl font-bold text-slate-800">
 
-                    <h1 className="text-3xl font-bold text-slate-800">
+                Problems
 
-                        Problems
+            </h1>
 
-                    </h1>
+            <p className="text-slate-500 mt-2">
 
-                    <p className="text-slate-500 mt-2">
+                Browse and track your solved problems
 
-                        Browse and track your solved problems
+            </p>
 
-                    </p>
+        </div>
 
-                </div>
+        {/* Search Bar */}
 
-                {/* Search Bar */}
+        <SearchBar
+            search={search}
+            setSearch={setSearch}
+            placeholder="Search problems..."
+            count={filteredProblems.length}
+            label="problems"
+        />
 
-                <SearchBar
-                    search={search}
-                    setSearch={setSearch}
-                    placeholder="Search problems..."
-                    count={filteredProblems.length}
-                    label="problems"
-                />
+        {/* Problems Table */}
 
-                {/* Problems Table */}
+        <SolvedProblems
+            problems={currentItems}
+        />
 
-                <SolvedProblems
-                    problems={currentItems}
-                />
+        {/* Pagination */}
 
-                {/* Pagination */}
+        <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            indexOfLastItem={indexOfLastItem}
+            totalItems={filteredProblems.length}
+        />
 
-                <Pagination
-                    currentPage={currentPage}
-                    setCurrentPage={setCurrentPage}
-                    indexOfLastItem={indexOfLastItem}
-                    totalItems={filteredProblems.length}
-                />
-
-            </div>
-        )
-    );
+    </div>
+);
 };
 
 export default Problems;

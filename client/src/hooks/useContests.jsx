@@ -5,6 +5,7 @@ const useContests = () => {
 
     const [contests, setContests] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
 
@@ -19,7 +20,7 @@ const useContests = () => {
                 setContests(response.data.contests);
 
             } catch (error) {
-
+                setError("Failed to fetch contests");
                 console.error(error);
 
             } finally {
@@ -35,7 +36,8 @@ const useContests = () => {
 
     return {
         contests,
-        loading
+        loading,
+        error
     };
 };
 

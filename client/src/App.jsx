@@ -6,49 +6,97 @@ import Dashboard from "./pages/Dashboard"
 import Problems from "./pages/Problems"; 
 import Contests from "./pages/Contests";
 import Profile from "./pages/Profile";
+import ProtectedRoutes from "./components/auth/ProtectedRoutes";
 function App() {
   return (
     <>
       =
-     <Routes>
-
-      <Route path="/" element={
-        <div className="flex">
-        <Sidebar />
-        <Dashboard />
-        </div>
-      } />
-
-      <Route path="/login" element={<Login />} />
-
-      <Route path="/register" element={<Register />} />
-
-      <Route path="/problems" element={
-         <div className="flex">
-         <Sidebar />
-         <Problems />
-         </div>
-       } />
-
-       <Route path="/contests" element={
-         <div className="flex">
-         <Sidebar />
-         <Contests />
-         </div>
-       } />
-
-       <Route path="/profile" element={
-         <div className="flex">
-         <Sidebar />
-         <Profile />
-         </div>
-       } />
+    <Routes>
 
 
+    <Route
+        path="/"
+        element={
+            <ProtectedRoutes>
+
+                <div className="flex">
+
+                    <Sidebar />
+                    <Dashboard />
+
+                </div>
+
+            </ProtectedRoutes>
+        }
+    />
+
+    <Route
+        path="/login"
+        element={<Login />}
+    />
+
+    <Route
+        path="/register"
+        element={<Register />}
+    />
+
+    
+
+    <Route
+        path="/problems"
+        element={
+
+            <ProtectedRoutes>
+
+                <div className="flex">
+
+                    <Sidebar />
+                    <Problems />
+
+                </div>
+
+            </ProtectedRoutes>
+        }
+    />
 
 
+    <Route
+        path="/contests"
+        element={
 
-    </Routes>
+            <ProtectedRoutes>
+
+                <div className="flex">
+
+                    <Sidebar />
+                    <Contests />
+
+                </div>
+
+            </ProtectedRoutes>
+        }
+    />
+
+   
+
+    <Route
+        path="/profile"
+        element={
+
+            <ProtectedRoutes>
+
+                <div className="flex">
+
+                    <Sidebar />
+                    <Profile />
+
+                </div>
+
+            </ProtectedRoutes>
+        }
+    />
+
+</Routes>
     </>
 
   )

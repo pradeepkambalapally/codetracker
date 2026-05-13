@@ -4,7 +4,7 @@ const useProfile = () => {
 
     const [profile, setProfile] = useState({});
     const [loading, setLoading] = useState(true);
-
+    const [error, setError] = useState("");
     useEffect(() => {
 
         const fetchProfile = async () => {
@@ -20,7 +20,7 @@ const useProfile = () => {
                 setProfile(response.data.stats);
 
             } catch (error) {
-
+                setError("Failed to fetch data");
                 console.error(error);
 
             } finally {
@@ -36,7 +36,8 @@ const useProfile = () => {
 
     return {
         profile,
-        loading
+        loading,
+        error
     };
 };
 

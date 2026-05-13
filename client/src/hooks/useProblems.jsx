@@ -5,6 +5,7 @@ const useProblems = () => {
 
     const [problems, setProblems] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
 
     useEffect(() => {
 
@@ -22,7 +23,7 @@ const useProblems = () => {
                 setProblems(response.data.submissions);
 
             } catch (error) {
-
+                    setError("Failed to fetch problems");
                 console.error(error);
 
             } finally {
@@ -38,7 +39,8 @@ const useProblems = () => {
 
     return {
         problems,
-        loading
+        loading,
+        error
     };
 };
 

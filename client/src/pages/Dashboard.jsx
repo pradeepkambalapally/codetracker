@@ -9,23 +9,24 @@ import SolvedProblemsChart from "../components/dashboard/SolvedProblemsChart";
 import useProblems from "../hooks/useProblems";
 import useContests from "../hooks/useContests";
 import useProfile from "../hooks/useProfile";
-
+import ErrorMessage from "../components/ErrorMessage";
 const Dashboard = () => {
 
     const {problems, loading }= useProblems();
-    const {profileStats} = useProfile();
+    const {profileStats, error} = useProfile();
     const {contests} = useContests();
 
+    if (loading) return <Loading />;
 
+    if (error) {
+
+       return <ErrorMessage error={error}/>
+    }
 
 
     return (
 
-        loading ? (
-
-            <Loading />
-
-        ) : (
+        
 
             <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
                 {/* Dashboard Header */}
@@ -76,7 +77,7 @@ const Dashboard = () => {
 
             </div>
         )
-    );
+    
 };
 
 export default Dashboard;
