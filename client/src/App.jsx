@@ -1,11 +1,11 @@
 import { Routes, Route } from "react-router-dom"
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Sidebar from "./components/Sidebar";
-import Dashboard from "./components/Dashboard";  
-import Problems from "./components/Problems"; 
-import Contests from "./components/Contests";
-import Profile from "./components/Profile";
+import Login from "./components/auth/Login"
+import Register from "./components/auth/Register";
+import Sidebar from "./components/layout/Sidebar";
+import Dashboard from "./pages/Dashboard"
+import Problems from "./pages/Problems"; 
+import Contests from "./pages/Contests";
+import Profile from "./pages/Profile";
 function App() {
   return (
     <>
