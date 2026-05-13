@@ -10,9 +10,10 @@ import useProblems from "../hooks/useProblems";
 import useContests from "../hooks/useContests";
 import getTopicDistribution from "../utils/getTopicDistribution";
 import getContestPerformance from "../utils/getContestPerformance";
+import ErrorMessage from "../components/ErrorMessage";
 const Profile = () => {
 
-    const {profile} = useProfile();
+    const {profile, error} = useProfile();
     const {problems, loading} = useProblems();
     const {contests} = useContests();
 
@@ -25,13 +26,16 @@ const chartData =
 const contestChartData =
     getContestPerformance(contests);
 
+    if (loading) return <Loading />;
+
+    if (error) {
+
+       return <ErrorMessage error={error}/>
+    }
+
     return (
 
-        loading ? (
-
-            <Loading />
-
-        ) : (
+        
 
             <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
 
@@ -74,7 +78,7 @@ const contestChartData =
 
             </div>
         )
-    );
+    
 };
 
 export default Profile;

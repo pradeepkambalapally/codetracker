@@ -3,8 +3,11 @@ import {
     ArrowRight,
     ExternalLink
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SolvedProblems = ({ problems }) => {
+
+    const navigate = useNavigate();
 
     return (
 
@@ -39,9 +42,11 @@ const SolvedProblems = ({ problems }) => {
 
                 </div>
 
-                {/* View All */}
+                
 
-                <button className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+                <button onClick ={() => {
+                    navigate("/problems")
+                }} className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
 
                     View All
 

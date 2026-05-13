@@ -107,8 +107,42 @@ const updateProfiles = async (req, res) => {
     }
 }
 
+const getUserData = async(req, res) => {
+    const userId = req.user.userId;
+    try{
+        const user = await User.findById(userId).select("-password");
+        if(!user){
+            return res.status(401).json({
+                message : "user not found!",
+                success : false
+            })
+        }
+        res.status(200).json({
+
+            success: true,
+            user: {
+
+                userId: user._id,
+
+                username: user.username,
+
+                email: user.email,
+
+                codeforcesUsername: user.codeforcesUsername,
+
+                leetcodeUsername: user.leetcodeUsername
+    }
+
+        });
+    }catch(error){
+        console.error('Error getting user data:', error);
+        res.status(500).json({message: 'Internal server error'});
+    }
+}
+
 module.exports = {
     registerUser,
     loginUser,
-    updateProfiles
+    updateProfiles,
+    getUserData
 }

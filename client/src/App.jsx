@@ -7,6 +7,7 @@ import Problems from "./pages/Problems";
 import Contests from "./pages/Contests";
 import Profile from "./pages/Profile";
 import ProtectedRoutes from "./components/auth/ProtectedRoutes";
+import Settings from "./pages/Settings";
 function App() {
   return (
     <>
@@ -95,7 +96,22 @@ function App() {
             </ProtectedRoutes>
         }
     />
+        <Route
+    path="/settings"
+    element={
 
+        <ProtectedRoutes>
+
+            <div className="flex">
+
+                <Sidebar />
+                <Settings />
+
+            </div>
+
+        </ProtectedRoutes>
+    }
+/>
 </Routes>
     </>
 

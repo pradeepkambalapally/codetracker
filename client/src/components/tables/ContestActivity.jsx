@@ -4,9 +4,10 @@ import {
     TrendingUp,
     TrendingDown
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ContestActivity = ({ contests }) => {
-
+    const navigate = useNavigate();
     return (
 
         <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
@@ -42,7 +43,9 @@ const ContestActivity = ({ contests }) => {
 
                 {/* View All */}
 
-                <button className="flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors">
+                <button onClick = {() => {
+                    navigate("/contests")
+                }} className="flex items-center gap-2 text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors">
 
                     View All
 
