@@ -58,29 +58,7 @@ const PreferencesCard = ({
     });
 
 }, [user]);
-useEffect(() => {
 
-    if (
-        preferences.theme ===
-        "Dark"
-    ) {
-
-        document.documentElement
-            .classList.add(
-                "dark"
-            );
-
-    }
-
-    else {
-
-        document.documentElement
-            .classList.remove(
-                "dark"
-            );
-    }
-
-}, [preferences.theme]);
 
     const handleChange =
         async (

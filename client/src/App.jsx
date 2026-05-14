@@ -8,7 +8,9 @@ import Contests from "./pages/Contests";
 import Profile from "./pages/Profile";
 import ProtectedRoutes from "./components/auth/ProtectedRoutes";
 import Settings from "./pages/Settings";
+import useTheme from "./hooks/useTheme";
 function App() {
+    useTheme();
   return (
     <>
       =
