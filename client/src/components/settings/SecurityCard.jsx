@@ -7,25 +7,147 @@ import {
     useNavigate
 } from "react-router-dom";
 
+import {
+    useState
+} from "react";
+
+import api from "../../api/axios";
+
 const SecurityCard = () => {
 
     const navigate =
         useNavigate();
 
+    const [
+        showPasswordForm,
+        setShowPasswordForm
+    ] = useState(false);
+
+    const [
+        passwords,
+        setPasswords
+    ] = useState({
+
+        currentPassword: "",
+
+        newPassword: "",
+
+        confirmPassword: ""
+
+    });
+
     const handleLogout = () => {
 
         localStorage.removeItem(
-        "token"
-    );
+            "token"
+        );
 
-    localStorage.removeItem(
-        "theme"
-    );
+        localStorage.removeItem(
+            "theme"
+        );
 
         navigate(
             "/login"
         );
     };
+
+    const handlePasswordUpdate =
+async () => {
+
+
+
+    if (
+
+        passwords.newPassword !==
+        passwords.confirmPassword
+
+    ) {
+
+        alert(
+            "Passwords do not match"
+        );
+
+        return;
+    }
+
+    try {
+
+        const token =
+    localStorage.getItem(
+        "token"
+    );
+
+const response =
+    await api.put(
+
+        "/users/change-password",
+
+        {
+
+            currentPassword:
+                passwords.currentPassword,
+
+            newPassword:
+                passwords.newPassword
+
+        },
+
+        {
+
+            headers: {
+
+                Authorization:
+                    `Bearer ${token}`
+
+            }
+
+        }
+
+    );
+
+        alert(
+
+            response.data.message ||
+
+            "Password updated successfully"
+
+        );
+
+        setPasswords({
+
+            currentPassword:"",
+
+            newPassword:"",
+
+            confirmPassword:""
+
+        });
+
+        setShowPasswordForm(
+            false
+        );
+
+    }
+
+    catch(error){
+
+        console.log(
+            error.response?.data
+        );
+
+        alert(
+
+            error.response
+            ?.data
+            ?.message ||
+
+            "Password update failed"
+
+        );
+
+    }
+
+};
 
     return (
 
@@ -42,8 +164,6 @@ const SecurityCard = () => {
             border-slate-200
             dark:border-slate-700
         ">
-
-            
 
             <div className="mb-6">
 
@@ -72,106 +192,292 @@ const SecurityCard = () => {
 
             </div>
 
-            
+            <div className="space-y-4">
 
-            <div className="
-                space-y-4
-            ">
+                {/* Change Password */}
 
-                
-
-                <div className="
-                    flex
-                    items-center
-                    justify-between
-
-                    bg-slate-50
-                    dark:bg-slate-700
-
-                    border
-                    border-slate-200
-                    dark:border-slate-600
-
-                    rounded-2xl
-                    p-4
-                ">
+                <div>
 
                     <div className="
                         flex
                         items-center
-                        gap-4
+                        justify-between
+
+                        bg-slate-50
+                        dark:bg-slate-700
+
+                        border
+                        border-slate-200
+                        dark:border-slate-600
+
+                        rounded-2xl
+                        p-4
                     ">
 
                         <div className="
-                            bg-blue-100
-                            dark:bg-blue-900/40
-
-                            p-3
-                            rounded-2xl
+                            flex
+                            items-center
+                            gap-4
                         ">
 
-                            <Lock
-                                className="
-                                text-blue-600
-                                dark:text-blue-300
-                                "
-                                size={22}
-                            />
+                            <div className="
+                                bg-blue-100
+                                dark:bg-blue-900/40
+
+                                p-3
+                                rounded-2xl
+                            ">
+
+                                <Lock
+                                    className="
+                                    text-blue-600
+                                    dark:text-blue-300
+                                    "
+                                    size={22}
+                                />
+
+                            </div>
+
+                            <div>
+
+                                <h3 className="
+                                    font-semibold
+
+                                    text-slate-800
+                                    dark:text-white
+                                ">
+
+                                    Change Password
+
+                                </h3>
+
+                                <p className="
+                                    text-sm
+                                    mt-1
+
+                                    text-slate-500
+                                    dark:text-slate-400
+                                ">
+
+                                    Update your account password securely
+
+                                </p>
+
+                            </div>
 
                         </div>
 
-                        <div>
+                        <button
 
-                            <h3 className="
-                                font-semibold
+                            onClick={() =>
 
-                                text-slate-800
-                                dark:text-white
-                            ">
+                                setShowPasswordForm(
+                                    !showPasswordForm
+                                )
+                            }
 
-                                Change Password
+                            className="
+                            bg-blue-600
+                            hover:bg-blue-700
 
-                            </h3>
+                            text-white
 
-                            <p className="
-                                text-sm
-                                mt-1
+                            px-4
+                            py-2
 
-                                text-slate-500
-                                dark:text-slate-400
-                            ">
+                            rounded-2xl
 
-                                Update your account password securely
+                            font-semibold
+                            "
+                        >
 
-                            </p>
+                            {
+                                showPasswordForm
+                                ? "Cancel"
+                                : "Update"
+                            }
 
-                        </div>
+                        </button>
 
                     </div>
 
-                    <button className="
-                        bg-blue-600
-                        hover:bg-blue-700
+                    {
 
-                        text-white
+                        showPasswordForm && (
 
-                        px-4
-                        py-2
+                        <div className="
+                            mt-4
 
-                        rounded-2xl
+                            p-4
 
-                        font-semibold
+                            rounded-2xl
 
-                        transition-colors
-                    ">
+                            border
+                            border-slate-200
+                            dark:border-slate-700
 
-                        Update
+                            bg-slate-50
+                            dark:bg-slate-900
 
-                    </button>
+                            space-y-3
+                        ">
+
+                            <input
+
+                                type="password"
+
+                                placeholder="Current Password"
+
+                                value={
+                                    passwords.currentPassword
+                                }
+
+                                onChange={(e)=>
+
+                                    setPasswords({
+
+                                        ...passwords,
+
+                                        currentPassword:
+                                            e.target.value
+
+                                    })
+
+                                }
+
+                                className="
+                                w-full
+                                p-3
+
+                                rounded-xl
+
+                                border
+                                border-slate-300
+                                dark:border-slate-700
+
+                                bg-white
+                                dark:bg-slate-800
+
+                                dark:text-white
+                                "
+                            />
+
+                            <input
+
+                                type="password"
+
+                                placeholder="New Password"
+
+                                value={
+                                    passwords.newPassword
+                                }
+
+                                onChange={(e)=>
+
+                                    setPasswords({
+
+                                        ...passwords,
+
+                                        newPassword:
+                                            e.target.value
+
+                                    })
+
+                                }
+
+                                className="
+                                w-full
+                                p-3
+
+                                rounded-xl
+
+                                border
+                                border-slate-300
+                                dark:border-slate-700
+
+                                bg-white
+                                dark:bg-slate-800
+
+                                dark:text-white
+                                "
+                            />
+
+                            <input
+
+                                type="password"
+
+                                placeholder="Confirm Password"
+
+                                value={
+                                    passwords.confirmPassword
+                                }
+
+                                onChange={(e)=>
+
+                                    setPasswords({
+
+                                        ...passwords,
+
+                                        confirmPassword:
+                                            e.target.value
+
+                                    })
+
+                                }
+
+                                className="
+                                w-full
+                                p-3
+
+                                rounded-xl
+
+                                border
+                                border-slate-300
+                                dark:border-slate-700
+
+                                bg-white
+                                dark:bg-slate-800
+
+                                dark:text-white
+                                "
+                            />
+
+                            <button
+
+                                onClick={
+                                    handlePasswordUpdate
+                                }
+
+                                className="
+                                    w-full
+
+                                    bg-green-600
+                                    hover:bg-green-700
+
+                                    text-white
+
+                                    p-3
+
+                                    rounded-xl
+
+                                    font-semibold
+                                "
+                            >
+
+                                Save Password
+
+                            </button>
+
+                        </div>
+
+                        )
+
+                    }
 
                 </div>
 
-                
+                {/* Logout */}
+
                 <div className="
                     flex
                     items-center
@@ -257,10 +563,6 @@ const SecurityCard = () => {
                             py-2
 
                             rounded-2xl
-
-                            font-semibold
-
-                            transition-colors
                         "
                     >
 

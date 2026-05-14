@@ -16,7 +16,7 @@ const useUser = () => {
                     await api.get("/users/me");
 
                 setUser(response.data.user);
-                console.log(response.data.user);
+               
 
             } catch (error) {
 

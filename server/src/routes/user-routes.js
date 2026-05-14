@@ -17,5 +17,5 @@ router.get('/codeforces-contests', authMiddleware, getCodeforcesContestData)
 router.get('/codeforces-profile-stats', authMiddleware, getCodeforcesProfileStats);
 router.get("/me", authMiddleware, getUserData);
 router.put("/update-preferences",authMiddleware, updatePreferences);
-router.post("/change-password", authMiddleware, changePassword)
+router.put("/change-password", authMiddleware, changePassword)
 module.exports = router;
