@@ -1,10 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import { UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+import api from "../../api/axios";
 const Register = () => {
-
+    
     const navigate = useNavigate();
 
     const [username, setUsername] = useState("");
@@ -16,8 +15,8 @@ const Register = () => {
 
         try {
 
-            await axios.post(
-                "http://localhost:3000/api/users/register",
+            await api.post(
+                "/users/register",
                 {
                     username,
                     password

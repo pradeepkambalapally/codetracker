@@ -1,40 +1,56 @@
 import Loading from "../components/ui/Loading";
+
 import SolvedProblems from "../components/tables/SolvedProblems";
 import ContestActivity from "../components/tables/ContestActivity";
+
 import TopicDistributionChart from "../components/dashboard/TopicDistributionChart";
 import ContestPerformanceChart from "../components/dashboard/ContestPerformanceChart";
+
 import ProfileCard from "../components/ui/ProfileCard";
+
 import useProfile from "../hooks/useProfile";
 import useProblems from "../hooks/useProblems";
 import useContests from "../hooks/useContests";
+
 import getTopicDistribution from "../utils/getTopicDistribution";
 import getContestPerformance from "../utils/getContestPerformance";
+
 import ErrorMessage from "../components/ErrorMessage";
 
 const Profile = () => {
 
     const {
-        profile,
+
+        profile = {},
+
         error
+
     } = useProfile();
 
     const {
-        problems,
+
+        problems = [],
+
         loading
+
     } = useProblems();
 
     const {
-        contests
+
+        contests = []
+
     } = useContests();
 
     const chartData =
+
         getTopicDistribution(
-            problems
+            problems || []
         );
 
     const contestChartData =
+
         getContestPerformance(
-            contests
+            contests || []
         );
 
     if (loading)
@@ -43,10 +59,13 @@ const Profile = () => {
     if (error) {
 
         return (
+
             <ErrorMessage
                 error={error}
             />
+
         );
+
     }
 
     return (
@@ -54,20 +73,23 @@ const Profile = () => {
         <div className="
             flex-1
             min-h-screen
+
             p-6
+
             overflow-x-hidden
+
             bg-slate-100
             dark:bg-slate-900
+
             transition-colors
         ">
-
-           
 
             <div className="mb-6">
 
                 <h1 className="
                     text-3xl
                     font-bold
+
                     text-slate-800
                     dark:text-white
                 ">
@@ -78,6 +100,7 @@ const Profile = () => {
 
                 <p className="
                     mt-2
+
                     text-slate-500
                     dark:text-slate-400
                 ">
@@ -95,45 +118,129 @@ const Profile = () => {
             <div className="
                 grid
                 grid-cols-1
-                md:grid-cols-3
-                xl:grid-cols-2
+                md:grid-cols-2
                 gap-6
                 mt-6
             ">
 
                 <TopicDistributionChart
                     chartData={
-                        chartData
+                        chartData || []
                     }
                 />
 
                 <ContestPerformanceChart
                     contestChartData={
-                        contestChartData
+                        contestChartData || []
                     }
                 />
 
-                <SolvedProblems
-                    problems={
-                        problems.slice(
-                            0,
-                            5
-                        )
-                    }
-                />
+                {
 
-                <ContestActivity
-                    contests={
-                        contests.slice(
-                            0,
-                            5
-                        )
-                    }
-                />
+                    problems.length > 0
+
+                    ?
+
+                    (
+
+                        <SolvedProblems
+
+                            problems={
+                                problems.slice(
+                                    0,
+                                    5
+                                )
+                            }
+
+                        />
+
+                    )
+
+                    :
+
+                    (
+
+                        <div className="
+                            p-8
+
+                            rounded-3xl
+
+                            text-center
+
+                            bg-white
+                            dark:bg-slate-800
+
+                            border
+                            border-slate-200
+                            dark:border-slate-700
+
+                            text-slate-500
+                            dark:text-slate-400
+                        ">
+
+                            No solved problems available
+
+                        </div>
+
+                    )
+
+                }
+
+                {
+
+                    contests.length > 0
+
+                    ?
+
+                    (
+
+                        <ContestActivity
+
+                            contests={
+                                contests.slice(
+                                    0,
+                                    5
+                                )
+                            }
+
+                        />
+
+                    )
+
+                    :
+
+                    (
+
+                        <div className="
+                            p-8
+
+                            rounded-3xl
+
+                            text-center
+
+                            bg-white
+                            dark:bg-slate-800
+
+                            border
+                            border-slate-200
+                            dark:border-slate-700
+
+                            text-slate-500
+                            dark:text-slate-400
+                        ">
+
+                            No contest history available
+
+                        </div>
+
+                    )
+
+                }
 
             </div>
 
         </div>
+
     );
 
 };

@@ -260,7 +260,50 @@ navigate("/");
                     />
 
                 </div>
+                <div className="
+    flex
+    items-center
+    justify-center
 
+    text-sm
+
+    text-gray-500
+    dark:text-slate-400
+">
+
+    <span>
+
+        Don't have an account?
+
+    </span>
+
+    <button
+
+        type="button"
+
+        onClick={() =>
+            navigate(
+                "/register"
+            )
+        }
+
+        className="
+            ml-2
+
+            font-semibold
+
+            text-blue-600
+            dark:text-blue-400
+
+            hover:underline
+        "
+    >
+
+        Create Account
+
+    </button>
+
+</div>
            
                 <button
                     type="submit"

@@ -1,71 +1,177 @@
-
-const axios = require('axios');
-const User = require('../models/user-credentials');
-
+const axios = require("axios");
+const User = require("../models/user-credentials");
 
 const getCodeforcesData = async (req, res) => {
+
     const userId = req.user.userId;
-    try{
+
+    try {
+
         const user = await User.findById(userId);
-        if(!user){
+
+        if (!user) {
+
             return res.status(401).json({
-                message : "User not found!",
-                success : false
-            })
+
+                message: "User not found!",
+                success: false
+
+            });
+
         }
-        const codeforcesusername = user.codeforcesUsername;
-        if(!codeforcesusername){
+
+        const codeforcesUsername =
+            user.codeforcesUsername;
+
+       
+
+        if (!codeforcesUsername) {
+
             return res.status(400).json({
-                message : "Codeforces username not set!",
-                success : false
-            })
+
+                message:
+                "Codeforces username not set!",
+
+                success: false
+
+            });
+
         }
 
-        const response = await axios.get(`https://codeforces.com/api/user.status?handle=${codeforcesusername}`);
-        const solvedProblems = new Set();
-        const submissions = [];
+        const response =
+            await axios.get(
 
-        response.data.result.forEach((submission) =>{
-            const problemKey =
-            `${submission.problem.contestId}-${submission.problem.index}`;
+                `https://codeforces.com/api/user.status?handle=${codeforcesUsername}`
 
-            if(submission.verdict === "OK" && !solvedProblems.has(problemKey)){
-                solvedProblems.add(problemKey);
-               submissions.push({
-    problemName : submission.problem.name,
+            );
 
-    problemLink : `https://codeforces.com/problemset/problem/${submission.problem.contestId}/${submission.problem.index}`,
+        if (
+            response.data.status !== "OK"
+        ) {
 
-    submissionTime : new Date(
-        submission.creationTimeSeconds * 1000
-    ).toLocaleString(),
+            return res.status(400).json({
 
-    programmingLanguage : submission.programmingLanguage,
+                message:
+                "Failed to fetch Codeforces data",
 
-    rating : submission.problem.rating || "Unrated",
+                success:false
 
-    tags : submission.problem.tags,
+            });
 
-    contestId : submission.problem.contestId,
+        }
 
-    problemIndex : submission.problem.index,
-})
+        const solvedProblems =
+            new Set();
+
+        const problems = [];
+
+        response.data.result.forEach(
+            (submission) => {
+
+                const problemKey =
+
+                `${submission.problem.contestId}-${submission.problem.index}`;
+
+                if (
+
+                    submission.verdict === "OK" &&
+
+                    !solvedProblems.has(
+                        problemKey
+                    )
+
+                ) {
+
+                    solvedProblems.add(
+                        problemKey
+                    );
+
+                    problems.push({
+
+                        problemName:
+                            submission.problem.name,
+
+                        problemLink:
+
+`https://codeforces.com/problemset/problem/${submission.problem.contestId}/${submission.problem.index}`,
+
+                        submissionTime:
+
+                            new Date(
+
+                                submission.creationTimeSeconds * 1000
+
+                            ).toLocaleString(),
+
+                        programmingLanguage:
+
+                            submission.programmingLanguage,
+
+                        rating:
+
+                            submission.problem.rating ||
+                            "Unrated",
+
+                        tags:
+
+                            submission.problem.tags || [],
+
+                        contestId:
+
+                            submission.problem.contestId,
+
+                        problemIndex:
+
+                            submission.problem.index
+
+                    });
+
+                }
+
             }
-        })
+        );
+
+        
+
         res.status(200).json({
-            message : "Codeforces data fetched successfully",
-            success : true,
-            solvedProblems : Array.from(solvedProblems),
-            submissions,
-            totalSolved : submissions.length
+
+            success: true,
+
+            problems,
+
+            totalSolved:
+                problems.length
+
         });
 
-    }catch(error){
-        console.error('Error fetching codeforces data:', error);
-        res.status(500).json({message: 'Internal server error'});
     }
-}
+
+    catch (error) {
+
+        console.error(
+
+            "Error fetching codeforces data:",
+
+            error.response?.data ||
+            error.message
+
+        );
+
+        res.status(500).json({
+
+            message:
+            "Internal server error",
+
+            success:false
+
+        });
+
+    }
+
+};
 
 module.exports = {
+
     getCodeforcesData
-}
+
+};

@@ -14,7 +14,7 @@ import {
 } from "react";
 
 const SolvedProblemsChart = ({
-    problems
+    problems = []
 }) => {
 
     const [
@@ -31,9 +31,8 @@ const SolvedProblemsChart = ({
                 document
                     .documentElement
                     .classList
-                    .contains(
-                        "dark"
-                    )
+                    .contains("dark")
+
             );
         };
 
@@ -45,9 +44,7 @@ const SolvedProblemsChart = ({
             );
 
         observer.observe(
-
             document.documentElement,
-
             {
                 attributes: true,
                 attributeFilter: [
@@ -61,12 +58,14 @@ const SolvedProblemsChart = ({
 
     }, []);
 
-    
-
     const groupedData = {};
 
-    problems.forEach(
+    (problems || []).forEach(
         (problem) => {
+
+            if(
+                !problem?.submissionTime
+            ) return;
 
             const date =
                 new Date(
@@ -77,29 +76,29 @@ const SolvedProblemsChart = ({
                 date.toLocaleDateString(
                     "en-US",
                     {
-                        month: "short",
-                        year: "numeric"
+                        month:"short",
+                        year:"numeric"
                     }
                 );
 
-            if (
+            if(
                 !groupedData[
                     monthYear
                 ]
-            ) {
+            ){
 
                 groupedData[
                     monthYear
                 ] = 0;
+
             }
 
             groupedData[
                 monthYear
-            ] += 1;
+            ]++;
+
         }
     );
-
-    
 
     let cumulativeSolved = 0;
 
@@ -108,7 +107,7 @@ const SolvedProblemsChart = ({
             groupedData
         ).map(
 
-            ([date, count]) => {
+            ([date,count]) => {
 
                 cumulativeSolved +=
                     count;
@@ -119,8 +118,11 @@ const SolvedProblemsChart = ({
 
                     solved:
                         cumulativeSolved
+
                 };
+
             }
+
         );
 
     return (
@@ -139,8 +141,6 @@ const SolvedProblemsChart = ({
             border-slate-200
             dark:border-slate-700
         ">
-
-          
 
             <div className="
                 flex
@@ -176,127 +176,117 @@ const SolvedProblemsChart = ({
 
             </div>
 
-           
+            <div className="
+                w-full
+                h-[350px]
+                min-h-[350px]
+            ">
 
-            <div className="w-full h-56">
+                {
+                    chartData.length > 0 ? (
 
-                <ResponsiveContainer
-                    width="100%"
-                    height="100%"
-                >
-
-                    <AreaChart
-                        data={
-                            chartData
-                        }
-
-                        margin={{
-
-                            top: 5,
-                            right: 10,
-                            left: -20,
-                            bottom: 0
-                        }}
+                    <ResponsiveContainer
+                        width="100%"
+                        height="100%"
                     >
 
-                        <CartesianGrid
+                        <AreaChart
+                            data={chartData}
+                            margin={{
+                                top:5,
+                                right:10,
+                                left:-20,
+                                bottom:0
+                            }}
+                        >
 
-                            strokeDasharray="3 3"
-
-                            stroke={
-                                isDark
+                            <CartesianGrid
+                                strokeDasharray="3 3"
+                                vertical={false}
+                                stroke={
+                                    isDark
                                     ? "#334155"
                                     : "#e2e8f0"
-                            }
+                                }
+                            />
 
-                            vertical={false}
-                        />
-
-                        <XAxis
-
-                            dataKey="date"
-
-                            tick={{
-                                fontSize: 12
-                            }}
-
-                            tickLine={false}
-
-                            axisLine={false}
-
-                            stroke={
-                                isDark
+                            <XAxis
+                                dataKey="date"
+                                tick={{fontSize:12}}
+                                tickLine={false}
+                                axisLine={false}
+                                stroke={
+                                    isDark
                                     ? "#cbd5e1"
                                     : "#94a3b8"
-                            }
-                        />
+                                }
+                            />
 
-                        <YAxis
-
-                            tick={{
-                                fontSize: 12
-                            }}
-
-                            tickLine={false}
-
-                            axisLine={false}
-
-                            stroke={
-                                isDark
+                            <YAxis
+                                tick={{fontSize:12}}
+                                tickLine={false}
+                                axisLine={false}
+                                stroke={
+                                    isDark
                                     ? "#cbd5e1"
                                     : "#94a3b8"
-                            }
-                        />
+                                }
+                            />
 
-                        <Tooltip
+                            <Tooltip
+                                contentStyle={{
+                                    borderRadius:"16px",
 
-                            contentStyle={{
-
-                                borderRadius:
-                                    "16px",
-
-                                border:
+                                    border:
 
                                     isDark
+                                    ? "1px solid #475569"
+                                    : "1px solid #e2e8f0",
 
-                                        ? "1px solid #475569"
-
-                                        : "1px solid #e2e8f0",
-
-                                backgroundColor:
+                                    backgroundColor:
 
                                     isDark
-                                        ? "#1e293b"
-                                        : "#fff",
+                                    ? "#1e293b"
+                                    : "#fff",
 
-                                color:
+                                    color:
 
                                     isDark
-                                        ? "#fff"
-                                        : "#000"
-                            }}
-                        />
+                                    ? "#fff"
+                                    : "#000"
+                                }}
+                            />
 
-                        <Area
+                            <Area
+                                type="monotone"
+                                dataKey="solved"
+                                stroke="#16a34a"
+                                fill="#86efac"
+                                fillOpacity={0.5}
+                                strokeWidth={3}
+                            />
 
-                            type="monotone"
+                        </AreaChart>
 
-                            dataKey="solved"
+                    </ResponsiveContainer>
 
-                            stroke="#16a34a"
+                    ) : (
 
-                            fill="#86efac"
+                    <div className="
+                        h-full
+                        flex
+                        items-center
+                        justify-center
+                        text-slate-500
+                        dark:text-slate-400
+                    ">
 
-                            fillOpacity={0.5}
+                        No solved problem data available
 
-                            strokeWidth={3}
+                    </div>
 
-                            animationDuration={1500}
-                        />
-
-                    </AreaChart>
-
-                </ResponsiveContainer>
+                    )
+                }
 
             </div>
 

@@ -3,9 +3,10 @@ import {
     Code2,
     Trophy,
     User,
-    // Calendar,
     Settings,
-    LogOut
+    LogOut,
+    LogIn,
+    UserPlus
 } from "lucide-react";
 
 import {
@@ -22,10 +23,19 @@ const Sidebar = () => {
     const navigate =
         useNavigate();
 
+    const token =
+        localStorage.getItem(
+            "token"
+        );
+
     const handleLogout = () => {
 
         localStorage.removeItem(
             "token"
+        );
+
+        localStorage.removeItem(
+            "theme"
         );
 
         navigate(
@@ -33,7 +43,7 @@ const Sidebar = () => {
         );
     };
 
-    const navLinks = [
+    const authLinks = [
 
         {
             name:"Dashboard",
@@ -57,21 +67,37 @@ const Sidebar = () => {
             name:"Profile",
             path:"/profile",
             icon:User
-        },
-
-        // {
-        //     name:"Calendar",
-        //     path:"/calendar",
-        //     icon:Calendar
-        // }
+        }
 
     ];
+
+    const guestLinks = [
+
+        {
+            name:"Login",
+            path:"/login",
+            icon:LogIn
+        },
+
+        {
+            name:"Register",
+            path:"/register",
+            icon:UserPlus
+        }
+
+    ];
+
+    const links =
+        token
+        ?
+        authLinks
+        :
+        guestLinks;
 
     return (
 
         <div className="
             w-64
-
             min-h-screen
 
             px-5
@@ -91,11 +117,9 @@ const Sidebar = () => {
             transition-colors
         ">
 
-           
+            {/* Logo */}
 
-            <div className="
-                mb-10
-            ">
+            <div className="mb-10">
 
                 <h1 className="
                     text-3xl
@@ -103,18 +127,22 @@ const Sidebar = () => {
                     tracking-tight
                 ">
 
-                    <span className="
-                        text-blue-500
-                    ">
+                    <span
+                    className="
+                    text-blue-500
+                    "
+                    >
 
                         Code
 
                     </span>
 
-                    <span className="
-                        text-slate-800
-                        dark:text-white
-                    ">
+                    <span
+                    className="
+                    text-slate-800
+                    dark:text-white
+                    "
+                    >
 
                         Tracker
 
@@ -124,197 +152,208 @@ const Sidebar = () => {
 
             </div>
 
-        
-            <nav className="
-                space-y-2
-            ">
+            {/* Navigation */}
+
+            <nav className="space-y-2">
 
                 {
 
-                navLinks.map(
+                    links.map(
 
-                (
-                    link,
-                    index
-                ) => {
+                        (
+                            link,
+                            index
+                        ) => {
 
-                const Icon =
-                    link.icon;
+                            const Icon =
+                                link.icon;
 
-                const isActive =
+                            const isActive =
 
-                    location.pathname
-                    ===
-                    link.path;
+                                location.pathname
+                                ===
+                                link.path;
 
-                return (
+                            return (
 
-                <Link
+                                <Link
 
-                    key={index}
+                                    key={index}
 
-                    to={
-                        link.path
-                    }
+                                    to={
+                                        link.path
+                                    }
 
-                    className={`
+                                    className={`
 
-                    flex
-                    items-center
-                    gap-3
+                                    flex
+                                    items-center
+                                    gap-3
 
-                    py-3
-                    px-4
+                                    py-3
+                                    px-4
 
-                    rounded-2xl
+                                    rounded-2xl
 
-                    font-medium
+                                    font-medium
 
-                    transition-all
-                    duration-200
+                                    transition-all
+                                    duration-200
 
-                    ${
+                                    ${
 
-                    isActive
+                                    isActive
 
-                    ?
+                                    ?
 
-                    "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                                    "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
 
-                    :
+                                    :
 
-                    "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
+                                    "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
 
-                    }
+                                    }
 
-                    `}
-                >
+                                    `}
+                                >
 
-                    <Icon
-                        size={20}
-                    />
+                                    <Icon
+                                        size={20}
+                                    />
 
-                    <span>
+                                    <span>
 
-                        {link.name}
+                                        {link.name}
 
-                    </span>
+                                    </span>
 
-                </Link>
+                                </Link>
 
-                );
+                            );
 
-                })
+                        }
+
+                    )
 
                 }
 
             </nav>
 
-           
+            {/* Bottom section */}
 
-            <div className="
-                mt-auto
-                pt-6
+            {
 
-                border-t
-
-                border-slate-200
-                dark:border-slate-800
-            ">
+                token && (
 
                 <div className="
-                    space-y-2
+                    mt-auto
+                    pt-6
+
+                    border-t
+
+                    border-slate-200
+                    dark:border-slate-800
                 ">
 
-                    <Link
+                    <div className="
+                        space-y-2
+                    ">
 
-                        to="/settings"
+                        <Link
 
-                        className="
-                        flex
-                        items-center
-                        gap-3
+                            to="/settings"
 
-                        py-3
-                        px-4
+                            className="
+                            flex
+                            items-center
+                            gap-3
 
-                        rounded-2xl
+                            py-3
+                            px-4
 
-                        font-medium
+                            rounded-2xl
 
-                        text-slate-600
-                        dark:text-slate-300
+                            font-medium
 
-                        hover:bg-slate-100
-                        dark:hover:bg-slate-900
+                            text-slate-600
+                            dark:text-slate-300
 
-                        hover:text-slate-900
-                        dark:hover:text-white
+                            hover:bg-slate-100
+                            dark:hover:bg-slate-900
 
-                        transition-all
-                        duration-200
-                        "
-                    >
+                            hover:text-slate-900
+                            dark:hover:text-white
 
-                        <Settings
-                            size={20}
-                        />
+                            transition-all
+                            duration-200
+                            "
+                        >
 
-                        <span>
+                            <Settings
+                                size={20}
+                            />
 
-                            Settings
+                            <span>
 
-                        </span>
+                                Settings
 
-                    </Link>
+                            </span>
 
-                    <button
+                        </Link>
 
-                        onClick={
-                            handleLogout
-                        }
+                        <button
 
-                        className="
-                        w-full
+                            onClick={
+                                handleLogout
+                            }
 
-                        flex
-                        items-center
-                        gap-3
+                            className="
+                            w-full
 
-                        py-3
-                        px-4
+                            flex
+                            items-center
+                            gap-3
 
-                        rounded-2xl
+                            py-3
+                            px-4
 
-                        font-medium
+                            rounded-2xl
 
-                        text-red-400
+                            font-medium
 
-                        hover:bg-red-500/10
+                            text-red-400
 
-                        transition-all
-                        duration-200
-                        "
-                    >
+                            hover:bg-red-500/10
 
-                        <LogOut
-                            size={20}
-                        />
+                            transition-all
+                            duration-200
+                            "
+                        >
 
-                        <span>
+                            <LogOut
+                                size={20}
+                            />
 
-                            Logout
+                            <span>
 
-                        </span>
+                                Logout
 
-                    </button>
+                            </span>
+
+                        </button>
+
+                    </div>
 
                 </div>
 
-            </div>
+                )
+
+            }
 
         </div>
+
     );
+
 };
 
 export default Sidebar;

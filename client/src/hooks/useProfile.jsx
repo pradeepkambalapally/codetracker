@@ -1,40 +1,83 @@
 import { useEffect, useState } from "react";
+
 import api from "../api/axios";
+import useUser from "./useUser";
+
 const useProfile = () => {
 
-    const [profile, setProfile] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const {
+        user,
+        loading:userLoading
+    } = useUser();
+
+    const [profile,setProfile] = useState({});
+    const [loading,setLoading] = useState(true);
+    const [error,setError] = useState("");
+
     useEffect(() => {
+
+        if(userLoading) return;
 
         const fetchProfile = async () => {
 
-            try {
+            if(
+                !user?.codeforcesUsername
+            ){
 
-                
-
-                const response = await api.get(
-                    "/users/codeforces-profile-stats"
+                setError(
+                    "Connect your Codeforces account in Settings"
                 );
 
-                setProfile(response.data.stats);
+                setLoading(false);
 
-            } catch (error) {
-                setError("Failed to fetch data");
+                return;
+            }
+
+            try{
+
+                setError("");
+
+                const response =
+                    await api.get(
+                        "/users/codeforces-profile-stats"
+                    );
+
+                setProfile(
+                    response.data.stats
+                );
+
+            }
+
+            catch(error){
+
+                setError(
+
+                    error.response?.data?.message ||
+
+                    "Failed to fetch profile"
+
+                );
+
                 console.error(error);
 
-            } finally {
+            }
+
+            finally{
 
                 setLoading(false);
 
             }
+
         };
 
         fetchProfile();
 
-    }, []);
+    },[
+        user,
+        userLoading
+    ]);
 
-    return {
+    return{
         profile,
         loading,
         error

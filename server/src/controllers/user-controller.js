@@ -4,37 +4,96 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const axios = require('axios');
 const registerUser = async (req, res) => {
-    const {username, password} = req.body;
-    if(!username || !password){
-       return res.status(401).json({
-          message : "All fields are required",
-          success : false
-    })
-   }
-    try{
-        const exisitingUser = await User.findOne({username});
-        if(exisitingUser){
-            return res.status(401).json({message: 'User already exists'});
-        }
-         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({
-            username,
-            password: hashedPassword
+    
+    const {
+        username,
+        password
+    } = req.body;
+
+    if (
+        !username ||
+        !password
+    ) {
+
+        return res.status(400).json({
+
+            message:
+            "All fields are required",
+
+            success:false
+
         });
-        await newUser.save();
-        res.status(201).json({
-            message : "User registered successfully",
-            success : true,
-            user : {
-                userId : newUser._id,
-                username : newUser.username
-            }
-        })
-    }catch(error){
-        console.error('Error registering user:', error);
-        res.status(500).json({message: 'Internal server error'});
+
     }
-}
+
+    try {
+
+        const existingUser =
+
+            await User.findOne({
+                username
+            });
+
+        if (
+            existingUser
+        ) {
+
+            return res.status(409).json({
+
+                message:
+                "User already exists",
+
+                success:false
+
+            });
+
+        }
+
+        const hashedPassword =
+
+            await bcrypt.hash(
+                password,
+                10
+            );
+
+        const newUser =
+            new User({
+
+                username,
+
+                password:
+                    hashedPassword
+            });
+
+        await newUser.save();
+
+        res.status(201).json({
+
+            message:
+            "User registered successfully",
+
+            success:true
+
+        });
+
+    }
+
+    catch(error){
+
+        console.error(
+            error
+        );
+
+        res.status(500).json({
+
+            message:
+            "Internal server error"
+
+        });
+
+    }
+
+};
 
 const loginUser = async (req, res) => {
     const {username, password} = req.body;

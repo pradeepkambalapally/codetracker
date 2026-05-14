@@ -21,6 +21,17 @@ const getCodeforcesContestData = async (req, res) => {
         }
 
         const response = await axios.get(`https://codeforces.com/api/user.rating?handle=${codeforcesusername}`);
+        if(response.data.result.length === 0){
+
+    return res.status(200).json({
+
+        success:true,
+
+        contests:[]
+
+    });
+
+}
 
         const contests = response.data.result.map((contest) => ({
             contestName : contest.contestName,
@@ -31,6 +42,7 @@ const getCodeforcesContestData = async (req, res) => {
             ratingChange : contest.newRating - contest.oldRating
 
         }))
+        
 
         res.status(200).json({
             message : "Codeforces contest data fetched successfully",

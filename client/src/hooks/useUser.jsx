@@ -1,32 +1,82 @@
-import { useEffect, useState } from "react";
+import {
+    useEffect,
+    useState
+} from "react";
+
 import api from "../api/axios";
 
 const useUser = () => {
-    
-    const [user, setUser] = useState({});
-    const [loading, setLoading] = useState(true);
+
+    const [
+        user,
+        setUser
+    ] = useState({});
+
+    const [
+        loading,
+        setLoading
+    ] = useState(true);
 
     useEffect(() => {
 
-        const fetchUser = async () => {
+        const token =
+            localStorage.getItem(
+                "token"
+            );
+
+        // Don't call /me if user
+        // isn't logged in
+
+        if (!token) {
+
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setLoading(
+                false
+            );
+
+            return;
+
+        }
+
+        const fetchUser =
+        async () => {
 
             try {
 
                 const response =
-                    await api.get("/users/me");
 
-                setUser(response.data.user);
-               
+                    await api.get(
+                        "/users/me"
+                    );
 
-            } catch (error) {
+                setUser(
 
-                console.error(error);
+                    response.data.user
 
-            } finally {
-
-                setLoading(false);
+                );
 
             }
+
+            catch(error){
+
+                console.error(
+                    error
+                );
+
+                localStorage.removeItem(
+                    "token"
+                );
+
+            }
+
+            finally{
+
+                setLoading(
+                    false
+                );
+
+            }
+
         };
 
         fetchUser();
@@ -34,9 +84,13 @@ const useUser = () => {
     }, []);
 
     return {
+
         user,
+
         loading
+
     };
+
 };
 
 export default useUser;

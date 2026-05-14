@@ -4,37 +4,52 @@ import DashboarCard from "../components/dashboard/DashboardCard";
 import Loading from "../components/ui/Loading";
 import RatingCharts from "../components/dashboard/RatingCharts";
 import SolvedProblemsChart from "../components/dashboard/SolvedProblemsChart";
+
 import useProblems from "../hooks/useProblems";
 import useContests from "../hooks/useContests";
 import useProfile from "../hooks/useProfile";
+
 import ErrorMessage from "../components/ErrorMessage";
 
 const Dashboard = () => {
 
     const {
-        problems,
-        loading
+        problems = [],
+        loading: problemsLoading
     } = useProblems();
 
     const {
-        profileStats,
+        profile,
+        loading: profileLoading,
         error
     } = useProfile();
 
     const {
-        contests
+        contests = [],
+        loading: contestsLoading
     } = useContests();
 
-    if (loading)
+    const loading =
+        problemsLoading ||
+        profileLoading ||
+        contestsLoading;
+
+    if (loading) {
+
         return <Loading />;
+
+    }
 
     if (error) {
 
         return (
+
             <ErrorMessage
                 error={error}
             />
+
         );
+
     }
 
     return (
@@ -44,18 +59,22 @@ const Dashboard = () => {
             min-h-screen
             p-6
             overflow-x-hidden
+
             bg-slate-100
             dark:bg-slate-900
+
             transition-colors
         ">
 
-           
+            {/* Header */}
+
             <div className="mb-6">
 
                 <h1 className="
                     text-3xl
                     font-bold
                     tracking-tight
+
                     text-slate-800
                     dark:text-white
                 ">
@@ -67,6 +86,7 @@ const Dashboard = () => {
                 <p className="
                     mt-2
                     text-lg
+
                     text-slate-500
                     dark:text-slate-400
                 ">
@@ -77,23 +97,23 @@ const Dashboard = () => {
 
             </div>
 
-           
+            {/* Stats Cards */}
 
             <DashboarCard
                 problems={
-                    problems
+                    problems || []
                 }
 
                 profileStats={
-                    profileStats
+                    profile || {}
                 }
 
                 contests={
-                    contests
+                    contests || []
                 }
             />
 
-           
+            {/* Charts */}
 
             <div className="
                 grid
@@ -105,22 +125,20 @@ const Dashboard = () => {
 
                 <SolvedProblemsChart
                     problems={
-                        problems
+                        problems || []
                     }
                 />
 
                 <RatingCharts
                     contests={
-                        contests.slice(
-                            0,
-                            5
-                        )
+                        (contests || [])
+                        .slice(0,5)
                     }
                 />
 
             </div>
 
-            {/* Table */}
+            {/* Recent Problems */}
 
             <div className="
                 mt-6
@@ -129,10 +147,8 @@ const Dashboard = () => {
 
                 <SolvedProblems
                     problems={
-                        problems.slice(
-                            0,
-                            8
-                        )
+                        (problems || [])
+                        .slice(0,8)
                     }
                 />
 
@@ -140,7 +156,6 @@ const Dashboard = () => {
 
         </div>
     );
-
 };
 
 export default Dashboard;

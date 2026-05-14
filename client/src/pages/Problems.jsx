@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import SolvedProblems from "../components/tables/SolvedProblems";
 import Loading from "../components/ui/Loading";
 import SearchBar from "../components/ui/SearchBar";
 import Pagination from "../components/ui/Pagination";
 import ErrorMessage from "../components/ErrorMessage";
+
 import useProblems from "../hooks/useProblems";
 import useSearch from "../hooks/useSearch";
 import usePagination from "../hooks/usePagination";
@@ -12,7 +13,7 @@ import usePagination from "../hooks/usePagination";
 const Problems = () => {
 
     const {
-        problems,
+        problems = [],
         loading,
         error
     } = useProblems();
@@ -22,16 +23,12 @@ const Problems = () => {
         setSearch
     ] = useState("");
 
-  
-
     const filteredProblems =
         useSearch(
-            problems,
+            problems || [],
             search,
             "problemName"
         );
-
-    
 
     const {
 
@@ -39,16 +36,28 @@ const Problems = () => {
 
         setCurrentPage,
 
-        currentItems,
+        currentItems = [],
 
         indexOfLastItem
 
     } = usePagination(
 
-        filteredProblems,
+        filteredProblems || [],
 
         10
     );
+
+    useEffect(() => {
+
+        setCurrentPage(1);
+
+    }, [
+
+        search,
+
+        setCurrentPage
+
+    ]);
 
     if (loading)
         return <Loading />;
@@ -56,10 +65,13 @@ const Problems = () => {
     if (error) {
 
         return (
+
             <ErrorMessage
                 error={error}
             />
+
         );
+
     }
 
     return (
@@ -69,18 +81,19 @@ const Problems = () => {
             min-h-screen
             p-6
             overflow-x-hidden
+
             bg-slate-100
             dark:bg-slate-900
+
             transition-colors
         ">
-
-          
 
             <div className="mb-6">
 
                 <h1 className="
                     text-3xl
                     font-bold
+
                     text-slate-800
                     dark:text-white
                 ">
@@ -91,6 +104,7 @@ const Problems = () => {
 
                 <p className="
                     mt-2
+
                     text-slate-500
                     dark:text-slate-400
                 ">
@@ -101,55 +115,94 @@ const Problems = () => {
 
             </div>
 
-           
-
             <SearchBar
-                search={
-                    search
-                }
 
-                setSearch={
-                    setSearch
-                }
+                search={search}
 
-                placeholder=
-                    "Search problems..."
+                setSearch={setSearch}
+
+                placeholder="Search problems..."
 
                 count={
-                    filteredProblems.length
+                    (filteredProblems || []).length
                 }
 
-                label=
-                    "problems"
+                label="problems"
+
             />
 
-        
+            {
 
-            <SolvedProblems
-                problems={
-                    currentItems
-                }
-            />
+                currentItems.length > 0
 
-            
+                ?
 
-            <Pagination
-                currentPage={
-                    currentPage
-                }
+                (
 
-                setCurrentPage={
-                    setCurrentPage
-                }
+                    <SolvedProblems
+                        problems={
+                            currentItems || []
+                        }
+                    />
 
-                indexOfLastItem={
-                    indexOfLastItem
-                }
+                )
 
-                totalItems={
-                    filteredProblems.length
-                }
-            />
+                :
+
+                (
+
+                    <div className="
+                        mt-8
+                        p-10
+
+                        rounded-3xl
+
+                        bg-white
+                        dark:bg-slate-800
+
+                        border
+                        border-slate-200
+                        dark:border-slate-700
+
+                        text-center
+
+                        text-slate-500
+                        dark:text-slate-400
+                    ">
+
+                        No problems found
+
+                    </div>
+
+                )
+
+            }
+
+            {
+
+                filteredProblems.length > 10 &&
+
+                <Pagination
+
+                    currentPage={
+                        currentPage
+                    }
+
+                    setCurrentPage={
+                        setCurrentPage
+                    }
+
+                    indexOfLastItem={
+                        indexOfLastItem
+                    }
+
+                    totalItems={
+                        filteredProblems.length
+                    }
+
+                />
+
+            }
 
         </div>
     );
