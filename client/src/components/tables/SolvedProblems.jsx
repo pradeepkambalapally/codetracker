@@ -3,26 +3,64 @@ import {
     ArrowRight,
     ExternalLink
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
-const SolvedProblems = ({ problems }) => {
+import {
+    useNavigate
+} from "react-router-dom";
 
-    const navigate = useNavigate();
+const SolvedProblems = ({
+    problems
+}) => {
+
+    const navigate =
+        useNavigate();
 
     return (
 
-        <div className="bg-white p-6 rounded-3xl shadow-sm border border-slate-200">
+        <div className="
+            bg-white
+            dark:bg-slate-800
 
-            {/* Header */}
+            p-6
 
-            <div className="flex items-center justify-between mb-6">
+            rounded-3xl
 
-                <div className="flex items-center gap-3">
+            shadow-sm
 
-                    <div className="bg-blue-100 p-3 rounded-2xl">
+            border
+            border-slate-200
+            dark:border-slate-700
+        ">
+
+            
+
+            <div className="
+                flex
+                items-center
+                justify-between
+                mb-6
+            ">
+
+                <div className="
+                    flex
+                    items-center
+                    gap-3
+                ">
+
+                    <div className="
+                        bg-blue-100
+                        dark:bg-blue-900/40
+
+                        p-3
+
+                        rounded-2xl
+                    ">
 
                         <CheckCircle2
-                            className="text-blue-600"
+                            className="
+                            text-blue-600
+                            dark:text-blue-400
+                            "
                             size={22}
                         />
 
@@ -30,201 +68,393 @@ const SolvedProblems = ({ problems }) => {
 
                     <div>
 
-                        <h2 className="text-2xl font-bold text-slate-800">
+                        <h2 className="
+                            text-2xl
+                            font-bold
+                            text-slate-800
+                            dark:text-white
+                        ">
+
                             Solved Problems
+
                         </h2>
 
-                        <p className="text-slate-500 text-sm mt-1">
+                        <p className="
+                            text-sm
+                            mt-1
+                            text-slate-500
+                            dark:text-slate-400
+                        ">
+
                             Your latest accepted submissions
+
                         </p>
 
                     </div>
 
                 </div>
 
-                
+                <button
 
-                <button onClick ={() => {
-                    navigate("/problems")
-                }} className="flex items-center gap-2 text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+                    onClick={() => {
+
+                        navigate(
+                            "/problems"
+                        );
+
+                    }}
+
+                    className="
+                    flex
+                    items-center
+                    gap-2
+
+                    text-sm
+                    font-semibold
+
+                    text-blue-600
+                    hover:text-blue-700
+
+                    dark:text-blue-400
+                    dark:hover:text-blue-300
+
+                    transition-colors
+                    "
+                >
 
                     View All
 
-                    <ArrowRight size={16} />
+                    <ArrowRight
+                        size={16}
+                    />
 
                 </button>
 
             </div>
 
-            {/* Table */}
+            
 
-            <div className="overflow-x-auto">
+            <div className="
+                overflow-x-auto
+            ">
 
-                <table className="w-full min-w-[900px]">
+                <table className="
+                    w-full
+                    min-w-[900px]
+                ">
 
-                    {/* Table Head */}
+                    
 
                     <thead>
 
-                        <tr className="border-b border-slate-200 text-left">
+                        <tr className="
+                            border-b
+                            border-slate-200
+                            dark:border-slate-700
 
-                            <th className="pb-4 text-sm font-semibold text-slate-500">
-                                #
-                            </th>
+                            text-left
+                        ">
 
-                            <th className="pb-4 text-sm font-semibold text-slate-500">
-                                Problem
-                            </th>
+                            {
 
-                            <th className="pb-4 text-sm font-semibold text-slate-500">
-                                Contest
-                            </th>
+                            [
+                                "#",
+                                "Problem",
+                                "Contest",
+                                "Tags",
+                                "Rating",
+                                "Language",
+                                "Solved At",
+                                "Action"
 
-                            <th className="pb-4 text-sm font-semibold text-slate-500">
-                                Tags
-                            </th>
+                            ].map(
 
-                            <th className="pb-4 text-sm font-semibold text-slate-500">
-                                Rating
-                            </th>
+                                (
+                                    item
+                                ) => (
 
-                            <th className="pb-4 text-sm font-semibold text-slate-500">
-                                Language
-                            </th>
+                                <th
+                                    key={item}
 
-                            <th className="pb-4 text-sm font-semibold text-slate-500">
-                                Solved At
-                            </th>
+                                    className="
+                                    pb-4
 
-                            <th className="pb-4 text-sm font-semibold text-slate-500">
-                                Action
-                            </th>
+                                    text-sm
+                                    font-semibold
+
+                                    text-slate-500
+                                    dark:text-slate-400
+                                    "
+                                >
+
+                                    {item}
+
+                                </th>
+
+                                ))
+
+                            }
 
                         </tr>
 
                     </thead>
 
-                    {/* Table Body */}
+                    
 
                     <tbody>
 
                         {
-                            problems.map((problem, index) => (
 
-                                <tr
-                                    key={index}
-                                    className="border-b border-slate-100 last:border-none hover:bg-slate-50 transition-colors"
-                                >
+                        problems.map(
 
-                                    {/* Index */}
+                        (
+                            problem,
+                            index
+                        ) => (
 
-                                    <td className="py-3 text-slate-500 font-medium">
+                            <tr
 
-                                        {index + 1}
+                                key={index}
 
-                                    </td>
+                                className="
+                                border-b
+                                border-slate-100
+                                dark:border-slate-700
 
-                                    {/* Problem */}
+                                last:border-none
 
-                                    <td className="py-3 pr-6">
+                                hover:bg-slate-50
+                                dark:hover:bg-slate-700/40
 
-                                        <p className="font-semibold text-slate-800">
+                                transition-colors
+                                "
+                            >
 
-                                            {problem.problemName}
+                                <td className="
+                                    py-3
+                                    font-medium
 
-                                        </p>
+                                    text-slate-500
+                                    dark:text-slate-400
+                                ">
 
-                                    </td>
+                                    {index+1}
 
-                                    {/* Contest */}
+                                </td>
 
-                                    <td className="py-3">
+                                <td className="
+                                    py-3
+                                    pr-6
+                                ">
 
-                                        <span className="text-slate-600 font-medium">
+                                    <p className="
+                                        font-semibold
+                                        text-slate-800
+                                        dark:text-white
+                                    ">
 
-                                            {problem.contestId}
-                                            {problem.problemIndex}
+                                        {
+                                            problem.problemName
+                                        }
 
-                                        </span>
+                                    </p>
 
-                                    </td>
+                                </td>
 
-                                    {/* Tags */}
+                                <td className="
+                                    py-3
+                                ">
 
-                                    <td className="py-3">
+                                    <span className="
+                                        font-medium
 
-                                        <div className="flex flex-wrap gap-2">
+                                        text-slate-600
+                                        dark:text-slate-300
+                                    ">
 
-                                            {
-                                                problem.tags
-                                                    .slice(0, 2)
-                                                    .map((tag, idx) => (
+                                        {
+                                            problem.contestId
+                                        }
 
-                                                        <span
-                                                            key={idx}
-                                                            className="bg-blue-100 text-blue-600 text-xs font-medium px-2.5 py-1 rounded-full whitespace-nowrap"
-                                                        >
+                                        {
+                                            problem.problemIndex
+                                        }
 
-                                                            {tag}
+                                    </span>
 
-                                                        </span>
-                                                    ))
-                                            }
+                                </td>
 
-                                        </div>
+                                <td className="
+                                    py-3
+                                ">
 
-                                    </td>
+                                    <div className="
+                                        flex
+                                        flex-wrap
+                                        gap-2
+                                    ">
 
-                                    {/* Rating */}
+                                    {
 
-                                    <td className="py-3">
+                                    problem.tags
+                                    .slice(0,2)
+                                    .map(
 
-                                        <span className="bg-yellow-100 text-yellow-700 text-sm font-semibold px-3 py-1 rounded-full whitespace-nowrap">
+                                    (
+                                        tag,
+                                        idx
+                                    ) => (
 
-                                            {problem.rating ? problem.rating : "-"}
+                                    <span
 
-                                        </span>
+                                        key={idx}
 
-                                    </td>
+                                        className="
+                                        bg-blue-100
+                                        dark:bg-blue-900/40
 
-                                    {/* Language */}
+                                        text-blue-600
+                                        dark:text-blue-300
 
-                                    <td className="py-3 text-slate-600 text-sm font-medium whitespace-nowrap">
+                                        text-xs
+                                        font-medium
 
-                                        {problem.programmingLanguage}
+                                        px-2.5
+                                        py-1
 
-                                    </td>
+                                        rounded-full
+                                        whitespace-nowrap
+                                        "
+                                    >
 
-                                    {/* Solved At */}
+                                        {tag}
 
-                                    <td className="py-4 text-slate-600 text-sm whitespace-nowrap">
+                                    </span>
 
-                                        {problem.submissionTime}
+                                    ))
 
-                                    </td>
+                                    }
 
-                                    {/* Action */}
+                                    </div>
 
-                                    <td className="py-3">
+                                </td>
 
-                                        <a
-                                            href={problem.problemLink}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            className="inline-flex items-center justify-center w-9 h-9 rounded-xl border border-slate-200 hover:bg-slate-100 transition-colors"
-                                        >
+                                <td className="
+                                    py-3
+                                ">
 
-                                            <ExternalLink
-                                                size={16}
-                                                className="text-slate-600"
-                                            />
+                                    <span className="
+                                        bg-yellow-100
+                                        dark:bg-yellow-900/40
 
-                                        </a>
+                                        text-yellow-700
+                                        dark:text-yellow-300
 
-                                    </td>
+                                        text-sm
+                                        font-semibold
 
-                                </tr>
-                            ))
+                                        px-3
+                                        py-1
+
+                                        rounded-full
+                                    ">
+
+                                        {
+
+                                        problem.rating
+                                        ? problem.rating
+                                        : "-"
+
+                                        }
+
+                                    </span>
+
+                                </td>
+
+                                <td className="
+                                    py-3
+
+                                    text-sm
+                                    font-medium
+
+                                    text-slate-600
+                                    dark:text-slate-300
+                                ">
+
+                                    {
+                                    problem.programmingLanguage
+                                    }
+
+                                </td>
+
+                                <td className="
+                                    py-4
+
+                                    text-sm
+
+                                    text-slate-600
+                                    dark:text-slate-300
+                                ">
+
+                                    {
+                                        problem.submissionTime
+                                    }
+
+                                </td>
+
+                                <td className="
+                                    py-3
+                                ">
+
+                                    <a
+
+                                        href={
+                                            problem.problemLink
+                                        }
+
+                                        target="_blank"
+
+                                        rel="noreferrer"
+
+                                        className="
+                                        inline-flex
+                                        items-center
+                                        justify-center
+
+                                        w-9
+                                        h-9
+
+                                        rounded-xl
+
+                                        border
+                                        border-slate-200
+                                        dark:border-slate-600
+
+                                        hover:bg-slate-100
+                                        dark:hover:bg-slate-700
+
+                                        transition-colors
+                                        "
+                                    >
+
+                                        <ExternalLink
+
+                                            size={16}
+
+                                            className="
+                                            text-slate-600
+                                            dark:text-slate-300
+                                            "
+                                        />
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        ))
+
                         }
 
                     </tbody>

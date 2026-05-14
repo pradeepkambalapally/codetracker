@@ -3,139 +3,308 @@ import {
     Code2,
     Trophy,
     User,
-    Calendar,
+    // Calendar,
     Settings,
     LogOut
 } from "lucide-react";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+    Link,
+    useLocation,
+    useNavigate
+} from "react-router-dom";
 
 const Sidebar = () => {
 
-    const location = useLocation();
-    const navigate = useNavigate();
+    const location =
+        useLocation();
+
+    const navigate =
+        useNavigate();
 
     const handleLogout = () => {
 
-        localStorage.removeItem("token");
+        localStorage.removeItem(
+            "token"
+        );
 
-        navigate("/login");
-
+        navigate(
+            "/login"
+        );
     };
 
     const navLinks = [
+
         {
-            name: "Dashboard",
-            path: "/",
-            icon: LayoutDashboard
+            name:"Dashboard",
+            path:"/",
+            icon:LayoutDashboard
         },
+
         {
-            name: "Problems",
-            path: "/problems",
-            icon: Code2
+            name:"Problems",
+            path:"/problems",
+            icon:Code2
         },
+
         {
-            name: "Contests",
-            path: "/contests",
-            icon: Trophy
+            name:"Contests",
+            path:"/contests",
+            icon:Trophy
         },
+
         {
-            name: "Profile",
-            path: "/profile",
-            icon: User
+            name:"Profile",
+            path:"/profile",
+            icon:User
         },
-        {
-            name: "Calendar",
-            path: "/calendar",
-            icon: Calendar
-        }
+
+        // {
+        //     name:"Calendar",
+        //     path:"/calendar",
+        //     icon:Calendar
+        // }
+
     ];
 
     return (
 
-        <div className="w-64 bg-slate-950 text-white min-h-screen px-5 py-6 flex flex-col border-r border-slate-800">
+        <div className="
+            w-64
 
-            {/* Logo */}
+            min-h-screen
 
-            <div className="mb-10">
+            px-5
+            py-6
 
-                <h1 className="text-3xl font-extrabold tracking-tight">
+            flex
+            flex-col
 
-                    <span className="text-blue-500">
+            border-r
+
+            bg-white
+            dark:bg-slate-950
+
+            border-slate-200
+            dark:border-slate-800
+
+            transition-colors
+        ">
+
+           
+
+            <div className="
+                mb-10
+            ">
+
+                <h1 className="
+                    text-3xl
+                    font-extrabold
+                    tracking-tight
+                ">
+
+                    <span className="
+                        text-blue-500
+                    ">
+
                         Code
+
                     </span>
 
-                    Tracker
+                    <span className="
+                        text-slate-800
+                        dark:text-white
+                    ">
+
+                        Tracker
+
+                    </span>
 
                 </h1>
 
             </div>
 
-            {/* Main Navigation */}
-
-            <nav className="space-y-2">
+        
+            <nav className="
+                space-y-2
+            ">
 
                 {
-                    navLinks.map((link, index) => {
 
-                        const Icon = link.icon;
+                navLinks.map(
 
-                        const isActive =
-                            location.pathname === link.path;
+                (
+                    link,
+                    index
+                ) => {
 
-                        return (
+                const Icon =
+                    link.icon;
 
-                            <Link
-                                key={index}
-                                to={link.path}
-                                className={`flex items-center gap-3 py-3 px-4 rounded-2xl transition-all duration-200 font-medium ${
-                                    isActive
-                                        ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
-                                        : "text-slate-300 hover:bg-slate-900 hover:text-white"
-                                }`}
-                            >
+                const isActive =
 
-                                <Icon size={20} />
+                    location.pathname
+                    ===
+                    link.path;
 
-                                <span>
-                                    {link.name}
-                                </span>
+                return (
 
-                            </Link>
-                        );
-                    })
+                <Link
+
+                    key={index}
+
+                    to={
+                        link.path
+                    }
+
+                    className={`
+
+                    flex
+                    items-center
+                    gap-3
+
+                    py-3
+                    px-4
+
+                    rounded-2xl
+
+                    font-medium
+
+                    transition-all
+                    duration-200
+
+                    ${
+
+                    isActive
+
+                    ?
+
+                    "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+
+                    :
+
+                    "text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white"
+
+                    }
+
+                    `}
+                >
+
+                    <Icon
+                        size={20}
+                    />
+
+                    <span>
+
+                        {link.name}
+
+                    </span>
+
+                </Link>
+
+                );
+
+                })
+
                 }
 
             </nav>
 
-            {/* Bottom Section */}
+           
 
-            <div className="mt-auto pt-6 border-t border-slate-800">
+            <div className="
+                mt-auto
+                pt-6
 
-                <div className="space-y-2">
+                border-t
+
+                border-slate-200
+                dark:border-slate-800
+            ">
+
+                <div className="
+                    space-y-2
+                ">
 
                     <Link
+
                         to="/settings"
-                        className="flex items-center gap-3 py-3 px-4 rounded-2xl text-slate-300 hover:bg-slate-900 hover:text-white transition-all duration-200 font-medium"
+
+                        className="
+                        flex
+                        items-center
+                        gap-3
+
+                        py-3
+                        px-4
+
+                        rounded-2xl
+
+                        font-medium
+
+                        text-slate-600
+                        dark:text-slate-300
+
+                        hover:bg-slate-100
+                        dark:hover:bg-slate-900
+
+                        hover:text-slate-900
+                        dark:hover:text-white
+
+                        transition-all
+                        duration-200
+                        "
                     >
 
-                        <Settings size={20} />
+                        <Settings
+                            size={20}
+                        />
 
                         <span>
+
                             Settings
+
                         </span>
 
                     </Link>
 
                     <button
-                        onClick={handleLogout}
-                        className="w-full flex items-center gap-3 py-3 px-4 rounded-2xl text-red-400 hover:bg-red-500/10 transition-all duration-200 font-medium"
+
+                        onClick={
+                            handleLogout
+                        }
+
+                        className="
+                        w-full
+
+                        flex
+                        items-center
+                        gap-3
+
+                        py-3
+                        px-4
+
+                        rounded-2xl
+
+                        font-medium
+
+                        text-red-400
+
+                        hover:bg-red-500/10
+
+                        transition-all
+                        duration-200
+                        "
                     >
 
-                        <LogOut size={20} />
+                        <LogOut
+                            size={20}
+                        />
 
                         <span>
+
                             Logout
+
                         </span>
 
                     </button>

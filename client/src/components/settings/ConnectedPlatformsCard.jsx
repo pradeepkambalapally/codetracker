@@ -17,7 +17,7 @@ const ConnectedPlatformsCard = ({
         setEditingPlatform
     ] = useState(null);
 
-    // Input State
+    
 
     const [
         handles,
@@ -31,8 +31,7 @@ const ConnectedPlatformsCard = ({
         codechefHandle: ""
     });
 
-    // Saved State
-
+    
     const [
         savedHandles,
         setSavedHandles
@@ -45,7 +44,7 @@ const ConnectedPlatformsCard = ({
         codechefHandle: ""
     });
 
-    // Sync when user data arrives
+   
 
     useEffect(() => {
 
@@ -70,8 +69,7 @@ const ConnectedPlatformsCard = ({
 
     }, [user]);
 
-    // Handle Input Change
-
+    
     const handleChange = (
         key,
         value
@@ -85,7 +83,7 @@ const ConnectedPlatformsCard = ({
         }));
     };
 
-    // Save Handle
+    
 
     const handleSave = async (
         key
@@ -143,7 +141,7 @@ const ConnectedPlatformsCard = ({
         }
     };
 
-    // Platforms Data
+   
 
     const platforms = [
 
@@ -188,72 +186,103 @@ const ConnectedPlatformsCard = ({
             logo: codechefLogo
         }
     ];
+return (
 
-    return (
+    <div className="
+        bg-white
+        dark:bg-slate-800
 
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200">
+        rounded-3xl
+        p-6
 
-            {/* Header */}
+        shadow-sm
 
-            <div className="mb-8">
+        border
+        border-slate-200
+        dark:border-slate-700
+    ">
 
-                <h2 className="text-2xl font-bold text-slate-800">
+        
 
-                    Connected Platforms
+        <div className="mb-8">
 
-                </h2>
+            <h2 className="
+                text-2xl
+                font-bold
 
-                <p className="text-slate-500 mt-2">
+                text-slate-800
+                dark:text-white
+            ">
 
-                    Manage your competitive programming accounts
+                Connected Platforms
 
-                </p>
+            </h2>
 
-            </div>
+            <p className="
+                mt-2
 
-            {/* Platforms */}
+                text-slate-500
+                dark:text-slate-400
+            ">
 
-            <div className="space-y-5">
+                Manage your competitive programming accounts
 
-                {
-
-                    platforms.map(
-                        (
-                            platform
-                        ) => (
-
-                            <PlatformCard
-                                key={
-                                    platform.name
-                                }
-                                platform={
-                                    platform
-                                }
-                                editingPlatform={
-                                    editingPlatform
-                                }
-                                setEditingPlatform={
-                                    setEditingPlatform
-                                }
-                                handles={
-                                    handles
-                                }
-                                handleChange={
-                                    handleChange
-                                }
-                                handleSave={
-                                    handleSave
-                                }
-                            />
-                        )
-                    )
-
-                }
-
-            </div>
+            </p>
 
         </div>
-    );
+
+        
+
+        <div className="space-y-5">
+
+            {
+
+            platforms.map(
+                (
+                    platform
+                ) => (
+
+                <PlatformCard
+
+                    key={
+                        platform.name
+                    }
+
+                    platform={
+                        platform
+                    }
+
+                    editingPlatform={
+                        editingPlatform
+                    }
+
+                    setEditingPlatform={
+                        setEditingPlatform
+                    }
+
+                    handles={
+                        handles
+                    }
+
+                    handleChange={
+                        handleChange
+                    }
+
+                    handleSave={
+                        handleSave
+                    }
+
+                />
+
+                )
+            )
+
+            }
+
+        </div>
+
+    </div>
+);
 };
 
 export default ConnectedPlatformsCard;

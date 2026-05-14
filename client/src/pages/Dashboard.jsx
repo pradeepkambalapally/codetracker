@@ -1,5 +1,3 @@
-
-
 import SolvedProblems from "../components/tables/SolvedProblems";
 import DashboarCard from "../components/dashboard/DashboardCard";
 
@@ -10,74 +8,139 @@ import useProblems from "../hooks/useProblems";
 import useContests from "../hooks/useContests";
 import useProfile from "../hooks/useProfile";
 import ErrorMessage from "../components/ErrorMessage";
+
 const Dashboard = () => {
 
-    const {problems, loading }= useProblems();
-    const {profileStats, error} = useProfile();
-    const {contests} = useContests();
+    const {
+        problems,
+        loading
+    } = useProblems();
 
-    if (loading) return <Loading />;
+    const {
+        profileStats,
+        error
+    } = useProfile();
+
+    const {
+        contests
+    } = useContests();
+
+    if (loading)
+        return <Loading />;
 
     if (error) {
 
-       return <ErrorMessage error={error}/>
+        return (
+            <ErrorMessage
+                error={error}
+            />
+        );
     }
-
 
     return (
 
-        
+        <div className="
+            flex-1
+            min-h-screen
+            p-6
+            overflow-x-hidden
+            bg-slate-100
+            dark:bg-slate-900
+            transition-colors
+        ">
 
-            <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
-                {/* Dashboard Header */}
+           
+            <div className="mb-6">
 
-                <div className="mb-6">
+                <h1 className="
+                    text-3xl
+                    font-bold
+                    tracking-tight
+                    text-slate-800
+                    dark:text-white
+                ">
 
-                    <h1 className="text-3xl font-bold text-slate-800 tracking-tight">
-                        Dashboard
-                    </h1>
+                    Dashboard
 
-                    <p className="text-slate-500 mt-2 text-lg">
-                        Track your competitive programming journey
-                    </p>
+                </h1>
 
-                </div>
+                <p className="
+                    mt-2
+                    text-lg
+                    text-slate-500
+                    dark:text-slate-400
+                ">
 
-                {/* Summary Cards */}
+                    Track your competitive programming journey
 
-                <DashboarCard
-                    problems={problems}
-                    profileStats={profileStats}
-                    contests={contests}
-                />
-
-                {/* Charts Section */}
-
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mt-6">
-
-                    <SolvedProblemsChart
-                        problems={problems}
-                    />
-
-                    <RatingCharts
-                        contests={contests.slice(0, 5)}
-                    />
-
-                </div>
-
-                {/* Full Width Problems Table */}
-
-                <div className="mt-6 w-full">
-
-                    <SolvedProblems
-                        problems={problems.slice(0, 8)}
-                    />
-
-                </div>
+                </p>
 
             </div>
-        )
-    
+
+           
+
+            <DashboarCard
+                problems={
+                    problems
+                }
+
+                profileStats={
+                    profileStats
+                }
+
+                contests={
+                    contests
+                }
+            />
+
+           
+
+            <div className="
+                grid
+                grid-cols-1
+                xl:grid-cols-2
+                gap-4
+                mt-6
+            ">
+
+                <SolvedProblemsChart
+                    problems={
+                        problems
+                    }
+                />
+
+                <RatingCharts
+                    contests={
+                        contests.slice(
+                            0,
+                            5
+                        )
+                    }
+                />
+
+            </div>
+
+            {/* Table */}
+
+            <div className="
+                mt-6
+                w-full
+            ">
+
+                <SolvedProblems
+                    problems={
+                        problems.slice(
+                            0,
+                            8
+                        )
+                    }
+                />
+
+            </div>
+
+        </div>
+    );
+
 };
 
 export default Dashboard;

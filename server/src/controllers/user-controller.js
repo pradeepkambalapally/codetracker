@@ -119,30 +119,76 @@ const getUserData = async(req, res) => {
         }
         res.status(200).json({
 
-            success: true,
-            user: {
+    success: true,
 
-                userId: user._id,
+    user: {
 
-                username: user.username,
+        userId:
+            user._id,
 
-                email: user.email,
+        username:
+            user.username,
 
-                codeforcesUsername: user.codeforcesUsername,
+        email:
+            user.email,
 
-                leetcodeUsername: user.leetcodeUsername
+        codeforcesUsername:
+            user.codeforcesUsername,
+
+        leetcodeUsername:
+            user.leetcodeUsername,
+
+        theme:
+            user.theme,
+
+        defaultPlatform:
+            user.defaultPlatform
     }
-
-        });
+});
     }catch(error){
         console.error('Error getting user data:', error);
         res.status(500).json({message: 'Internal server error'});
     }
 }
 
+const updatePreferences = async (req,res)=>{
+
+    const { theme, defaultPlatform } = req.body;
+
+    const user = await User.findById(req.user.userId);
+
+    if(!user){
+
+        return res.status(404)
+        .json({
+            message:
+            "User not found"
+        });
+    }
+
+    user.theme =
+        theme ||
+        user.theme;
+
+    user.defaultPlatform =
+        defaultPlatform ||
+        user.defaultPlatform;
+
+    await user.save();
+
+    res.status(200).json({
+
+        success:true,
+
+        user
+    });
+
+};
+
 module.exports = {
     registerUser,
     loginUser,
     updateProfiles,
-    getUserData
+    getUserData,
+    updatePreferences
 }

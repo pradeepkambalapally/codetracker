@@ -4,23 +4,43 @@ import PreferencesCard from "../components/settings/PreferencesCard";
 import SecurityCard from "../components/settings/SecurityCard";
 
 import useUser from "../hooks/useUser";
+
 const Settings = () => {
+
     const { user } = useUser();
+
     return (
 
-        <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
+        <div className="
+            flex-1
+            min-h-screen
+            p-6
+            overflow-x-hidden
+            bg-slate-100
+            dark:bg-slate-900
+            transition-colors
+        ">
 
-            {/* Header */}
+            
 
             <div className="mb-6">
 
-                <h1 className="text-3xl font-bold text-slate-800">
+                <h1 className="
+                    text-3xl
+                    font-bold
+                    text-slate-800
+                    dark:text-white
+                ">
 
                     Settings
 
                 </h1>
 
-                <p className="text-slate-500 mt-2">
+                <p className="
+                    text-slate-500
+                    dark:text-slate-400
+                    mt-2
+                ">
 
                     Manage your account and application preferences
 
@@ -28,26 +48,25 @@ const Settings = () => {
 
             </div>
 
-            {/* Settings Grid */}
+            
 
-            <div className="grid-cols-1 xl:grid-cols-[0.8fr_1.2fr]
-items-start">
+            <div className="
+                grid-cols-1
+                xl:grid-cols-[0.8fr_1.2fr]
+                items-start
+            ">
 
-                
+                <AccountInfoCard
+                    user={user}
+                />
 
-              <AccountInfoCard
-    user={user}
-/>
+                <ConnectedPlatformsCard
+                    user={user}
+                />
 
-                
-
-                <ConnectedPlatformsCard user = {user}/>
-
-                
-
-                <PreferencesCard />
-
-                
+                <PreferencesCard
+                    user={user}
+                />
 
                 <SecurityCard />
 

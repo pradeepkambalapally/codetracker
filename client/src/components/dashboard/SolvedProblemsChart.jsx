@@ -8,85 +8,190 @@ import {
     CartesianGrid
 } from "recharts";
 
+import {
+    useEffect,
+    useState
+} from "react";
 
+const SolvedProblemsChart = ({
+    problems
+}) => {
 
-const SolvedProblemsChart = ({ problems }) => {
+    const [
+        isDark,
+        setIsDark
+    ] = useState(false);
 
-    // Group solved problems by month/year
+    useEffect(() => {
 
-    const groupedData = {};
+        const updateTheme = () => {
 
-    problems.forEach((problem) => {
+            setIsDark(
 
-        const date = new Date(problem.submissionTime);
+                document
+                    .documentElement
+                    .classList
+                    .contains(
+                        "dark"
+                    )
+            );
+        };
 
-        const monthYear = date.toLocaleDateString(
-            "en-US",
+        updateTheme();
+
+        const observer =
+            new MutationObserver(
+                updateTheme
+            );
+
+        observer.observe(
+
+            document.documentElement,
+
             {
-                month: "short",
-                year: "numeric"
+                attributes: true,
+                attributeFilter: [
+                    "class"
+                ]
             }
         );
 
-        if (!groupedData[monthYear]) {
+        return () =>
+            observer.disconnect();
 
-            groupedData[monthYear] = 0;
+    }, []);
 
-        }
+    
 
-        groupedData[monthYear] += 1;
+    const groupedData = {};
 
-    });
+    problems.forEach(
+        (problem) => {
 
-    // Convert to cumulative solved count
+            const date =
+                new Date(
+                    problem.submissionTime
+                );
 
-    let cumulativeSolved = 0;
+            const monthYear =
+                date.toLocaleDateString(
+                    "en-US",
+                    {
+                        month: "short",
+                        year: "numeric"
+                    }
+                );
 
-    const chartData = Object.entries(groupedData).map(
-        ([date, count]) => {
+            if (
+                !groupedData[
+                    monthYear
+                ]
+            ) {
 
-            cumulativeSolved += count;
+                groupedData[
+                    monthYear
+                ] = 0;
+            }
 
-            return {
-                date,
-                solved: cumulativeSolved
-            };
+            groupedData[
+                monthYear
+            ] += 1;
         }
     );
 
+    
+
+    let cumulativeSolved = 0;
+
+    const chartData =
+        Object.entries(
+            groupedData
+        ).map(
+
+            ([date, count]) => {
+
+                cumulativeSolved +=
+                    count;
+
+                return {
+
+                    date,
+
+                    solved:
+                        cumulativeSolved
+                };
+            }
+        );
+
     return (
 
-        <div className="bg-white p-5 rounded-3xl shadow-sm border border-slate-200">
+        <div className="
+            bg-white
+            dark:bg-slate-800
 
-            {/* Header */}
+            p-5
 
-            <div className="flex items-center justify-between mb-6">
+            rounded-3xl
+
+            shadow-sm
+
+            border
+            border-slate-200
+            dark:border-slate-700
+        ">
+
+          
+
+            <div className="
+                flex
+                items-center
+                justify-between
+                mb-6
+            ">
 
                 <div>
 
-                    <h2 className="text-2xl font-bold text-slate-800">
+                    <h2 className="
+                        text-2xl
+                        font-bold
+                        text-slate-800
+                        dark:text-white
+                    ">
+
                         Solved Problems Progress
+
                     </h2>
 
-                    <p className="text-slate-500 mt-1">
+                    <p className="
+                        mt-1
+                        text-slate-500
+                        dark:text-slate-400
+                    ">
+
                         Track your cumulative solved problems
+
                     </p>
 
                 </div>
 
-                
-
             </div>
 
-            {/* Chart */}
+           
 
             <div className="w-full h-56">
 
-                <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer
+                    width="100%"
+                    height="100%"
+                >
 
                     <AreaChart
-                        data={chartData}
+                        data={
+                            chartData
+                        }
+
                         margin={{
+
                             top: 5,
                             right: 10,
                             left: -20,
@@ -94,52 +199,98 @@ const SolvedProblemsChart = ({ problems }) => {
                         }}
                     >
 
-                        {/* Grid */}
-
                         <CartesianGrid
+
                             strokeDasharray="3 3"
-                            stroke="#e2e8f0"
+
+                            stroke={
+                                isDark
+                                    ? "#334155"
+                                    : "#e2e8f0"
+                            }
+
                             vertical={false}
                         />
 
-                        {/* X Axis */}
-
                         <XAxis
-                            dataKey="date"
-                            tick={{ fontSize: 12 }}
-                            tickLine={false}
-                            axisLine={false}
-                            stroke="#94a3b8"
-                        />
 
-                        {/* Y Axis */}
+                            dataKey="date"
+
+                            tick={{
+                                fontSize: 12
+                            }}
+
+                            tickLine={false}
+
+                            axisLine={false}
+
+                            stroke={
+                                isDark
+                                    ? "#cbd5e1"
+                                    : "#94a3b8"
+                            }
+                        />
 
                         <YAxis
-                            tick={{ fontSize: 12 }}
+
+                            tick={{
+                                fontSize: 12
+                            }}
+
                             tickLine={false}
+
                             axisLine={false}
-                            stroke="#94a3b8"
+
+                            stroke={
+                                isDark
+                                    ? "#cbd5e1"
+                                    : "#94a3b8"
+                            }
                         />
 
-                        {/* Tooltip */}
-
                         <Tooltip
+
                             contentStyle={{
-                                borderRadius: "16px",
-                                border: "1px solid #e2e8f0",
-                                boxShadow: "0 4px 12px rgba(0,0,0,0.08)"
+
+                                borderRadius:
+                                    "16px",
+
+                                border:
+
+                                    isDark
+
+                                        ? "1px solid #475569"
+
+                                        : "1px solid #e2e8f0",
+
+                                backgroundColor:
+
+                                    isDark
+                                        ? "#1e293b"
+                                        : "#fff",
+
+                                color:
+
+                                    isDark
+                                        ? "#fff"
+                                        : "#000"
                             }}
                         />
 
-                        {/* Area */}
-
                         <Area
+
                             type="monotone"
+
                             dataKey="solved"
+
                             stroke="#16a34a"
+
                             fill="#86efac"
+
                             fillOpacity={0.5}
+
                             strokeWidth={3}
+
                             animationDuration={1500}
                         />
 

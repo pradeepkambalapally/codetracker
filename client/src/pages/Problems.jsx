@@ -11,85 +11,148 @@ import usePagination from "../hooks/usePagination";
 
 const Problems = () => {
 
-    const { problems, loading, error } = useProblems();
-
-    const [search, setSearch] = useState("");
-
-    // Search Hook
-
-    const filteredProblems = useSearch(
+    const {
         problems,
-        search,
-        "problemName"
-    );
+        loading,
+        error
+    } = useProblems();
 
-    // Pagination Hook
+    const [
+        search,
+        setSearch
+    ] = useState("");
+
+  
+
+    const filteredProblems =
+        useSearch(
+            problems,
+            search,
+            "problemName"
+        );
+
+    
 
     const {
+
         currentPage,
+
         setCurrentPage,
+
         currentItems,
+
         indexOfLastItem
+
     } = usePagination(
+
         filteredProblems,
+
         10
     );
-    if (loading) return <Loading />;
+
+    if (loading)
+        return <Loading />;
 
     if (error) {
 
-       return <ErrorMessage error={error}/>
+        return (
+            <ErrorMessage
+                error={error}
+            />
+        );
     }
 
-return (
+    return (
 
-    <div className="flex-1 bg-slate-100 min-h-screen p-6 overflow-x-hidden">
+        <div className="
+            flex-1
+            min-h-screen
+            p-6
+            overflow-x-hidden
+            bg-slate-100
+            dark:bg-slate-900
+            transition-colors
+        ">
 
-        {/* Header */}
+          
 
-        <div className="mb-6">
+            <div className="mb-6">
 
-            <h1 className="text-3xl font-bold text-slate-800">
+                <h1 className="
+                    text-3xl
+                    font-bold
+                    text-slate-800
+                    dark:text-white
+                ">
 
-                Problems
+                    Problems
 
-            </h1>
+                </h1>
 
-            <p className="text-slate-500 mt-2">
+                <p className="
+                    mt-2
+                    text-slate-500
+                    dark:text-slate-400
+                ">
 
-                Browse and track your solved problems
+                    Browse and track your solved problems
 
-            </p>
+                </p>
+
+            </div>
+
+           
+
+            <SearchBar
+                search={
+                    search
+                }
+
+                setSearch={
+                    setSearch
+                }
+
+                placeholder=
+                    "Search problems..."
+
+                count={
+                    filteredProblems.length
+                }
+
+                label=
+                    "problems"
+            />
+
+        
+
+            <SolvedProblems
+                problems={
+                    currentItems
+                }
+            />
+
+            
+
+            <Pagination
+                currentPage={
+                    currentPage
+                }
+
+                setCurrentPage={
+                    setCurrentPage
+                }
+
+                indexOfLastItem={
+                    indexOfLastItem
+                }
+
+                totalItems={
+                    filteredProblems.length
+                }
+            />
 
         </div>
-
-        {/* Search Bar */}
-
-        <SearchBar
-            search={search}
-            setSearch={setSearch}
-            placeholder="Search problems..."
-            count={filteredProblems.length}
-            label="problems"
-        />
-
-        {/* Problems Table */}
-
-        <SolvedProblems
-            problems={currentItems}
-        />
-
-        {/* Pagination */}
-
-        <Pagination
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            indexOfLastItem={indexOfLastItem}
-            totalItems={filteredProblems.length}
-        />
-
-    </div>
-);
+    );
 };
 
 export default Problems;

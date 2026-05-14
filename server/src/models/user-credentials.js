@@ -19,7 +19,16 @@ const userCredentialsSchema = new mongoose.Schema({
     codeforcesUsername : {
         type : String,
         default : ''
-    }
+    },
+    theme: {
+        type: String,
+        default: "Light"
+    },
+
+    defaultPlatform: {
+        type: String,
+        default: "Codeforces"
+    },
     
 },{
     timestamps : true

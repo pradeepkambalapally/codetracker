@@ -33,101 +33,256 @@ const Login = () => {
         }
     };
 
-    return (
+   return (
 
-        <div className="flex-1 min-h-screen bg-gray-100 flex items-center justify-center p-6">
+    <div className="
+        flex-1
+        min-h-screen
 
-            <div className="bg-white w-full max-w-md rounded-3xl shadow-xl p-8">
+        flex
+        items-center
+        justify-center
 
-                {/* Header */}
+        p-6
 
-                <div className="flex flex-col items-center mb-8">
+        bg-gray-100
+        dark:bg-slate-900
 
-                    <div className="bg-blue-100 p-4 rounded-2xl mb-4">
+        transition-colors
+    ">
 
-                        <LogIn
-                            className="text-blue-600"
-                            size={32}
-                        />
+        <div className="
+            w-full
+            max-w-md
 
-                    </div>
+            p-8
 
-                    <h1 className="text-4xl font-bold text-gray-800">
-                        Welcome Back
-                    </h1>
+            rounded-3xl
 
-                    <p className="text-gray-500 mt-2 text-center">
-                        Login to continue tracking your coding journey
-                    </p>
+            shadow-xl
+
+            bg-white
+            dark:bg-slate-800
+
+            border
+            border-slate-200
+            dark:border-slate-700
+        ">
+
+            
+            <div className="
+                flex
+                flex-col
+                items-center
+
+                mb-8
+            ">
+
+                <div className="
+                    bg-blue-100
+                    dark:bg-blue-900/40
+
+                    p-4
+                    rounded-2xl
+                    mb-4
+                ">
+
+                    <LogIn
+                        className="
+                        text-blue-600
+                        dark:text-blue-300
+                        "
+                        size={32}
+                    />
 
                 </div>
 
-                {/* Form */}
+                <h1 className="
+                    text-4xl
+                    font-bold
 
-                <form
-                    className="space-y-5"
-                    onSubmit={handleSubmit}
-                >
+                    text-gray-800
+                    dark:text-white
+                ">
 
-                    {/* Username */}
+                    Welcome Back
 
-                    <div>
+                </h1>
 
-                        <label
-                            htmlFor="name"
-                            className="block text-sm font-semibold text-gray-700 mb-2"
-                        >
-                            Username
-                        </label>
+                <p className="
+                    mt-2
+                    text-center
 
-                        <input
-                            type="text"
-                            id="name"
-                            placeholder="Enter your username"
-                            className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
+                    text-gray-500
+                    dark:text-slate-400
+                ">
 
-                    </div>
+                    Login to continue tracking your coding journey
 
-                    {/* Password */}
-
-                    <div>
-
-                        <label
-                            htmlFor="password"
-                            className="block text-sm font-semibold text-gray-700 mb-2"
-                        >
-                            Password
-                        </label>
-
-                        <input
-                            type="password"
-                            id="password"
-                            placeholder="Enter your password"
-                            className="w-full border border-gray-300 p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
-
-                    </div>
-
-                    {/* Button */}
-
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white p-3 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200"
-                    >
-                        Log In
-                    </button>
-
-                </form>
+                </p>
 
             </div>
 
+        
+
+            <form
+                className="space-y-5"
+                onSubmit={handleSubmit}
+            >
+
+                
+
+                <div>
+
+                    <label
+                        htmlFor="name"
+                        className="
+                            block
+                            mb-2
+
+                            text-sm
+                            font-semibold
+
+                            text-gray-700
+                            dark:text-slate-300
+                        "
+                    >
+
+                        Username
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        value={username}
+                        onChange={(e)=>
+                            setUsername(
+                                e.target.value
+                            )
+                        }
+
+                        placeholder="Enter your username"
+
+                        className="
+                            w-full
+
+                            p-3
+
+                            rounded-xl
+
+                            border
+                            border-gray-300
+                            dark:border-slate-600
+
+                            bg-white
+                            dark:bg-slate-700
+
+                            text-gray-800
+                            dark:text-white
+
+                            focus:outline-none
+                            focus:ring-2
+                            focus:ring-blue-500
+                        "
+                    />
+
+                </div>
+
+                
+
+                <div>
+
+                    <label
+                        htmlFor="password"
+                        className="
+                            block
+                            mb-2
+
+                            text-sm
+                            font-semibold
+
+                            text-gray-700
+                            dark:text-slate-300
+                        "
+                    >
+
+                        Password
+
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+
+                        value={password}
+
+                        onChange={(e)=>
+                            setPassword(
+                                e.target.value
+                            )
+                        }
+
+                        placeholder="Enter your password"
+
+                        className="
+                            w-full
+
+                            p-3
+
+                            rounded-xl
+
+                            border
+                            border-gray-300
+                            dark:border-slate-600
+
+                            bg-white
+                            dark:bg-slate-700
+
+                            text-gray-800
+                            dark:text-white
+
+                            focus:outline-none
+                            focus:ring-2
+                            focus:ring-blue-500
+                        "
+                    />
+
+                </div>
+
+           
+                <button
+                    type="submit"
+
+                    className="
+                        w-full
+
+                        p-3
+
+                        rounded-xl
+
+                        font-semibold
+
+                        text-white
+
+                        bg-blue-600
+                        hover:bg-blue-700
+
+                        transition-all
+                        duration-200
+                    "
+                >
+
+                    Log In
+
+                </button>
+
+            </form>
+
         </div>
-    );
+
+    </div>
+);
 };
 
 export default Login;
