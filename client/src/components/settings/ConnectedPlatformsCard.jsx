@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import api from "../../api/axios";
 
@@ -24,14 +24,11 @@ const ConnectedPlatformsCard = ({
         setHandles
     ] = useState({
 
-        codeforcesUsername:
-            user?.codeforcesUsername || "",
+        codeforcesUsername: "",
 
-        leetcodeUsername:
-            user?.leetcodeHandle || "",
+        leetcodeUsername: "",
 
-        codechefHandle:
-            user?.codechefHandle || ""
+        codechefHandle: ""
     });
 
     // Saved State
@@ -41,15 +38,37 @@ const ConnectedPlatformsCard = ({
         setSavedHandles
     ] = useState({
 
-        codeforcesUsername:
-            user?.codeforcesUsername || "",
+        codeforcesUsername: "",
 
-        leetcodeUsername:
-            user?.leetcodeUsername || "",
+        leetcodeUsername: "",
 
-        codechefHandle:
-            user?.codechefHandle || ""
+        codechefHandle: ""
     });
+
+    // Sync when user data arrives
+
+    useEffect(() => {
+
+        if (!user?.username) return;
+
+        const userHandles = {
+
+            codeforcesUsername:
+                user.codeforcesUsername || "",
+
+            leetcodeUsername:
+                user.leetcodeUsername || "",
+
+            codechefHandle:
+                user.codechefHandle || ""
+        };
+
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setHandles(userHandles);
+
+        setSavedHandles(userHandles);
+
+    }, [user]);
 
     // Handle Input Change
 
@@ -74,41 +93,37 @@ const ConnectedPlatformsCard = ({
 
         try {
 
-            const token =
-                localStorage.getItem("token");
-
-            const response= await api.put(
-                "/users/update-profile",
-                {
-                    [key]:
-                        handles[key]
-                },
-                {
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`
+            const response =
+                await api.put(
+                    "/users/update-profile",
+                    {
+                        [key]:
+                            handles[key]
                     }
-                }
+                );
+
+            const updatedUser =
+                response.data.user;
+
+            const updatedHandles = {
+
+                codeforcesUsername:
+                    updatedUser.codeforcesUsername || "",
+
+                leetcodeUsername:
+                    updatedUser.leetcodeUsername || "",
+
+                codechefHandle:
+                    updatedUser.codechefHandle || ""
+            };
+
+            setSavedHandles(
+                updatedHandles
             );
 
-            // Update Saved State
-
-           const updatedUser =
-    response.data.user;
-
-setSavedHandles({
-
-    codeforcesUsername:
-        updatedUser.codeforcesUsername || "",
-
-    leetcodeUsername:
-        updatedUser.leetcodeUsername || "",
-
-    codechefHandle:
-        updatedUser.codechefHandle || ""
-});
-
-            // Close Input
+            setHandles(
+                updatedHandles
+            );
 
             setEditingPlatform(
                 null
@@ -120,7 +135,10 @@ setSavedHandles({
 
         } catch (error) {
 
-            console.error(error);
+            console.error(
+                "Update failed:",
+                error
+            );
 
         }
     };
@@ -150,9 +168,7 @@ setSavedHandles({
             connected:
                 !!savedHandles.leetcodeUsername,
             status:
-                savedHandles.leetcodeUsername
-                    ? "Connected"
-                    : "Coming Soon",
+                "Coming Soon",
             value:
                 savedHandles.leetcodeUsername,
             available: false,
@@ -165,9 +181,7 @@ setSavedHandles({
             connected:
                 !!savedHandles.codechefHandle,
             status:
-                savedHandles.codechefHandle
-                    ? "Connected"
-                    : "Coming Soon",
+                "Coming Soon",
             value:
                 savedHandles.codechefHandle,
             available: false,
@@ -202,20 +216,38 @@ setSavedHandles({
             <div className="space-y-5">
 
                 {
+
                     platforms.map(
-                        (platform) => (
+                        (
+                            platform
+                        ) => (
 
                             <PlatformCard
-                                key={platform.name}
-                                platform={platform}
-                                editingPlatform={editingPlatform}
-                                setEditingPlatform={setEditingPlatform}
-                                handles={handles}
-                                handleChange={handleChange}
-                                handleSave={handleSave}
+                                key={
+                                    platform.name
+                                }
+                                platform={
+                                    platform
+                                }
+                                editingPlatform={
+                                    editingPlatform
+                                }
+                                setEditingPlatform={
+                                    setEditingPlatform
+                                }
+                                handles={
+                                    handles
+                                }
+                                handleChange={
+                                    handleChange
+                                }
+                                handleSave={
+                                    handleSave
+                                }
                             />
                         )
                     )
+
                 }
 
             </div>
