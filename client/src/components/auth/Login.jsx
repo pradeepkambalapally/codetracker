@@ -21,10 +21,21 @@ const Login = () => {
                 }
             );
 
-            localStorage.setItem("token", response.data.token);
+            localStorage.setItem(
+    "token",
+    response.data.token
+);
 
-            alert("Login successful!");
-                navigate("/");
+localStorage.setItem(
+    "theme",
+    response.data.user.theme || "Light"
+);
+
+alert(
+    "Login successful!"
+);
+
+navigate("/");
 
         } catch (error) {
 

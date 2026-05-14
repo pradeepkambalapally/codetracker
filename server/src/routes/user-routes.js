@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const {registerUser, loginUser, updateProfiles, getUserData, updatePreferences} = require('../controllers/user-controller');
+const {registerUser, loginUser, updateProfiles, getUserData, updatePreferences, changePassword} = require('../controllers/user-controller');
 const {getCodeforcesData} = require('../controllers/codeforces-controller');
 const authMiddleware = require('../middleWare/authMiddleware');
 const { getCodeforcesContestData } = require('../controllers/codeforces-contest-controller');
@@ -16,5 +16,6 @@ router.get('/codeforces', authMiddleware, getCodeforcesData);
 router.get('/codeforces-contests', authMiddleware, getCodeforcesContestData)
 router.get('/codeforces-profile-stats', authMiddleware, getCodeforcesProfileStats);
 router.get("/me", authMiddleware, getUserData);
-router.put("/update-preferences",authMiddleware, updatePreferences)
+router.put("/update-preferences",authMiddleware, updatePreferences);
+router.post("/change-password", authMiddleware, changePassword)
 module.exports = router;

@@ -1,19 +1,35 @@
-import { useEffect } from "react";
-import useUser from "./useUser";
+import {
+    useEffect
+} from "react";
+
+import useUser
+from "./useUser";
 
 const useTheme = () => {
 
-    const { user } =
-        useUser();
+    const {
+        user
+    } = useUser();
 
     useEffect(() => {
 
+        const savedTheme =
+            localStorage.getItem(
+                "theme"
+            );
+
+        const theme =
+
+            savedTheme ||
+            user?.theme ||
+            "Light";
+
         if (
-            user?.theme ===
-            "Dark"
+            theme === "Dark"
         ) {
 
-            document.documentElement
+            document
+                .documentElement
                 .classList.add(
                     "dark"
                 );
@@ -22,10 +38,12 @@ const useTheme = () => {
 
         else {
 
-            document.documentElement
+            document
+                .documentElement
                 .classList.remove(
                     "dark"
                 );
+
         }
 
     }, [user]);

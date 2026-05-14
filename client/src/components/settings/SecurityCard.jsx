@@ -15,8 +15,12 @@ const SecurityCard = () => {
     const handleLogout = () => {
 
         localStorage.removeItem(
-            "token"
-        );
+        "token"
+    );
+
+    localStorage.removeItem(
+        "theme"
+    );
 
         navigate(
             "/login"

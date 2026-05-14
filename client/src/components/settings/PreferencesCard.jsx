@@ -60,41 +60,77 @@ const PreferencesCard = ({
 }, [user]);
 
 
-    const handleChange =
-        async (
-            key,
+   const handleChange =
+    async (
+        key,
+        value
+    ) => {
+
+    const updated = {
+
+        ...preferences,
+
+        [key]:
             value
-        ) => {
+    };
 
-            const updated = {
+    setPreferences(
+        updated
+    );
 
-                ...preferences,
+    // Theme update immediately
 
-                [key]:
-                    value
-            };
+    if (
+        key === "theme"
+    ) {
 
-            setPreferences(
-                updated
-            );
+        localStorage.setItem(
+            "theme",
+            value
+        );
 
-            try {
+        if (
+            value === "Dark"
+        ) {
 
-                await api.put(
-                    "/users/update-preferences",
-                    updated
+            document
+                .documentElement
+                .classList.add(
+                    "dark"
                 );
 
-            } catch (
-                error
-            ) {
+        }
 
-                console.error(
-                    error
+        else {
+
+            document
+                .documentElement
+                .classList.remove(
+                    "dark"
                 );
-            }
-        };
 
+        }
+
+    }
+
+    try {
+
+        await api.put(
+            "/users/update-preferences",
+            updated
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            error
+        );
+
+    }
+
+};
  return (
 
     <div className="
