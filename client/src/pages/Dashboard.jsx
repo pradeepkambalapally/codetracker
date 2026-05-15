@@ -8,6 +8,7 @@ import SolvedProblemsChart from "../components/dashboard/SolvedProblemsChart";
 import useProblems from "../hooks/useProblems";
 import useContests from "../hooks/useContests";
 import useProfile from "../hooks/useProfile";
+import useLeetcodeProblems from "../hooks/useLeetcodeProblems";
 
 import ErrorMessage from "../components/ErrorMessage";
 
@@ -17,6 +18,27 @@ const Dashboard = () => {
         problems = [],
         loading: problemsLoading
     } = useProblems();
+
+    const {
+        problems: leetcodeProblems = [],
+        loading: leetcodeLoading
+    } = useLeetcodeProblems();
+
+    const allProblems = [
+
+    ...(problems || []),
+
+    ...(leetcodeProblems || [])
+
+].sort(
+
+    (a, b) =>
+
+        (b?.submissionTime || 0)
+        -
+        (a?.submissionTime || 0)
+
+);
 
     const {
         profile,
@@ -30,8 +52,13 @@ const Dashboard = () => {
     } = useContests();
 
     const loading =
+
         problemsLoading ||
+
+        leetcodeLoading ||
+
         profileLoading ||
+
         contestsLoading;
 
     if (loading) {
@@ -66,8 +93,6 @@ const Dashboard = () => {
             transition-colors
         ">
 
-            {/* Header */}
-
             <div className="mb-6">
 
                 <h1 className="
@@ -97,11 +122,10 @@ const Dashboard = () => {
 
             </div>
 
-            {/* Stats Cards */}
-
             <DashboarCard
+
                 problems={
-                    problems || []
+                    allProblems
                 }
 
                 profileStats={
@@ -111,9 +135,8 @@ const Dashboard = () => {
                 contests={
                     contests || []
                 }
-            />
 
-            {/* Charts */}
+            />
 
             <div className="
                 grid
@@ -125,20 +148,18 @@ const Dashboard = () => {
 
                 <SolvedProblemsChart
                     problems={
-                        problems || []
+                        allProblems
                     }
                 />
 
                 <RatingCharts
                     contests={
                         (contests || [])
-                        .slice(0,5)
+                        .slice(0, 5)
                     }
                 />
 
             </div>
-
-            {/* Recent Problems */}
 
             <div className="
                 mt-6
@@ -147,15 +168,17 @@ const Dashboard = () => {
 
                 <SolvedProblems
                     problems={
-                        (problems || [])
-                        .slice(0,8)
+                        allProblems
+                        .slice(0, 8)
                     }
                 />
 
             </div>
 
         </div>
+
     );
+
 };
 
 export default Dashboard;

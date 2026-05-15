@@ -9,7 +9,7 @@ import {
 } from "react-router-dom";
 
 const SolvedProblems = ({
-    problems
+    problems = []
 }) => {
 
     const navigate =
@@ -31,8 +31,6 @@ const SolvedProblems = ({
             border-slate-200
             dark:border-slate-700
         ">
-
-            
 
             <div className="
                 flex
@@ -132,336 +130,528 @@ const SolvedProblems = ({
 
             </div>
 
-            
+            {
 
-            <div className="
-                overflow-x-auto
+                problems.length === 0
+
+                ?
+
+                (
+
+                    <div className="
+                        py-12
+
+                        text-center
+
+                        text-slate-500
+                        dark:text-slate-400
+                    ">
+
+                        No solved problems found
+
+                    </div>
+
+                )
+
+                :
+
+                (
+
+                    <div className="
+                        overflow-x-auto
+                    ">
+
+                        <table className="
+                            w-full
+                            min-w-[1100px]
+                        ">
+
+                            <thead>
+
+    <tr className="
+        border-b
+        border-slate-200
+        dark:border-slate-700
+        text-left
+    ">
+
+        {
+
+        [
+            "#",
+            "Problem",
+            "Contest",
+            "Tags",
+            "Rating",
+            "Language",
+            "Solved At",
+            "Action"
+
+        ].map((item) => (
+
+            <th
+
+                key={item}
+
+                className="
+                    pb-4
+                    px-2
+
+                    text-sm
+                    font-semibold
+
+                    text-slate-500
+                    dark:text-slate-400
+
+                    whitespace-nowrap
+                "
+            >
+
+                {item}
+
+            </th>
+
+        ))
+
+        }
+
+    </tr>
+
+</thead>
+
+                            <tbody>
+
+    {
+
+    (problems || []).map(
+
+    (
+        problem,
+        index
+    ) => (
+
+        <tr
+
+            key={index}
+
+            className="
+            border-b
+            border-slate-100
+            dark:border-slate-700
+
+            last:border-none
+
+            hover:bg-slate-50
+            dark:hover:bg-slate-700/40
+
+            transition-colors
+            "
+        >
+
+            <td className="
+                py-3
+                font-medium
+
+                text-slate-500
+                dark:text-slate-400
             ">
 
-                <table className="
-                    w-full
-                    min-w-[900px]
+                {index + 1}
+
+            </td>
+
+            <td className="
+                py-3
+                pr-6
+            ">
+
+                <div className="
+                    flex
+                    items-center
+                    gap-2
                 ">
 
-                    
+                    <p className="
+                        font-semibold
+                        text-slate-800
+                        dark:text-white
+                    ">
 
-                    <thead>
+                        {
 
-                        <tr className="
-                            border-b
-                            border-slate-200
-                            dark:border-slate-700
+                            problem?.problemName ||
 
-                            text-left
+                            "Unknown Problem"
+
+                        }
+
+                    </p>
+
+                    <span className={`
+
+                        px-2
+                        py-1
+
+                        rounded-full
+
+                        text-xs
+                        font-semibold
+
+                        ${
+
+                            problem?.platform === "Codeforces"
+
+                            ?
+
+                            "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300"
+
+                            :
+
+                            "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300"
+
+                        }
+
+                    `}>
+
+                        {
+
+                            problem?.platform ||
+
+                            "Unknown"
+
+                        }
+
+                    </span>
+
+                </div>
+
+            </td>
+
+            <td className="
+                py-3
+            ">
+
+                {
+
+                    problem?.platform === "Codeforces"
+
+                    ?
+
+                    `${
+
+                        problem?.contestId || ""
+
+                    }${
+
+                        problem?.problemIndex || ""
+
+                    }`
+
+                    :
+
+                    (
+
+                        <span className="
+                            text-orange-600
+                            dark:text-orange-400
+                            font-semibold
                         ">
 
                             {
 
-                            [
-                                "#",
-                                "Problem",
-                                "Contest",
-                                "Tags",
-                                "Rating",
-                                "Language",
-                                "Solved At",
-                                "Action"
+                                problem?.difficulty ||
 
-                            ].map(
-
-                                (
-                                    item
-                                ) => (
-
-                                <th
-                                    key={item}
-
-                                    className="
-                                    pb-4
-
-                                    text-sm
-                                    font-semibold
-
-                                    text-slate-500
-                                    dark:text-slate-400
-                                    "
-                                >
-
-                                    {item}
-
-                                </th>
-
-                                ))
+                                "-"
 
                             }
 
-                        </tr>
+                        </span>
 
-                    </thead>
+                    )
 
-                    
+                }
 
-                    <tbody>
+            </td>
 
-                        {
+            <td className="
+                py-3
+            ">
 
-                        problems.map(
+                <div className="
+                    flex
+                    flex-wrap
+                    gap-2
+                ">
+
+                    {
+
+                    Array.isArray(problem?.tags)
+
+                    &&
+
+                    problem.tags.length > 0
+
+                    ?
+
+                    (
+
+                        problem.tags
+                        .slice(0, 2)
+                        .map(
 
                         (
-                            problem,
-                            index
+                            tag,
+                            idx
                         ) => (
 
-                            <tr
+                        <span
 
-                                key={index}
+                            key={idx}
 
-                                className="
-                                border-b
-                                border-slate-100
-                                dark:border-slate-700
+                            className={`
 
-                                last:border-none
+                                text-xs
+                                font-medium
 
-                                hover:bg-slate-50
-                                dark:hover:bg-slate-700/40
+                                px-2.5
+                                py-1
 
-                                transition-colors
-                                "
-                            >
+                                rounded-full
+                                whitespace-nowrap
 
-                                <td className="
-                                    py-3
-                                    font-medium
+                                ${
 
-                                    text-slate-500
-                                    dark:text-slate-400
-                                ">
+                                    problem?.platform === "Codeforces"
 
-                                    {index+1}
+                                    ?
 
-                                </td>
+                                    "bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-300"
 
-                                <td className="
-                                    py-3
-                                    pr-6
-                                ">
+                                    :
 
-                                    <p className="
-                                        font-semibold
-                                        text-slate-800
-                                        dark:text-white
-                                    ">
+                                    "bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300"
 
-                                        {
-                                            problem.problemName
-                                        }
+                                }
 
-                                    </p>
+                            `}
+                        >
 
-                                </td>
+                            {tag}
 
-                                <td className="
-                                    py-3
-                                ">
-
-                                    <span className="
-                                        font-medium
-
-                                        text-slate-600
-                                        dark:text-slate-300
-                                    ">
-
-                                        {
-                                            problem.contestId
-                                        }
-
-                                        {
-                                            problem.problemIndex
-                                        }
-
-                                    </span>
-
-                                </td>
-
-                                <td className="
-                                    py-3
-                                ">
-
-                                    <div className="
-                                        flex
-                                        flex-wrap
-                                        gap-2
-                                    ">
-
-                                    {
-
-                                    problem.tags
-                                    .slice(0,2)
-                                    .map(
-
-                                    (
-                                        tag,
-                                        idx
-                                    ) => (
-
-                                    <span
-
-                                        key={idx}
-
-                                        className="
-                                        bg-blue-100
-                                        dark:bg-blue-900/40
-
-                                        text-blue-600
-                                        dark:text-blue-300
-
-                                        text-xs
-                                        font-medium
-
-                                        px-2.5
-                                        py-1
-
-                                        rounded-full
-                                        whitespace-nowrap
-                                        "
-                                    >
-
-                                        {tag}
-
-                                    </span>
-
-                                    ))
-
-                                    }
-
-                                    </div>
-
-                                </td>
-
-                                <td className="
-                                    py-3
-                                ">
-
-                                    <span className="
-                                        bg-yellow-100
-                                        dark:bg-yellow-900/40
-
-                                        text-yellow-700
-                                        dark:text-yellow-300
-
-                                        text-sm
-                                        font-semibold
-
-                                        px-3
-                                        py-1
-
-                                        rounded-full
-                                    ">
-
-                                        {
-
-                                        problem.rating
-                                        ? problem.rating
-                                        : "-"
-
-                                        }
-
-                                    </span>
-
-                                </td>
-
-                                <td className="
-                                    py-3
-
-                                    text-sm
-                                    font-medium
-
-                                    text-slate-600
-                                    dark:text-slate-300
-                                ">
-
-                                    {
-                                    problem.programmingLanguage
-                                    }
-
-                                </td>
-
-                                <td className="
-                                    py-4
-
-                                    text-sm
-
-                                    text-slate-600
-                                    dark:text-slate-300
-                                ">
-
-                                    {
-                                        problem.submissionTime
-                                    }
-
-                                </td>
-
-                                <td className="
-                                    py-3
-                                ">
-
-                                    <a
-
-                                        href={
-                                            problem.problemLink
-                                        }
-
-                                        target="_blank"
-
-                                        rel="noreferrer"
-
-                                        className="
-                                        inline-flex
-                                        items-center
-                                        justify-center
-
-                                        w-9
-                                        h-9
-
-                                        rounded-xl
-
-                                        border
-                                        border-slate-200
-                                        dark:border-slate-600
-
-                                        hover:bg-slate-100
-                                        dark:hover:bg-slate-700
-
-                                        transition-colors
-                                        "
-                                    >
-
-                                        <ExternalLink
-
-                                            size={16}
-
-                                            className="
-                                            text-slate-600
-                                            dark:text-slate-300
-                                            "
-                                        />
-
-                                    </a>
-
-                                </td>
-
-                            </tr>
+                        </span>
 
                         ))
 
-                        }
+                    )
 
-                    </tbody>
+                    :
 
-                </table>
+                    (
 
-            </div>
+                        <span className="
+                            text-slate-400
+                            text-sm
+                        ">
+
+                            -
+
+                        </span>
+
+                    )
+
+                    }
+
+                </div>
+
+            </td>
+
+            <td className="
+                py-3
+            ">
+
+                {
+
+                    problem?.platform === "Codeforces"
+
+                    ?
+
+                    (
+
+                        <span className="
+                            bg-yellow-100
+                            dark:bg-yellow-900/40
+
+                            text-yellow-700
+                            dark:text-yellow-300
+
+                            text-sm
+                            font-semibold
+
+                            px-3
+                            py-1
+
+                            rounded-full
+                        ">
+
+                            {
+
+                                problem?.rating ||
+
+                                "-"
+
+                            }
+
+                        </span>
+
+                    )
+
+                    :
+
+                    (
+
+                        <span className="
+                            bg-orange-100
+                            dark:bg-orange-900/40
+
+                            text-orange-700
+                            dark:text-orange-300
+
+                            text-sm
+                            font-semibold
+
+                            px-3
+                            py-1
+
+                            rounded-full
+                        ">
+
+                            {
+
+                                problem?.difficulty ||
+
+                                "-"
+
+                            }
+
+                        </span>
+
+                    )
+
+                }
+
+            </td>
+
+            <td className="
+                py-3
+
+                text-sm
+                font-medium
+
+                text-slate-600
+                dark:text-slate-300
+            ">
+
+                {
+
+                    problem?.programmingLanguage ||
+
+                    "-"
+
+                }
+
+            </td>
+
+            <td className="
+                py-4
+
+                text-sm
+
+                text-slate-600
+                dark:text-slate-300
+            ">
+
+                {
+
+                     problem?.submissionTime
+
+    ?
+
+    new Date(
+        problem.submissionTime
+    ).toLocaleString()
+
+    :
+
+    "-"
+
+                }
+
+            </td>
+
+            <td className="
+                py-3
+            ">
+
+                <a
+
+                    href={
+                        problem?.problemLink || "#"
+                    }
+
+                    target="_blank"
+
+                    rel="noreferrer"
+
+                    className="
+                    inline-flex
+                    items-center
+                    justify-center
+
+                    w-9
+                    h-9
+
+                    rounded-xl
+
+                    border
+                    border-slate-200
+                    dark:border-slate-600
+
+                    hover:bg-slate-100
+                    dark:hover:bg-slate-700
+
+                    transition-colors
+                    "
+                >
+
+                    <ExternalLink
+
+                        size={16}
+
+                        className="
+                        text-slate-600
+                        dark:text-slate-300
+                        "
+                    />
+
+                </a>
+
+            </td>
+
+        </tr>
+
+    ))
+
+    }
+
+</tbody>
+
+                        </table>
+
+                    </div>
+
+                )
+
+            }
 
         </div>
     );

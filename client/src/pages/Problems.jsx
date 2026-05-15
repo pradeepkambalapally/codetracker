@@ -7,27 +7,82 @@ import Pagination from "../components/ui/Pagination";
 import ErrorMessage from "../components/ErrorMessage";
 
 import useProblems from "../hooks/useProblems";
+import useLeetcodeProblems from "../hooks/useLeetcodeProblems";
+
 import useSearch from "../hooks/useSearch";
 import usePagination from "../hooks/usePagination";
 
 const Problems = () => {
 
     const {
-        problems = [],
-        loading,
-        error
+
+        problems: codeforcesProblems = [],
+
+        loading: cfLoading,
+
+        error: cfError
+
     } = useProblems();
 
+    const {
+
+        problems: leetcodeProblems = [],
+
+        loading: lcLoading,
+
+        error: lcError
+
+    } = useLeetcodeProblems();
+
+    const problems = [
+
+    ...(codeforcesProblems || []),
+
+    ...(leetcodeProblems || [])
+
+].sort(
+
+    (a, b) =>
+
+        (b?.submissionTime || 0)
+        -
+        (a?.submissionTime || 0)
+
+);
+
+    const loading =
+        cfLoading || lcLoading;
+
+    const error =
+
+        cfError && lcError
+
+        ?
+
+        cfError
+
+        :
+
+        "";
+
     const [
+
         search,
+
         setSearch
+
     ] = useState("");
 
     const filteredProblems =
+
         useSearch(
+
             problems || [],
+
             search,
+
             "problemName"
+
         );
 
     const {
@@ -45,6 +100,7 @@ const Problems = () => {
         filteredProblems || [],
 
         10
+
     );
 
     useEffect(() => {

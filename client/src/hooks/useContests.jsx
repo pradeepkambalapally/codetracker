@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import api from "../api/axios";
 import useUser from "./useUser";
 
@@ -9,55 +10,157 @@ const useContests = () => {
         loading: userLoading
     } = useUser();
 
-    const [contests, setContests] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const [contests, setContests] =
+        useState([]);
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [error, setError] =
+        useState("");
 
     useEffect(() => {
 
-        // wait for user fetch
-        if(userLoading) return;
+        if (userLoading) return;
 
         const fetchContests = async () => {
 
-            if(!user?.codeforcesUsername){
+            try {
 
-                setError(
-                    "Connect your Codeforces account in Settings"
-                );
+                setLoading(true);
 
-                setLoading(false);
+                setError("");
 
-                return;
-            }
+                if (!user) {
 
-            try{
+                    setContests([]);
+
+                    setError(
+                        "User not found"
+                    );
+
+                    return;
+
+                }
+
+                if (!user?.codeforcesUsername) {
+
+                    setContests([]);
+
+                    setError(
+                        "Connect your Codeforces account in Settings"
+                    );
+
+                    return;
+
+                }
 
                 const response =
                     await api.get(
                         "/users/codeforces-contests"
                     );
 
+                if (
+
+                    !response ||
+
+                    !response.data
+
+                ) {
+
+                    setContests([]);
+
+                    setError(
+                        "Invalid server response"
+                    );
+
+                    return;
+
+                }
+
+                const contestsData =
+                    response.data.contests || [];
+
+                if (
+
+                    !Array.isArray(
+                        contestsData
+                    )
+
+                ) {
+
+                    setContests([]);
+
+                    setError(
+                        "Invalid contests data"
+                    );
+
+                    return;
+
+                }
+
                 setContests(
-                    response.data.contests || []
+                    contestsData
                 );
+
+                // IMPORTANT:
+                // no contests is NOT an error
 
             }
 
-            catch(error){
+            catch (error) {
 
-                if(
+                console.log(error);
 
-                    error.response?.status===400 ||
+                setContests([]);
 
-                    error.response?.status===404
+                if (
 
-                ){
+                    error.response?.status === 401
 
-                    setContests([]);
+                ) {
+
+                    setError(
+                        "Unauthorized access"
+                    );
+
                 }
 
-                else{
+                else if (
+
+                    error.response?.status === 404
+
+                ) {
+
+                    // no contests found
+
+                    setError("");
+
+                }
+
+                else if (
+
+                    error.response?.status === 400
+
+                ) {
+
+                    setError("");
+
+                }
+
+                else if (
+
+                    error.code === "ERR_NETWORK"
+
+                ) {
+
+                    setError(
+                        "Network error"
+                    );
+
+                }
+
+                else {
 
                     setError(
 
@@ -71,7 +174,7 @@ const useContests = () => {
 
             }
 
-            finally{
+            finally {
 
                 setLoading(false);
 
@@ -84,14 +187,16 @@ const useContests = () => {
     }, [
 
         user,
-
         userLoading
 
     ]);
 
     return {
 
-        contests,
+        contests:
+            Array.isArray(contests)
+            ? contests
+            : [],
 
         loading,
 

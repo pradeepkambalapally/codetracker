@@ -87,7 +87,7 @@ const getCodeforcesData = async (req, res) => {
                     );
 
                     problems.push({
-
+                        platform:"Codeforces",
                         problemName:
                             submission.problem.name,
 
@@ -95,13 +95,9 @@ const getCodeforcesData = async (req, res) => {
 
 `https://codeforces.com/problemset/problem/${submission.problem.contestId}/${submission.problem.index}`,
 
-                        submissionTime:
+                        submissionTime: submission.creationTimeSeconds * 1000,
 
-                            new Date(
-
-                                submission.creationTimeSeconds * 1000
-
-                            ).toLocaleString(),
+                           
 
                         programmingLanguage:
 
