@@ -1,71 +1,199 @@
+import {
+    useState, useEffect, useRef
+} from "react";
+
 import SolvedProblems from "../components/tables/SolvedProblems";
 import DashboarCard from "../components/dashboard/DashboardCard";
-
 import Loading from "../components/ui/Loading";
 import RatingCharts from "../components/dashboard/RatingCharts";
 import SolvedProblemsChart from "../components/dashboard/SolvedProblemsChart";
+import PlatformFilter from "../components/ui/PlatformFilter";
+import ErrorMessage from "../components/ErrorMessage";
 
 import useProblems from "../hooks/useProblems";
 import useContests from "../hooks/useContests";
 import useProfile from "../hooks/useProfile";
 import useLeetcodeProblems from "../hooks/useLeetcodeProblems";
-
-import ErrorMessage from "../components/ErrorMessage";
+import useLeetcodeProfile from "../hooks/useLeetcodeProfile";
+import useUser from "../hooks/useUser";
 
 const Dashboard = () => {
+    const {
+
+    user,
+
+    loading:
+        userLoading
+
+} = useUser();
 
     const {
+
+        profile:
+            leetcodeProfile,
+
+        loading:
+            leetcodeProfileLoading
+
+    } = useLeetcodeProfile();
+
+    const {
+
         problems = [],
-        loading: problemsLoading
+
+        loading:
+            problemsLoading
+
     } = useProblems();
 
     const {
-        problems: leetcodeProblems = [],
-        loading: leetcodeLoading
+
+        problems:
+            leetcodeProblems = [],
+
+        loading:
+            leetcodeLoading
+
     } = useLeetcodeProblems();
 
-    const allProblems = [
-
-    ...(problems || []),
-
-    ...(leetcodeProblems || [])
-
-].sort(
-
-    (a, b) =>
-
-        (b?.submissionTime || 0)
-        -
-        (a?.submissionTime || 0)
-
-);
-
     const {
+
         profile,
-        loading: profileLoading,
+
+        loading:
+            profileLoading,
+
         error
+
     } = useProfile();
 
     const {
+
         contests = [],
-        loading: contestsLoading
+
+        loading:
+            contestsLoading
+
     } = useContests();
+
+    const [
+
+    platformFilter,
+
+    setPlatformFilter
+
+] = useState(
+
+    user?.defaultPlatform ||
+
+    "All"
+
+);
+const hasInitialized = useRef(false);
+useEffect(() => {
+
+    if (
+
+        !hasInitialized.current &&
+
+        user?.defaultPlatform
+
+    ) {
+
+        setPlatformFilter(
+
+            user.defaultPlatform
+
+        );
+
+        hasInitialized.current = true;
+
+    }
+
+}, [user]);
+
+    // MERGE PROBLEMS
+
+    const allProblems = [
+
+        ...(problems || []),
+
+        ...(leetcodeProblems || [])
+
+    ].sort(
+
+        (a, b) =>
+
+            (b?.submissionTime || 0)
+
+            -
+
+            (a?.submissionTime || 0)
+
+    );
+
+    // FILTER PROBLEMS
+
+    const filteredProblems =
+
+        platformFilter === "All"
+
+        ?
+
+        allProblems
+
+        :
+
+        allProblems.filter(
+
+            (problem) =>
+
+                problem.platform ===
+                platformFilter
+
+        );
+
+    // FILTER CONTESTS
+
+    const filteredContests =
+
+        platformFilter === "Codeforces"
+
+        ||
+
+        platformFilter === "All"
+
+        ?
+
+        contests
+
+        :
+
+        [];
+
+    // LOADING
 
     const loading =
 
-        problemsLoading ||
+           userLoading ||
 
-        leetcodeLoading ||
+    problemsLoading ||
 
-        profileLoading ||
+    leetcodeLoading ||
 
-        contestsLoading;
+    leetcodeProfileLoading ||
+
+    profileLoading ||
+
+    contestsLoading;
 
     if (loading) {
 
         return <Loading />;
 
     }
+
+    // ERROR
 
     if (error) {
 
@@ -84,7 +212,9 @@ const Dashboard = () => {
         <div className="
             flex-1
             min-h-screen
+
             p-6
+
             overflow-x-hidden
 
             bg-slate-100
@@ -92,6 +222,8 @@ const Dashboard = () => {
 
             transition-colors
         ">
+
+            {/* HEADER */}
 
             <div className="mb-6">
 
@@ -122,44 +254,97 @@ const Dashboard = () => {
 
             </div>
 
+            {/* PLATFORM FILTER */}
+
+            <PlatformFilter
+
+                platformFilter={
+                    platformFilter
+                }
+
+                setPlatformFilter={
+                    setPlatformFilter
+                }
+
+            />
+
+            {/* MAIN DASHBOARD CARDS */}
+
             <DashboarCard
 
                 problems={
-                    allProblems
+                    filteredProblems || []
                 }
 
                 profileStats={
                     profile || {}
                 }
+                platformFilter={
+    platformFilter
+}
+                leetcodeProfile={
+                    leetcodeProfile || {}
+                }
 
                 contests={
-                    contests || []
+                    filteredContests || []
                 }
 
             />
 
-            <div className="
+
+            {/* CHARTS */}
+
+            <div className={`
                 grid
                 grid-cols-1
-                xl:grid-cols-2
+
+                ${
+
+                    platformFilter !== "LeetCode"
+
+                    ?
+
+                    "xl:grid-cols-2"
+
+                    :
+
+                    ""
+
+                }
+
                 gap-4
                 mt-6
-            ">
+            `}>
 
                 <SolvedProblemsChart
+
                     problems={
-                        allProblems
+                        filteredProblems || []
                     }
+
                 />
 
-                <RatingCharts
-                    contests={
-                        (contests || [])
-                        .slice(0, 5)
-                    }
-                />
+                {
+
+                    platformFilter !== "LeetCode"
+
+                    &&
+
+                    <RatingCharts
+
+                        contests={
+                            (filteredContests || [])
+                            .slice(0, 5)
+                        }
+
+                    />
+
+                }
 
             </div>
+
+            {/* RECENT PROBLEMS */}
 
             <div className="
                 mt-6
@@ -167,10 +352,12 @@ const Dashboard = () => {
             ">
 
                 <SolvedProblems
+
                     problems={
-                        allProblems
+                        (filteredProblems || [])
                         .slice(0, 8)
                     }
+
                 />
 
             </div>

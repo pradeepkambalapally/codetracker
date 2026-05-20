@@ -7,21 +7,45 @@ import TopicDistributionChart from "../components/dashboard/TopicDistributionCha
 import ContestPerformanceChart from "../components/dashboard/ContestPerformanceChart";
 
 import ProfileCard from "../components/ui/ProfileCard";
+import LeetcodeProfileCard from "../components/ui/LeetcodeProfileCard";
 
 import useProfile from "../hooks/useProfile";
 import useProblems from "../hooks/useProblems";
 import useContests from "../hooks/useContests";
+import useLeetcodeProfile from "../hooks/useLeetcodeProfile";
+import useLeetcodeProblems from "../hooks/useLeetcodeProblems";
+import useActivityHeatmap from "../hooks/useActivityHeatmap";
 
 import getTopicDistribution from "../utils/getTopicDistribution";
 import getContestPerformance from "../utils/getContestPerformance";
 
 import ErrorMessage from "../components/ErrorMessage";
+import ActivityHeatmap from "../components/dashboard/ActivityHeatmap";
+import useUser from "../hooks/useUser";
 
 const Profile = () => {
 
     const {
 
+        heatmapData,
+
+        loading:
+            heatmapLoading
+
+    } = useActivityHeatmap();
+
+    const {
+
+    user
+
+} = useUser();
+
+    const {
+
         profile = {},
+
+        loading:
+            profileLoading,
 
         error
 
@@ -29,22 +53,118 @@ const Profile = () => {
 
     const {
 
+        profile:
+            leetcodeProfile = {},
+
+        loading:
+            leetcodeProfileLoading
+
+    } = useLeetcodeProfile();
+
+    const {
+
+        problems:
+            leetcodeProblems = [],
+
+        loading:
+            leetcodeProblemsLoading
+
+    } = useLeetcodeProblems();
+
+    const {
+
         problems = [],
 
-        loading
+        loading:
+            problemsLoading
 
     } = useProblems();
 
     const {
 
-        contests = []
+        contests = [],
+
+        loading:
+            contestsLoading
 
     } = useContests();
+
+    // COMBINED LOADING
+
+    const loading =
+
+        profileLoading ||
+
+        leetcodeProfileLoading ||
+
+        problemsLoading ||
+
+        leetcodeProblemsLoading ||
+
+        contestsLoading ||
+
+        heatmapLoading;
+
+    // MERGED PROBLEMS
+
+    const allProblems = [
+
+        ...(problems || []),
+
+        ...(leetcodeProblems || [])
+
+    ].sort(
+
+        (a, b) =>
+
+            (b?.submissionTime || 0)
+
+            -
+
+            (a?.submissionTime || 0)
+
+    );
+
+    const filteredProblems =
+
+    user?.defaultPlatform === "Codeforces"
+
+    ?
+
+    allProblems.filter(
+
+        (problem) =>
+
+            problem.platform ===
+            "Codeforces"
+
+    )
+
+    :
+
+    user?.defaultPlatform === "LeetCode"
+
+    ?
+
+    allProblems.filter(
+
+        (problem) =>
+
+            problem.platform ===
+            "LeetCode"
+
+    )
+
+    :
+
+    allProblems;
+
+    // CHART DATA
 
     const chartData =
 
         getTopicDistribution(
-            problems || []
+            allProblems || []
         );
 
     const contestChartData =
@@ -84,6 +204,8 @@ const Profile = () => {
             transition-colors
         ">
 
+            {/* HEADER */}
+
             <div className="mb-6">
 
                 <h1 className="
@@ -111,9 +233,27 @@ const Profile = () => {
 
             </div>
 
-            <ProfileCard
-                profile={profile}
-            />
+            {/* PROFILE CARDS */}
+
+            <div className="
+                space-y-6
+            ">
+
+                <ProfileCard
+                    profile={profile}
+                />
+
+                <LeetcodeProfileCard
+                    profile={leetcodeProfile}
+                />
+
+                <ActivityHeatmap
+                    heatmapData={heatmapData}
+                />
+
+            </div>
+
+            {/* CHARTS */}
 
             <div className="
                 grid
@@ -129,15 +269,59 @@ const Profile = () => {
                     }
                 />
 
-                <ContestPerformanceChart
-                    contestChartData={
-                        contestChartData || []
-                    }
-                />
+                {
+
+                    contests.length > 0
+
+                    ?
+
+                    (
+
+                        <ContestPerformanceChart
+
+                            contestChartData={
+                                contestChartData || []
+                            }
+
+                        />
+
+                    )
+
+                    :
+
+                    (
+
+                        <div className="
+                            p-8
+
+                            rounded-3xl
+
+                            text-center
+
+                            bg-white
+                            dark:bg-slate-800
+
+                            border
+                            border-slate-200
+                            dark:border-slate-700
+
+                            text-slate-500
+                            dark:text-slate-400
+                        ">
+
+                            No contest performance data available
+
+                        </div>
+
+                    )
+
+                }
+
+                {/* RECENT PROBLEMS */}
 
                 {
 
-                    problems.length > 0
+                    allProblems.length > 0
 
                     ?
 
@@ -146,7 +330,7 @@ const Profile = () => {
                         <SolvedProblems
 
                             problems={
-                                problems.slice(
+                                filteredProblems.slice(
                                     0,
                                     5
                                 )
@@ -185,6 +369,8 @@ const Profile = () => {
                     )
 
                 }
+
+                {/* CONTEST HISTORY */}
 
                 {
 

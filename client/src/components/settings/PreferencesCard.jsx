@@ -39,7 +39,7 @@ const PreferencesCard = ({
             (user.theme || "Light") &&
 
             prev.defaultPlatform ===
-            (user.defaultPlatform || "Codeforces")
+            (user.defaultPlatform || "All")
         ) {
 
             return prev;
@@ -53,7 +53,7 @@ const PreferencesCard = ({
 
             defaultPlatform:
                 user.defaultPlatform ||
-                "Codeforces"
+                "All"
         };
     });
 
@@ -369,53 +369,59 @@ const PreferencesCard = ({
 
                 </div>
 
-                <select
+               <select
 
-                    value={
-                        preferences.defaultPlatform
-                    }
+    value={
+        preferences.defaultPlatform
+    }
 
-                    onChange={(e)=>
+    onChange={(e)=>
 
-                        handleChange(
-                            "defaultPlatform",
-                            e.target.value
-                        )
-                    }
+        handleChange(
+            "defaultPlatform",
+            e.target.value
+        )
+    }
 
-                    className="
-                        px-3
-                        py-2
+    className="
+        px-3
+        py-2
 
-                        rounded-xl
+        rounded-xl
 
-                        border
-                        border-slate-200
-                        dark:border-slate-600
+        border
+        border-slate-200
+        dark:border-slate-600
 
-                        bg-white
-                        dark:bg-slate-800
+        bg-white
+        dark:bg-slate-800
 
-                        text-slate-800
-                        dark:text-white
+        text-slate-800
+        dark:text-white
 
-                        outline-none
-                    "
-                >
+        outline-none
+    "
+>
 
-                    <option>
+    <option value="All">
 
-                        Codeforces
+        All
 
-                    </option>
+    </option>
 
-                    <option>
+    <option value="Codeforces">
 
-                        LeetCode
+        Codeforces
 
-                    </option>
+    </option>
 
-                </select>
+    <option value="LeetCode">
+
+        LeetCode
+
+    </option>
+
+</select>
 
             </div>
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import SolvedProblems from "../components/tables/SolvedProblems";
 import Loading from "../components/ui/Loading";
@@ -11,6 +11,8 @@ import useLeetcodeProblems from "../hooks/useLeetcodeProblems";
 
 import useSearch from "../hooks/useSearch";
 import usePagination from "../hooks/usePagination";
+import PlatformFilter from "../components/ui/PlatformFilter";
+import useUser from "../hooks/useUser";
 
 const Problems = () => {
 
@@ -24,6 +26,14 @@ const Problems = () => {
 
     } = useProblems();
 
+    const {
+
+    user,
+
+    loading:
+        userLoading
+
+} = useUser();
     const {
 
         problems: leetcodeProblems = [],
@@ -51,7 +61,12 @@ const Problems = () => {
 );
 
     const loading =
-        cfLoading || lcLoading;
+
+    userLoading ||
+
+    cfLoading ||
+
+    lcLoading;
 
     const error =
 
@@ -73,17 +88,69 @@ const Problems = () => {
 
     ] = useState("");
 
-    const filteredProblems =
+    const [
 
-        useSearch(
+    platformFilter,
 
-            problems || [],
+    setPlatformFilter
 
-            search,
+] = useState(
 
-            "problemName"
+    user?.defaultPlatform ||
+
+    "All"
+
+);
+const hasInitialized = useRef(false);
+useEffect(() => {
+
+    if (
+
+        !hasInitialized.current &&
+
+        user?.defaultPlatform
+
+    ) {
+
+        setPlatformFilter(
+
+            user.defaultPlatform
 
         );
+
+        hasInitialized.current = true;
+
+    }
+
+}, [user]);
+    const searchedProblems =
+
+    useSearch(
+
+        problems || [],
+        search,
+        "problemName"
+
+    );
+
+const filteredProblems =
+
+    platformFilter === "All"
+
+    ?
+
+    searchedProblems
+
+    :
+
+    searchedProblems.filter(
+
+        (problem) =>
+
+            problem.platform ===
+            platformFilter
+
+    );
 
     const {
 
@@ -102,18 +169,19 @@ const Problems = () => {
         10
 
     );
+useEffect(() => {
 
-    useEffect(() => {
+    setCurrentPage(1);
 
-        setCurrentPage(1);
+}, [
 
-    }, [
+    search,
 
-        search,
+    platformFilter,
 
-        setCurrentPage
+    setCurrentPage
 
-    ]);
+]);
 
     if (loading)
         return <Loading />;
@@ -186,7 +254,17 @@ const Problems = () => {
                 label="problems"
 
             />
+             <PlatformFilter
 
+    platformFilter={
+        platformFilter
+    }
+
+    setPlatformFilter={
+        setPlatformFilter
+    }
+
+/>
             {
 
                 currentItems.length > 0

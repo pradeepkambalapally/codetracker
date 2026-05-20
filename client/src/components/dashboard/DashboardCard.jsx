@@ -6,10 +6,123 @@ import {
 } from "lucide-react";
 
 const DashboardCard = ({
-    problems,
-    profileStats,
-    contests
+
+    problems = [],
+
+    profileStats = {},
+
+    leetcodeProfile = {},
+
+    contests = [],
+
+    platformFilter
+
 }) => {
+
+    const codeforcesSolved =
+
+        problems.filter(
+
+            (problem) =>
+
+                problem.platform ===
+                "Codeforces"
+
+        ).length;
+
+    const leetcodeSolved =
+
+        leetcodeProfile
+        ?.submitStats
+        ?.acSubmissionNum
+        ?.find(
+
+            (item) =>
+
+                item.difficulty ===
+                "All"
+
+        )?.count || 0;
+
+    const totalSolved =
+
+        platformFilter === "Codeforces"
+
+        ?
+
+        codeforcesSolved
+
+        :
+
+        platformFilter === "LeetCode"
+
+        ?
+
+        leetcodeSolved
+
+        :
+
+        codeforcesSolved + leetcodeSolved;
+
+    const isLeetcode =
+        platformFilter === "LeetCode";
+
+    const activeDates = new Set();
+
+problems.forEach((problem) => {
+
+    if (!problem?.submissionTime) return;
+
+    const date =
+
+        new Date(
+            problem.submissionTime
+        )
+
+        .toISOString()
+        .split("T")[0];
+
+    activeDates.add(date);
+
+});
+
+let streak = 0;
+
+const currentDate = new Date();
+
+while (true) {
+
+    const formattedDate =
+
+        currentDate
+        .toISOString()
+        .split("T")[0];
+
+    if (
+
+        activeDates.has(
+            formattedDate
+        )
+
+    ) {
+
+        streak++;
+
+    }
+
+    else {
+
+        break;
+
+    }
+
+    currentDate.setDate(
+
+        currentDate.getDate() - 1
+
+    );
+
+}
 
     const cardData = [
 
@@ -18,7 +131,7 @@ const DashboardCard = ({
                 "Solved Problems",
 
             value:
-                problems.length,
+                totalSolved,
 
             subtitle:
                 "Across all time",
@@ -37,13 +150,41 @@ const DashboardCard = ({
         },
 
         {
+
             title:
+
+                isLeetcode
+
+                ?
+
+                "Global Rank"
+
+                :
+
                 "Contests Attended",
 
             value:
+
+                isLeetcode
+
+                ?
+
+                leetcodeProfile?.ranking || "N/A"
+
+                :
+
                 contests.length,
 
             subtitle:
+
+                isLeetcode
+
+                ?
+
+                "LeetCode ranking"
+
+                :
+
                 "Rated contests",
 
             icon:
@@ -60,14 +201,42 @@ const DashboardCard = ({
         },
 
         {
+
             title:
+
+                isLeetcode
+
+                ?
+
+                "Star Rating"
+
+                :
+
                 "Highest Rating",
 
             value:
+
+                isLeetcode
+
+                ?
+
+                leetcodeProfile?.starRating || "N/A"
+
+                :
+
                 profileStats?.maxRating ||
-                "Unrated",
+                  "Unrated",
 
             subtitle:
+
+                isLeetcode
+
+                ?
+
+                "LeetCode stars"
+
+                :
+
                 "Keep grinding!",
 
             icon:
@@ -88,7 +257,7 @@ const DashboardCard = ({
                 "Current Streak",
 
             value:
-                "5 Days",
+                `${streak} Days`,
 
             subtitle:
                 "Keep it up!",
@@ -131,9 +300,7 @@ const DashboardCard = ({
                         return (
 
                             <div
-                                key={
-                                    index
-                                }
+                                key={index}
 
                                 className={`
 
@@ -231,7 +398,9 @@ const DashboardCard = ({
                                 </div>
 
                             </div>
+
                         );
+
                     }
                 )
 

@@ -14,12 +14,17 @@ import {
 } from "react";
 
 const SolvedProblemsChart = ({
+
     problems = []
+
 }) => {
 
     const [
+
         isDark,
+
         setIsDark
+
     ] = useState(false);
 
     useEffect(() => {
@@ -34,6 +39,7 @@ const SolvedProblemsChart = ({
                     .contains("dark")
 
             );
+
         };
 
         updateTheme();
@@ -44,13 +50,19 @@ const SolvedProblemsChart = ({
             );
 
         observer.observe(
+
             document.documentElement,
+
             {
+
                 attributes: true,
+
                 attributeFilter: [
                     "class"
                 ]
+
             }
+
         );
 
         return () =>
@@ -58,12 +70,14 @@ const SolvedProblemsChart = ({
 
     }, []);
 
+    // GROUP MONTHLY SOLVED PROBLEMS
+
     const groupedData = {};
 
     (problems || []).forEach(
         (problem) => {
 
-            if(
+            if (
                 !problem?.submissionTime
             ) return;
 
@@ -76,16 +90,16 @@ const SolvedProblemsChart = ({
                 date.toLocaleDateString(
                     "en-US",
                     {
-                        month:"short",
-                        year:"numeric"
+                        month: "short",
+                        year: "numeric"
                     }
                 );
 
-            if(
+            if (
                 !groupedData[
                     monthYear
                 ]
-            ){
+            ) {
 
                 groupedData[
                     monthYear
@@ -100,17 +114,33 @@ const SolvedProblemsChart = ({
         }
     );
 
+    // SORT MONTHS
+
+    const sortedEntries =
+
+        Object.entries(
+            groupedData
+        ).sort(
+
+            ([a], [b]) =>
+
+                new Date(a) -
+                new Date(b)
+
+        );
+
+    // BUILD CUMULATIVE DATA
+
     let cumulativeSolved = 0;
 
     const chartData =
-        Object.entries(
-            groupedData
-        ).map(
 
-            ([date,count]) => {
+        sortedEntries.map(
 
-                cumulativeSolved +=
-                    count;
+            ([date, count]) => {
+
+                // eslint-disable-next-line react-hooks/immutability
+                cumulativeSolved += count;
 
                 return {
 
@@ -168,7 +198,7 @@ const SolvedProblemsChart = ({
                         dark:text-slate-400
                     ">
 
-                        Track your cumulative solved problems
+                        Track your recent solved problems progression
 
                     </p>
 
@@ -183,115 +213,208 @@ const SolvedProblemsChart = ({
             ">
 
                 {
-                    chartData.length > 0 ? (
 
-                    <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                    >
+                    chartData.length > 0
 
-                        <AreaChart
-                            data={chartData}
-                            margin={{
-                                top:5,
-                                right:10,
-                                left:-20,
-                                bottom:0
-                            }}
+                    ?
+
+                    (
+
+                        <ResponsiveContainer
+                            width="100%"
+                            height="100%"
                         >
 
-                            <CartesianGrid
-                                strokeDasharray="3 3"
-                                vertical={false}
-                                stroke={
-                                    isDark
-                                    ? "#334155"
-                                    : "#e2e8f0"
-                                }
-                            />
+                            <AreaChart
 
-                            <XAxis
-                                dataKey="date"
-                                tick={{fontSize:12}}
-                                tickLine={false}
-                                axisLine={false}
-                                stroke={
-                                    isDark
-                                    ? "#cbd5e1"
-                                    : "#94a3b8"
-                                }
-                            />
+                                data={chartData}
 
-                            <YAxis
-                                tick={{fontSize:12}}
-                                tickLine={false}
-                                axisLine={false}
-                                stroke={
-                                    isDark
-                                    ? "#cbd5e1"
-                                    : "#94a3b8"
-                                }
-                            />
+                                margin={{
 
-                            <Tooltip
-                                contentStyle={{
-                                    borderRadius:"16px",
+                                    top: 5,
 
-                                    border:
+                                    right: 10,
 
-                                    isDark
-                                    ? "1px solid #475569"
-                                    : "1px solid #e2e8f0",
+                                    left: -20,
 
-                                    backgroundColor:
+                                    bottom: 0
 
-                                    isDark
-                                    ? "#1e293b"
-                                    : "#fff",
-
-                                    color:
-
-                                    isDark
-                                    ? "#fff"
-                                    : "#000"
                                 }}
-                            />
 
-                            <Area
-                                type="monotone"
-                                dataKey="solved"
-                                stroke="#16a34a"
-                                fill="#86efac"
-                                fillOpacity={0.5}
-                                strokeWidth={3}
-                            />
+                            >
 
-                        </AreaChart>
+                                <CartesianGrid
 
-                    </ResponsiveContainer>
+                                    strokeDasharray="3 3"
 
-                    ) : (
+                                    vertical={false}
 
-                    <div className="
-                        h-full
-                        flex
-                        items-center
-                        justify-center
-                        text-slate-500
-                        dark:text-slate-400
-                    ">
+                                    stroke={
 
-                        No solved problem data available
+                                        isDark
 
-                    </div>
+                                        ?
+
+                                        "#334155"
+
+                                        :
+
+                                        "#e2e8f0"
+
+                                    }
+
+                                />
+
+                                <XAxis
+
+                                    dataKey="date"
+
+                                    tick={{
+                                        fontSize: 12
+                                    }}
+
+                                    tickLine={false}
+
+                                    axisLine={false}
+
+                                    stroke={
+
+                                        isDark
+
+                                        ?
+
+                                        "#cbd5e1"
+
+                                        :
+
+                                        "#94a3b8"
+
+                                    }
+
+                                />
+
+                                <YAxis
+
+                                    tick={{
+                                        fontSize: 12
+                                    }}
+
+                                    tickLine={false}
+
+                                    axisLine={false}
+
+                                    stroke={
+
+                                        isDark
+
+                                        ?
+
+                                        "#cbd5e1"
+
+                                        :
+
+                                        "#94a3b8"
+
+                                    }
+
+                                />
+
+                                <Tooltip
+
+                                    contentStyle={{
+
+                                        borderRadius: "16px",
+
+                                        border:
+
+                                            isDark
+
+                                            ?
+
+                                            "1px solid #475569"
+
+                                            :
+
+                                            "1px solid #e2e8f0",
+
+                                        backgroundColor:
+
+                                            isDark
+
+                                            ?
+
+                                            "#1e293b"
+
+                                            :
+
+                                            "#fff",
+
+                                        color:
+
+                                            isDark
+
+                                            ?
+
+                                            "#fff"
+
+                                            :
+
+                                            "#000"
+
+                                    }}
+
+                                />
+
+                                <Area
+
+                                    type="monotone"
+
+                                    dataKey="solved"
+
+                                    stroke="#16a34a"
+
+                                    fill="#86efac"
+
+                                    fillOpacity={0.5}
+
+                                    strokeWidth={3}
+
+                                />
+
+                            </AreaChart>
+
+                        </ResponsiveContainer>
 
                     )
+
+                    :
+
+                    (
+
+                        <div className="
+                            h-full
+                            flex
+                            items-center
+                            justify-center
+
+                            text-slate-500
+                            dark:text-slate-400
+                        ">
+
+                            No solved problem data available
+
+                        </div>
+
+                    )
+
                 }
 
             </div>
 
         </div>
+
     );
+
 };
 
 export default SolvedProblemsChart;

@@ -25,10 +25,23 @@ const userCredentialsSchema = new mongoose.Schema({
         default: "Light"
     },
 
-    defaultPlatform: {
-        type: String,
-        default: "Codeforces"
-    },
+   defaultPlatform: {
+
+    type: String,
+
+    enum: [
+
+        "All",
+
+        "Codeforces",
+
+        "LeetCode"
+
+    ],
+
+    default: "All"
+
+},
     
 },{
     timestamps : true

@@ -2,3 +2,27 @@
 
 /* Add this */
 @custom-variant dark (&:where(.dark, .dark *));
+
+.react-calendar-heatmap .color-empty {
+    fill: #e2e8f0;
+}
+
+.dark .react-calendar-heatmap .color-empty {
+    fill: #334155;
+}
+
+.react-calendar-heatmap .color-github-1 {
+    fill: #93c5fd;
+}
+
+.react-calendar-heatmap .color-github-2 {
+    fill: #60a5fa;
+}
+
+.react-calendar-heatmap .color-github-3 {
+    fill: #2563eb;
+}
+
+.react-calendar-heatmap .color-github-4 {
+    fill: #1d4ed8;
+}

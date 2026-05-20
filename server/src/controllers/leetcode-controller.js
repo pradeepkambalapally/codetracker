@@ -10,13 +10,13 @@ const getLeetcodeProfile = async (req, res) => {
                 req.user.userId
             );
 
-        if(!user){
+        if (!user) {
 
             return res.status(404).json({
 
-                success:false,
+                success: false,
 
-                message:"User not found"
+                message: "User not found"
 
             });
 
@@ -25,14 +25,14 @@ const getLeetcodeProfile = async (req, res) => {
         const username =
             user.leetcodeUsername;
 
-        if(!username){
+        if (!username) {
 
             return res.status(400).json({
 
-                success:false,
+                success: false,
 
                 message:
-                "LeetCode username not set"
+                    "LeetCode username not set"
 
             });
 
@@ -47,9 +47,11 @@ const getLeetcodeProfile = async (req, res) => {
                 username
 
                 profile {
+
                     ranking
                     reputation
                     starRating
+
                 }
 
                 submitStats {
@@ -58,9 +60,12 @@ const getLeetcodeProfile = async (req, res) => {
 
                         difficulty
                         count
+
                     }
 
                 }
+
+                submissionCalendar
 
             }
 
@@ -76,7 +81,7 @@ const getLeetcodeProfile = async (req, res) => {
 
                 query,
 
-                variables:{
+                variables: {
                     username
                 }
 
@@ -84,38 +89,99 @@ const getLeetcodeProfile = async (req, res) => {
 
             {
 
-                headers:{
+                headers: {
+
                     "Content-Type":
-                    "application/json"
-                }
+                        "application/json"
+
+                },
+
+                timeout: 10000
 
             }
 
         );
 
+        if (
+
+            !response.data ||
+
+            !response.data.data ||
+
+            !response.data.data.matchedUser
+
+        ) {
+
+            return res.status(500).json({
+
+                success: false,
+
+                message:
+                    "Invalid LeetCode response"
+
+            });
+
+        }
+
         const data =
-            response.data.data.matchedUser;
+            response.data
+            .data
+            .matchedUser;
 
         res.status(200).json({
 
-            success:true,
+            success: true,
 
-            profile:data
+            profile: {
+
+                username:
+                    data.username,
+
+                ranking:
+                    data.profile?.ranking || 0,
+
+                reputation:
+                    data.profile?.reputation || 0,
+
+                starRating:
+                    data.profile?.starRating || 0,
+
+                submitStats:
+                    data.submitStats || {},
+
+                submissionCalendar:
+
+                    data.submissionCalendar
+
+                    ?
+
+                    JSON.parse(
+                        data.submissionCalendar
+                    )
+
+                    :
+
+                    {}
+
+            }
 
         });
 
     }
 
-    catch(error){
+    catch (error) {
 
-        console.log(error);
+        console.log(
+            "LeetCode Profile Error:",
+            error.message
+        );
 
         res.status(500).json({
 
-            success:false,
+            success: false,
 
             message:
-            "Failed to fetch LeetCode profile"
+                "Failed to fetch LeetCode profile"
 
         });
 

@@ -7,6 +7,7 @@ const authMiddleware = require('../middleWare/authMiddleware');
 const { getCodeforcesContestData } = require('../controllers/codeforces-contest-controller');
 const { getCodeforcesProfileStats } = require('../controllers/codeforecs-profile-stats');
 const {getLeetcodeProfile, getLeetcodeSubmissions} = require('../controllers//leetcode-controller');
+const { getActivityHeatmap } = require('../controllers/activity-controller');
 
 
 router.post('/register',registerUser );
@@ -23,5 +24,7 @@ router.put("/change-password", authMiddleware, changePassword)
 
 router.get("/leetcode-profile",authMiddleware,getLeetcodeProfile);
 router.get("/leetcode-submissions",authMiddleware,getLeetcodeSubmissions);
+
+router.get("/activity-heatmap",authMiddleware, getActivityHeatmap)
 
 module.exports = router;
