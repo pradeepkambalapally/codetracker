@@ -203,7 +203,8 @@ const getLeetcodeSubmissions = async (req, res) => {
 
                 success: false,
 
-                message: "User not found"
+                message:
+                    "User not found"
 
             });
 
@@ -225,7 +226,9 @@ const getLeetcodeSubmissions = async (req, res) => {
 
         }
 
-        const response =
+        // FETCH ACCEPTED SUBMISSIONS
+
+        const submissionsResponse =
             await axios.get(
 
 `https://alfa-leetcode-api.onrender.com/${username}/acSubmission`
@@ -233,7 +236,7 @@ const getLeetcodeSubmissions = async (req, res) => {
             );
 
         const submissionsData =
-            response.data?.submission || [];
+            submissionsResponse.data?.submission || [];
 
         if (
 
@@ -248,17 +251,82 @@ const getLeetcodeSubmissions = async (req, res) => {
                 success: false,
 
                 message:
-                    "Invalid LeetCode response"
+                    "Invalid submissions response"
 
             });
 
         }
 
+        // FETCH PROBLEMS METADATA
+
+        const problemsResponse =
+            await axios.get(
+
+`https://alfa-leetcode-api.onrender.com/problems`
+
+            );
+
+        const problemsData =
+            problemsResponse.data?.problemsetQuestionList || [];
+
+        // CREATE LOOKUP MAP
+
+        const problemsMap = {};
+
+        problemsData.forEach(
+            (problem) => {
+
+                if (
+                    problem?.titleSlug
+                ) {
+
+                    problemsMap[
+                        problem.titleSlug
+                    ] = {
+
+                        difficulty:
+
+                            problem.difficulty ||
+
+                            "Unknown",
+
+                        tags:
+
+                            Array.isArray(
+                                problem.topicTags
+                            )
+
+                            ?
+
+                            problem.topicTags.map(
+                                (tag) =>
+
+                                    typeof tag === "string"
+
+                                    ?
+
+                                    tag
+
+                                    :
+
+                                    tag?.name
+                            )
+
+                            :
+
+                            []
+
+                    };
+
+                }
+
+            }
+        );
+
+        // REMOVE DUPLICATES
+
         const solvedSet =
             new Set();
-
-        const problemCache =
-            {};
 
         const uniqueSubmissions =
 
@@ -300,74 +368,21 @@ const getLeetcodeSubmissions = async (req, res) => {
                 }
             );
 
-        const submissions = [];
+        // FORMAT FINAL DATA
 
-        for (
+        const submissions =
 
-            const submission of uniqueSubmissions
+            uniqueSubmissions
+            .slice(0, 50)
+            .map((submission) => {
 
-        ) {
+                const metadata =
 
-            try {
+                    problemsMap[
+                        submission.titleSlug
+                    ] || {};
 
-                const slug =
-                    submission.titleSlug;
-
-                if (
-
-                    !problemCache[slug]
-
-                ) {
-
-                    const detailsResponse =
-                        await axios.get(
-
-`https://alfa-leetcode-api.onrender.com/select?titleSlug=${slug}`
-
-                        );
-
-                    const questionData =
-                        detailsResponse.data;
-
-                    problemCache[slug] = {
-
-                        difficulty:
-
-                            questionData?.difficulty ||
-
-                            "Unknown",
-
-                        tags:
-
-                            Array.isArray(
-                                questionData?.topicTags
-                            )
-
-                            ?
-
-                            questionData.topicTags.map(
-                                (tag) =>
-
-                                    typeof tag === "string"
-
-                                    ?
-
-                                    tag
-
-                                    :
-
-                                    tag?.name
-                            )
-
-                            :
-
-                            []
-
-                    };
-
-                }
-
-                submissions.push({
+                return {
 
                     platform:
                         "LeetCode",
@@ -407,15 +422,13 @@ const getLeetcodeSubmissions = async (req, res) => {
 
                     difficulty:
 
-                        problemCache[slug]
-                        ?.difficulty ||
+                        metadata.difficulty ||
 
                         "Unknown",
 
                     tags:
 
-                        problemCache[slug]
-                        ?.tags ||
+                        metadata.tags ||
 
                         [],
 
@@ -428,80 +441,9 @@ const getLeetcodeSubmissions = async (req, res) => {
                     problemIndex:
                         null
 
-                });
+                };
 
-            }
-
-            catch (problemError) {
-
-                console.log(
-
-                    "Problem details error:",
-
-                    submission.titleSlug,
-
-                    problemError.message
-
-                );
-
-                submissions.push({
-
-                    platform:
-                        "LeetCode",
-
-                    problemName:
-                        submission.title,
-
-                    problemLink:
-
-`https://leetcode.com/problems/${submission.titleSlug}`,
-
-                    submissionTime:
-
-                        submission.timestamp
-
-                        ?
-
-                        Number(
-                            submission.timestamp
-                        ) * 1000
-
-                        :
-
-                        null,
-
-                    programmingLanguage:
-
-                        submission.lang ||
-
-                        "Unknown",
-
-                    verdict:
-
-                        submission.statusDisplay ||
-
-                        "Accepted",
-
-                    difficulty:
-                        "Unknown",
-
-                    tags:
-                        [],
-
-                    rating:
-                        null,
-
-                    contestId:
-                        null,
-
-                    problemIndex:
-                        null
-
-                });
-
-            }
-
-        }
+            });
 
         return res.status(200).json({
 
@@ -519,8 +461,11 @@ const getLeetcodeSubmissions = async (req, res) => {
     catch (error) {
 
         console.log(
+
             "LeetCode Error:",
+
             error.message
+
         );
 
         return res.status(500).json({

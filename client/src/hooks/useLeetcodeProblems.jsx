@@ -6,22 +6,41 @@ import useUser from "./useUser";
 const useLeetcodeProblems = () => {
 
     const {
+
         user,
-        loading:userLoading
+
+        loading:
+            userLoading
+
     } = useUser();
 
-    const [problems, setProblems] =
-        useState([]);
+    const [
 
-    const [loading, setLoading] =
-        useState(true);
+        problems,
 
-    const [error, setError] =
-        useState("");
+        setProblems
+
+    ] = useState([]);
+
+    const [
+
+        loading,
+
+        setLoading
+
+    ] = useState(true);
+
+    const [
+
+        error,
+
+        setError
+
+    ] = useState("");
 
     useEffect(() => {
 
-        if(userLoading) return;
+        if (userLoading) return;
 
         const fetchProblems = async () => {
 
@@ -31,7 +50,7 @@ const useLeetcodeProblems = () => {
 
                 setError("");
 
-                if(!user){
+                if (!user) {
 
                     setProblems([]);
 
@@ -40,9 +59,10 @@ const useLeetcodeProblems = () => {
                     );
 
                     return;
+
                 }
 
-                if(!user?.leetcodeUsername){
+                if (!user?.leetcodeUsername) {
 
                     setProblems([]);
 
@@ -51,6 +71,7 @@ const useLeetcodeProblems = () => {
                     );
 
                     return;
+
                 }
 
                 const response =
@@ -58,7 +79,7 @@ const useLeetcodeProblems = () => {
                         "/users/leetcode-submissions"
                     );
 
-                if(
+                if (
 
                     !response ||
 
@@ -66,7 +87,7 @@ const useLeetcodeProblems = () => {
 
                     !response.data.success
 
-                ){
+                ) {
 
                     setProblems([]);
 
@@ -75,12 +96,14 @@ const useLeetcodeProblems = () => {
                     );
 
                     return;
+
                 }
 
                 const submissions =
+
                     response.data.submissions || [];
 
-                if(!Array.isArray(submissions)){
+                if (!Array.isArray(submissions)) {
 
                     setProblems([]);
 
@@ -89,13 +112,14 @@ const useLeetcodeProblems = () => {
                     );
 
                     return;
+
                 }
 
                 const cleanedProblems =
 
                     submissions.filter(
 
-                        (problem)=>
+                        (problem) =>
 
                             problem &&
 
@@ -109,7 +133,7 @@ const useLeetcodeProblems = () => {
                     cleanedProblems
                 );
 
-                if(cleanedProblems.length === 0){
+                if (cleanedProblems.length === 0) {
 
                     setError(
                         "No accepted LeetCode submissions found"
@@ -119,17 +143,17 @@ const useLeetcodeProblems = () => {
 
             }
 
-            catch(error){
+            catch (error) {
 
                 console.log(error);
 
                 setProblems([]);
 
-                if(
+                if (
 
                     error.response?.status === 401
 
-                ){
+                ) {
 
                     setError(
                         "Unauthorized access"
@@ -137,11 +161,11 @@ const useLeetcodeProblems = () => {
 
                 }
 
-                else if(
+                else if (
 
                     error.response?.status === 404
 
-                ){
+                ) {
 
                     setError(
                         "LeetCode data not found"
@@ -149,11 +173,11 @@ const useLeetcodeProblems = () => {
 
                 }
 
-                else if(
+                else if (
 
                     error.response?.status === 429
 
-                ){
+                ) {
 
                     setError(
                         "Too many requests. Try again later"
@@ -161,11 +185,11 @@ const useLeetcodeProblems = () => {
 
                 }
 
-                else if(
+                else if (
 
                     error.code === "ERR_NETWORK"
 
-                ){
+                ) {
 
                     setError(
                         "Network error"
@@ -173,7 +197,7 @@ const useLeetcodeProblems = () => {
 
                 }
 
-                else{
+                else {
 
                     setError(
 
@@ -187,7 +211,7 @@ const useLeetcodeProblems = () => {
 
             }
 
-            finally{
+            finally {
 
                 setLoading(false);
 
@@ -197,9 +221,38 @@ const useLeetcodeProblems = () => {
 
         fetchProblems();
 
+        // REFETCH ON TAB FOCUS
+
+        const handleFocus = () => {
+
+            fetchProblems();
+
+        };
+
+        window.addEventListener(
+
+            "focus",
+
+            handleFocus
+
+        );
+
+        return () => {
+
+            window.removeEventListener(
+
+                "focus",
+
+                handleFocus
+
+            );
+
+        };
+
     }, [
 
         user,
+
         userLoading
 
     ]);
@@ -207,9 +260,16 @@ const useLeetcodeProblems = () => {
     return {
 
         problems:
+
             Array.isArray(problems)
-            ? problems
-            : [],
+
+            ?
+
+            problems
+
+            :
+
+            [],
 
         loading,
 

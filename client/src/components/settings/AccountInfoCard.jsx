@@ -1,6 +1,5 @@
 import {
     User,
-    Mail,
     Calendar
 } from "lucide-react";
 
@@ -126,70 +125,7 @@ const AccountInfoCard = ({
 
                
 
-                <div className="
-                    flex
-                    items-center
-                    gap-4
-
-                    bg-slate-50
-                    dark:bg-slate-700
-
-                    border
-                    border-slate-200
-                    dark:border-slate-600
-
-                    rounded-2xl
-                    p-4
-                ">
-
-                    <div className="
-                        bg-purple-100
-                        dark:bg-purple-900/40
-
-                        p-3
-                        rounded-2xl
-                    ">
-
-                        <Mail
-                            className="
-                            text-purple-600
-                            dark:text-purple-300
-                            "
-                            size={22}
-                        />
-
-                    </div>
-
-                    <div>
-
-                        <p className="
-                            text-sm
-                            text-slate-400
-                        ">
-
-                            Email
-
-                        </p>
-
-                        <h3 className="
-                            text-lg
-                            font-semibold
-                            mt-1
-
-                            text-slate-800
-                            dark:text-white
-                        ">
-
-                            {
-                                user?.email ||
-                                "demo@gmail.com"
-                            }
-
-                        </h3>
-
-                    </div>
-
-                </div>
+               
 
                
 

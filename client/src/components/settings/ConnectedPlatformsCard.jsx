@@ -160,19 +160,33 @@ const ConnectedPlatformsCard = ({
             logo: codeforcesLogo
         },
 
-        {
-            name: "LeetCode",
-            key: "leetcodeUsername",
-            connected:
-                !!savedHandles.leetcodeUsername,
-            status:
-                "Coming Soon",
-            value:
-                savedHandles.leetcodeUsername,
-            available: false,
-            logo: leetcodeLogo
-        },
+       {
+    name: "LeetCode",
 
+    key: "leetcodeUsername",
+
+    connected:
+        !!savedHandles.leetcodeUsername,
+
+    status:
+
+        savedHandles.leetcodeUsername
+
+        ?
+
+        "Connected"
+
+        :
+
+        "Available",
+
+    value:
+        savedHandles.leetcodeUsername,
+
+    available: true,
+
+    logo: leetcodeLogo
+},
         {
             name: "CodeChef",
             key: "codechefHandle",

@@ -190,8 +190,8 @@ const getUserData = async(req, res) => {
         username:
             user.username,
 
-        email:
-            user.email,
+        createdAt:
+            user.createdAt,
 
         codeforcesUsername:
             user.codeforcesUsername,

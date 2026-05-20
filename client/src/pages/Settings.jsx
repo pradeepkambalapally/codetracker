@@ -54,21 +54,26 @@ const Settings = () => {
                 grid-cols-1
                 xl:grid-cols-[0.8fr_1.2fr]
                 items-start
+                
             ">
 
                 <AccountInfoCard
                     user={user}
                 />
 
-                <ConnectedPlatformsCard
-                    user={user}
-                />
+                <div className="space-y-6 mt-2">
 
-                <PreferencesCard
-                    user={user}
-                />
+                      <ConnectedPlatformsCard
+                            user={user}
+                      />
 
-                <SecurityCard />
+                      <PreferencesCard
+                           user={user}
+                      />
+
+                       <SecurityCard />
+
+                </div>
 
             </div>
 
