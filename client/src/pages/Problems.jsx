@@ -14,6 +14,10 @@ import PlatformFilter from "../components/ui/PlatformFilter";
 import useUser from "../hooks/useUser";
 import EmptyState from "../components/ui/EmptyState";
 
+import useContests from "../hooks/useContests";
+import useProfile from "../hooks/useProfile";
+import useLeetcodeProfile from "../hooks/useLeetcodeProfile";
+
 const Problems = () => {
 
     const {
@@ -22,9 +26,40 @@ const Problems = () => {
 
         loading: cfLoading,
 
-        error: cfError
+       
 
     } = useProblems();
+
+    const {
+
+        problems:
+            leetcodeProblems = [],
+
+
+    } = useLeetcodeProblems();
+
+    const {
+
+        profile,
+
+      
+
+    } = useProfile();
+     const {
+
+        profile:
+            leetcodeProfile,
+
+
+    } = useLeetcodeProfile();
+
+    const {
+
+        contests = [],
+
+        
+
+    } = useContests();
 
     const {
 
@@ -34,15 +69,7 @@ const Problems = () => {
         userLoading
 
 } = useUser();
-    const {
-
-        problems: leetcodeProblems = [],
-
-        loading: lcLoading,
-
-        error: lcError
-
-    } = useLeetcodeProblems();
+    
 
     const problems = [
 
@@ -64,21 +91,7 @@ const Problems = () => {
 
     userLoading ||
 
-    cfLoading ||
-
-    lcLoading;
-
-    const error =
-
-        cfError && lcError
-
-        ?
-
-        cfError
-
-        :
-
-        "";
+    cfLoading;
 
     const [
 
@@ -183,26 +196,35 @@ useEffect(() => {
 
 ]);
 
+
+const hasCodeforcesData =
+    profile?.handle ||
+    (codeforcesProblems?.length ?? 0) > 0 ||
+    (contests?.length ?? 0) > 0;
+
+const hasLeetcodeData =
+    leetcodeProfile?.username ||
+    (leetcodeProblems?.length ?? 0) > 0;
+
+const hasAnyPlatformData =
+    hasCodeforcesData ||
+    hasLeetcodeData;
+
+
     if (loading)
         return <Loading />;
 
-    if (error) {
-
-        return (
-
-             <EmptyState
-
-    title="No Data Found"
-
-    description="
-        Connect to Codeforces/Leetcode account to view data analytics from settings page
-    "
-
-/>
-
-        );
-
-    }
+    
+   if (!hasAnyPlatformData) {
+    return (
+        <EmptyState
+            title="No Data Found"
+            description="
+                Connect your Codeforces or LeetCode account from the settings page to view analytics.
+            "
+        />
+    );
+}
 
     return (
 

@@ -47,7 +47,7 @@ const Profile = () => {
         loading:
             profileLoading,
 
-        error
+        
 
     } = useProfile();
 
@@ -173,10 +173,23 @@ const Profile = () => {
             contests || []
         );
 
+    const hasCodeforcesData =
+    profile?.handle ||
+    (problems?.length ?? 0) > 0 ||
+    (contests?.length ?? 0) > 0;
+
+const hasLeetcodeData =
+    leetcodeProfile?.username ||
+    (leetcodeProblems?.length ?? 0) > 0;
+
+const hasAnyPlatformData =
+    hasCodeforcesData ||
+    hasLeetcodeData;
+
     if (loading)
         return <Loading />;
 
-    if (error) {
+    if (!hasAnyPlatformData) {
 
         return (
 

@@ -63,8 +63,6 @@ const Dashboard = () => {
         loading:
             profileLoading,
 
-        error
-
     } = useProfile();
 
     const {
@@ -187,6 +185,20 @@ useEffect(() => {
 
     contestsLoading;
 
+
+const hasCodeforcesData =
+    profile?.handle ||
+    (problems?.length ?? 0) > 0 ||
+    (contests?.length ?? 0) > 0;
+
+const hasLeetcodeData =
+    leetcodeProfile?.username ||
+    (leetcodeProblems?.length ?? 0) > 0;
+
+const hasAnyPlatformData =
+    hasCodeforcesData ||
+    hasLeetcodeData;
+
     if (loading) {
 
         return <Loading />;
@@ -195,23 +207,18 @@ useEffect(() => {
 
     // ERROR
 
-    if (error) {
+    
 
-        return (
-
-            <EmptyState
-
-    title="No Data Found"
-
-    description="
-        Connect to Codeforces/Leetcode account to view data analytics from settings page
-    "
-
-/>
-
-        );
-
-    }
+   if (!hasAnyPlatformData) {
+    return (
+        <EmptyState
+            title="No Data Found"
+            description="
+                Connect your Codeforces or LeetCode account from the settings page to view analytics.
+            "
+        />
+    );
+}
 
     return (
 
