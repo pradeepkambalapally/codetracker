@@ -5,8 +5,8 @@ const {registerUser, loginUser, updateProfiles, getUserData, updatePreferences, 
 const {getCodeforcesData} = require('../controllers/codeforces-controller');
 const authmiddleware = require('../middleware/auth');
 const { getCodeforcesContestData } = require('../controllers/codeforces-contest-controller');
-const { getCodeforcesProfileStats } = require('../controllers/codeforecs-profile-stats');
-const {getLeetcodeProfile, getLeetcodeSubmissions} = require('../controllers//leetcode-controller');
+const { getCodeforcesProfileStats } = require('../controllers/codeforces-profile-stats');
+const {getLeetcodeProfile, getLeetcodeSubmissions} = require('../controllers/leetcode-controller');
 const { getActivityHeatmap } = require('../controllers/activity-controller');
 
 
