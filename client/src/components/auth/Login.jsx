@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import axios from "axios";
+import api from "../../api/axios"
 
 import { LogIn } from "lucide-react";
 
@@ -37,16 +37,16 @@ const Login = () => {
             setLoading(true);
 
             const response =
-                await axios.post(
+               await api.post(
 
-                    "http://localhost:3000/api/users/login",
+    "/users/login",
 
-                    {
-                        username,
-                        password
-                    }
+    {
+        username,
+        password
+    }
 
-                );
+);
 
             localStorage.setItem(
 
