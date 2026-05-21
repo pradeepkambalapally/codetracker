@@ -1,7 +1,7 @@
 const axios = require("axios");
 const User = require("../models/user-credentials");
 
-const getLeetcodeProfile = async (req, res) => {
+const getLeetcodeProfile = async (req, res, next) => {
 
     try {
 
@@ -171,19 +171,7 @@ const getLeetcodeProfile = async (req, res) => {
 
     catch (error) {
 
-        console.log(
-            "LeetCode Profile Error:",
-            error.message
-        );
-
-        res.status(500).json({
-
-            success: false,
-
-            message:
-                "Failed to fetch LeetCode profile"
-
-        });
+        next(error)
 
     }
 
@@ -193,7 +181,7 @@ let leetcodeCache = {};
 const CACHE_DURATION =
     1000 * 60 * 10; // 10 minutes
 
-const getLeetcodeSubmissions = async (req, res) => {
+const getLeetcodeSubmissions = async (req, res, next) => {
 
     try {
 
@@ -446,23 +434,7 @@ const getLeetcodeSubmissions = async (req, res) => {
 
     catch (error) {
 
-        console.log(
-
-            "LeetCode Error:",
-
-            error.message
-
-        );
-
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                "Failed to fetch LeetCode submissions"
-
-        });
-
+       next(error)
     }
 
 };

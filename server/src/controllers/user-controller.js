@@ -3,7 +3,7 @@ const User = require('../models/user-credentials');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const axios = require('axios');
-const registerUser = async (req, res) => {
+const registerUser = async (req, res, next) => {
     
     const {
         username,
@@ -80,22 +80,13 @@ const registerUser = async (req, res) => {
 
     catch(error){
 
-        console.error(
-            error
-        );
-
-        res.status(500).json({
-
-            message:
-            "Internal server error"
-
-        });
+       next(error)
 
     }
 
 };
 
-const loginUser = async (req, res) => {
+const loginUser = async (req, res, next) => {
     const {username, password} = req.body;
     try{
         const user = await User.findOne({username});
@@ -132,12 +123,11 @@ const loginUser = async (req, res) => {
             }
         })
     }catch(error){
-        console.error('Error logging in user:', error);
-        res.status(500).json({message: 'Internal server error'});
+        next(error)
     }
 }
 
-const updateProfiles = async (req, res) => {
+const updateProfiles = async (req, res, next) => {
     const {leetcodeUsername, codeforcesUsername} = req.body;
     const userId = req.user.userId;
     try{
@@ -163,12 +153,11 @@ const updateProfiles = async (req, res) => {
             }
         })
     }catch(error){
-        console.error('Error updating profiles:', error);
-        res.status(500).json({message: 'Internal server error'});   
+       next(error)
     }
 }
 
-const getUserData = async(req, res) => {
+const getUserData = async(req, res, next) => {
     const userId = req.user.userId;
     try{
         const user = await User.findById(userId).select("-password");
@@ -207,14 +196,14 @@ const getUserData = async(req, res) => {
     }
 });
     }catch(error){
-        console.error('Error getting user data:', error);
-        res.status(500).json({message: 'Internal server error'});
+        next(error)
     }
 }
 
-const updatePreferences = async (req,res)=>{
+const updatePreferences = async (req,res, next)=>{
 
-    const { theme, defaultPlatform } = req.body;
+    try{
+        const { theme, defaultPlatform } = req.body;
 
     const user = await User.findById(req.user.userId);
 
@@ -243,10 +232,13 @@ const updatePreferences = async (req,res)=>{
 
         user
     });
+    }catch(error){
+        next(error);
+    }
 
 };
 
-const changePassword = async (req, res) => {
+const changePassword = async (req, res, next) => {
     const {currentPassword, newPassword} = req.body;
     const userId = req.user.userId;
     try{
@@ -278,8 +270,7 @@ const changePassword = async (req, res) => {
     }
         
     catch(error){
-        console.error('Error getting user data:', error);
-        res.status(500).json({message: 'Internal server error'});
+        next(error)
     }
 }
 

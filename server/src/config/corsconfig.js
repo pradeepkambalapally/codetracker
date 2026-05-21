@@ -5,7 +5,7 @@ const configureCors = () =>{
         origin : (origin, callback) =>{
             const allowedOrigins = [
                 "http://localhost:5173", // local domain
-                "https://yourcustomdomain.com" // production domain
+                process.env.CLIENT_URL // production domain
             ]
 
             if(!origin || allowedOrigins.indexOf(origin) !== -1){

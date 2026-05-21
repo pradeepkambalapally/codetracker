@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const User = require("../models/user-credentials");
 
-const getActivityHeatmap = async (req, res) => {
+const getActivityHeatmap = async (req, res, next) => {
 
     try {
 
@@ -218,18 +218,7 @@ const getActivityHeatmap = async (req, res) => {
     }
 
     catch (error) {
-
-        console.log(error);
-
-        return res.status(500).json({
-
-            success: false,
-
-            message:
-                "Failed to fetch heatmap data"
-
-        });
-
+         next(error);
     }
 
 };

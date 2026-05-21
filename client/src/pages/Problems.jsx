@@ -4,7 +4,6 @@ import SolvedProblems from "../components/tables/SolvedProblems";
 import Loading from "../components/ui/Loading";
 import SearchBar from "../components/ui/SearchBar";
 import Pagination from "../components/ui/Pagination";
-import ErrorMessage from "../components/ErrorMessage";
 
 import useProblems from "../hooks/useProblems";
 import useLeetcodeProblems from "../hooks/useLeetcodeProblems";
@@ -13,6 +12,7 @@ import useSearch from "../hooks/useSearch";
 import usePagination from "../hooks/usePagination";
 import PlatformFilter from "../components/ui/PlatformFilter";
 import useUser from "../hooks/useUser";
+import EmptyState from "../components/ui/EmptyState";
 
 const Problems = () => {
 
@@ -190,9 +190,15 @@ useEffect(() => {
 
         return (
 
-            <ErrorMessage
-                error={error}
-            />
+             <EmptyState
+
+    title="No Data Found"
+
+    description="
+        Connect to Codeforces/Leetcode account to view data analytics from settings page
+    "
+
+/>
 
         );
 

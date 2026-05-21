@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
+import toast from "react-hot-toast";
 const Register = () => {
     
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ const Register = () => {
                 }
             );
 
-            alert("Registration successful!");
+            toast.success("Registration successful!");
 
             navigate("/login");
 

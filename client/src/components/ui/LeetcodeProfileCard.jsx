@@ -63,7 +63,7 @@ const LeetcodeProfileCard = ({
                 <div>
 
                     <h1 className="
-                        text-3xl
+                        text-2xl sm:text-3xl
                         font-bold
 
                         text-slate-800
@@ -112,10 +112,15 @@ const LeetcodeProfileCard = ({
 
             <div className="
                 grid
-                grid-cols-2
-                md:grid-cols-4
+
+                grid-cols-1
+                sm:grid-cols-2
+                lg:grid-cols-4
+
                 gap-4
+
                 mt-8
+
             ">
 
                 {

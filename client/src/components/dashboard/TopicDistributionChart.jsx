@@ -71,15 +71,17 @@ const TopicDistributionChart = ({
             </p>
 
             <div className="
-                flex
-                items-center
-                justify-center
-            ">
+    w-full
+    h-[320px]
+    sm:h-[400px]
 
-                <PieChart
-                    width={420}
-                    height={320}
-                >
+    overflow-hidden
+">
+
+    <PieChart
+        width={350}
+        height={320}
+    >
 
                     <Pie
                         data={
@@ -95,7 +97,11 @@ const TopicDistributionChart = ({
                         cx="42%"
                         cy="50%"
 
-                        outerRadius={90}
+                        outerRadius={
+    window.innerWidth < 640
+        ? 70
+        : 90
+}
                     >
 
                         {
@@ -149,16 +155,25 @@ const TopicDistributionChart = ({
                         }}
                     />
 
-                    <Legend
+                   <Legend
 
-                        layout=
-                            "vertical"
+    layout={
+        window.innerWidth < 640
+            ? "horizontal"
+            : "vertical"
+    }
 
-                        align=
-                            "right"
+    align={
+        window.innerWidth < 640
+            ? "center"
+            : "right"
+    }
 
-                        verticalAlign=
-                            "middle"
+    verticalAlign={
+        window.innerWidth < 640
+            ? "bottom"
+            : "middle"
+    }
 
                         wrapperStyle={{
 

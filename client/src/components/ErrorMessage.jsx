@@ -28,6 +28,10 @@ const ErrorMessage = ({
 
                 rounded-3xl
 
+                animate-in
+                fade-in
+                duration-300
+
                 p-8
 
                 shadow-xl
@@ -128,7 +132,11 @@ const ErrorMessage = ({
                         dark:text-red-300
                     ">
 
-                        {error}
+                        {
+    error ||
+
+    "An unexpected error occurred"
+}
 
                     </p>
 

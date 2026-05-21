@@ -7,6 +7,7 @@ import PlatformCard from "./PlatformCard";
 import codeforcesLogo from "../../assets/codeforces.png";
 import leetcodeLogo from "../../assets/leetcode.png";
 import codechefLogo from "../../assets/codechef.png";
+import toast from "react-hot-toast";
 
 const ConnectedPlatformsCard = ({
     user
@@ -127,7 +128,7 @@ const ConnectedPlatformsCard = ({
                 null
             );
 
-            alert(
+            toast.success(
                 "Handle updated successfully!"
             );
 

@@ -392,18 +392,36 @@ const SolvedProblemsChart = ({
                     (
 
                         <div className="
-                            h-full
-                            flex
-                            items-center
-                            justify-center
+    flex
+    flex-col
+    items-center
+    justify-center
 
-                            text-slate-500
-                            dark:text-slate-400
-                        ">
+    py-10
 
-                            No solved problem data available
+    text-slate-500
+    dark:text-slate-400
+">
 
-                        </div>
+    <p className="
+        text-lg
+        font-semibold
+    ">
+
+        No solved problems yet
+
+    </p>
+
+    <p className="
+        text-sm
+        mt-2
+    ">
+
+        Start solving problems to see activity here
+
+    </p>
+
+</div>
 
                     )
 

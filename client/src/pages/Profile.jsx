@@ -19,9 +19,9 @@ import useActivityHeatmap from "../hooks/useActivityHeatmap";
 import getTopicDistribution from "../utils/getTopicDistribution";
 import getContestPerformance from "../utils/getContestPerformance";
 
-import ErrorMessage from "../components/ErrorMessage";
 import ActivityHeatmap from "../components/dashboard/ActivityHeatmap";
 import useUser from "../hooks/useUser";
+import EmptyState from "../components/ui/EmptyState";
 
 const Profile = () => {
 
@@ -180,9 +180,15 @@ const Profile = () => {
 
         return (
 
-            <ErrorMessage
-                error={error}
-            />
+            <EmptyState
+
+    title="No Data Found"
+
+    description="
+        Connect to Codeforces/Leetcode account to view data analytics from settings page
+    "
+
+/>
 
         );
 

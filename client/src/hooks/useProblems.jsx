@@ -58,10 +58,7 @@ const useProblems = () => {
 
                     );
 
-                console.log(
-                    response.data
-                );
-
+                
                 setProblems(
 
                     response.data.problems || []

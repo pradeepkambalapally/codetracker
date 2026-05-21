@@ -139,17 +139,36 @@ const SolvedProblems = ({
                 (
 
                     <div className="
-                        py-12
+    flex
+    flex-col
+    items-center
+    justify-center
 
-                        text-center
+    py-10
 
-                        text-slate-500
-                        dark:text-slate-400
-                    ">
+    text-slate-500
+    dark:text-slate-400
+">
 
-                        No solved problems found
+    <p className="
+        text-lg
+        font-semibold
+    ">
 
-                    </div>
+        No solved problems yet
+
+    </p>
+
+    <p className="
+        text-sm
+        mt-2
+    ">
+
+        Start solving problems to see activity here
+
+    </p>
+
+</div>
 
                 )
 
@@ -163,7 +182,7 @@ const SolvedProblems = ({
 
                         <table className="
                             w-full
-                            min-w-[1100px]
+                            min-w-[900px]
                         ">
 
                             <thead>

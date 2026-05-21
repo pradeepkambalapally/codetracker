@@ -1,11 +1,32 @@
 import { useState } from "react";
+
 import axios from "axios";
+
 import { LogIn } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
+
+import toast from "react-hot-toast";
+
 const Login = () => {
-    const navigate = useNavigate();
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+
+    const navigate =
+        useNavigate();
+
+    const [
+        username,
+        setUsername
+    ] = useState("");
+
+    const [
+        password,
+        setPassword
+    ] = useState("");
+
+    const [
+        loading,
+        setLoading
+    ] = useState(false);
 
     const handleSubmit = async (e) => {
 
@@ -13,330 +34,443 @@ const Login = () => {
 
         try {
 
-            const response = await axios.post(
-                "http://localhost:3000/api/users/login",
-                {
-                    username,
-                    password
-                }
+            setLoading(true);
+
+            const response =
+                await axios.post(
+
+                    "http://localhost:3000/api/users/login",
+
+                    {
+                        username,
+                        password
+                    }
+
+                );
+
+            localStorage.setItem(
+
+                "token",
+
+                response.data.token
+
             );
 
             localStorage.setItem(
-    "token",
-    response.data.token
-);
 
-localStorage.setItem(
-    "theme",
-    response.data.user.theme || "Light"
-);
+                "theme",
 
-alert(
-    "Login successful!"
-);
+                response.data.user.theme || "Light"
 
-navigate("/");
+            );
 
-        } catch (error) {
+            toast.success(
+                "Login successful!"
+            );
 
-            console.error("Login failed:", error);
+            navigate("/");
 
         }
+
+        catch (error) {
+
+            console.error(
+                "Login failed:",
+                error
+            );
+
+            toast.error(
+
+                error.response?.data?.message ||
+
+                "Login failed"
+
+            );
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
     };
 
-   return (
-
-    <div className="
-        flex-1
-        min-h-screen
-
-        flex
-        items-center
-        justify-center
-
-        p-6
-
-        bg-gray-100
-        dark:bg-slate-900
-
-        transition-colors
-    ">
+    return (
 
         <div className="
-            w-full
-            max-w-md
+            flex-1
+            min-h-screen
 
-            p-8
+            flex
+            items-center
+            justify-center
 
-            rounded-3xl
+            p-4
+            sm:p-6
 
-            shadow-xl
+            bg-gray-100
+            dark:bg-slate-900
 
-            bg-white
-            dark:bg-slate-800
-
-            border
-            border-slate-200
-            dark:border-slate-700
+            transition-colors
         ">
 
-            
             <div className="
-                flex
-                flex-col
-                items-center
+                w-full
+                max-w-md
 
-                mb-8
+                p-6
+                sm:p-8
+
+                rounded-3xl
+
+                shadow-xl
+
+                bg-white
+                dark:bg-slate-800
+
+                border
+                border-slate-200
+                dark:border-slate-700
             ">
 
-                <div className="
-                    bg-blue-100
-                    dark:bg-blue-900/40
+                {/* HEADER */}
 
-                    p-4
-                    rounded-2xl
-                    mb-4
+                <div className="
+                    flex
+                    flex-col
+                    items-center
+
+                    mb-8
                 ">
 
-                    <LogIn
-                        className="
-                        text-blue-600
-                        dark:text-blue-300
-                        "
-                        size={32}
-                    />
+                    <div className="
+                        bg-blue-100
+                        dark:bg-blue-900/40
+
+                        p-4
+
+                        rounded-2xl
+
+                        mb-4
+                    ">
+
+                        <LogIn
+
+                            className="
+                                text-blue-600
+                                dark:text-blue-300
+                            "
+
+                            size={32}
+
+                        />
+
+                    </div>
+
+                    <h1 className="
+                        text-3xl
+                        sm:text-4xl
+
+                        font-bold
+
+                        text-center
+
+                        text-gray-800
+                        dark:text-white
+                    ">
+
+                        Welcome Back
+
+                    </h1>
+
+                    <p className="
+                        mt-2
+
+                        text-center
+
+                        text-sm
+                        sm:text-base
+
+                        text-gray-500
+                        dark:text-slate-400
+                    ">
+
+                        Login to continue tracking your coding journey
+
+                    </p>
 
                 </div>
 
-                <h1 className="
-                    text-4xl
-                    font-bold
+                {/* FORM */}
 
-                    text-gray-800
-                    dark:text-white
-                ">
+                <form
 
-                    Welcome Back
+                    className="
+                        space-y-5
+                    "
 
-                </h1>
+                    onSubmit={
+                        handleSubmit
+                    }
 
-                <p className="
-                    mt-2
-                    text-center
+                >
 
-                    text-gray-500
-                    dark:text-slate-400
-                ">
+                    {/* USERNAME */}
 
-                    Login to continue tracking your coding journey
+                    <div>
 
-                </p>
+                        <label
+
+                            htmlFor="name"
+
+                            className="
+                                block
+
+                                mb-2
+
+                                text-sm
+                                font-semibold
+
+                                text-gray-700
+                                dark:text-slate-300
+                            "
+
+                        >
+
+                            Username
+
+                        </label>
+
+                        <input
+
+                            type="text"
+
+                            id="name"
+
+                            value={username}
+
+                            onChange={(e) =>
+
+                                setUsername(
+                                    e.target.value
+                                )
+
+                            }
+
+                            placeholder="Enter your username"
+
+                            className="
+                                w-full
+
+                                p-3
+
+                                rounded-xl
+
+                                border
+                                border-gray-300
+                                dark:border-slate-600
+
+                                bg-white
+                                dark:bg-slate-700
+
+                                text-gray-800
+                                dark:text-white
+
+                                placeholder:text-gray-400
+                                dark:placeholder:text-slate-400
+
+                                focus:outline-none
+                                focus:ring-2
+                                focus:ring-blue-500
+                            "
+
+                        />
+
+                    </div>
+
+                    {/* PASSWORD */}
+
+                    <div>
+
+                        <label
+
+                            htmlFor="password"
+
+                            className="
+                                block
+
+                                mb-2
+
+                                text-sm
+                                font-semibold
+
+                                text-gray-700
+                                dark:text-slate-300
+                            "
+
+                        >
+
+                            Password
+
+                        </label>
+
+                        <input
+
+                            type="password"
+
+                            id="password"
+
+                            value={password}
+
+                            onChange={(e) =>
+
+                                setPassword(
+                                    e.target.value
+                                )
+
+                            }
+
+                            placeholder="Enter your password"
+
+                            className="
+                                w-full
+
+                                p-3
+
+                                rounded-xl
+
+                                border
+                                border-gray-300
+                                dark:border-slate-600
+
+                                bg-white
+                                dark:bg-slate-700
+
+                                text-gray-800
+                                dark:text-white
+
+                                placeholder:text-gray-400
+                                dark:placeholder:text-slate-400
+
+                                focus:outline-none
+                                focus:ring-2
+                                focus:ring-blue-500
+                            "
+
+                        />
+
+                    </div>
+
+                    {/* REGISTER LINK */}
+
+                    <div className="
+                        flex
+                        flex-col
+                        sm:flex-row
+
+                        items-center
+                        justify-center
+
+                        gap-1
+
+                        text-sm
+
+                        text-gray-500
+                        dark:text-slate-400
+                    ">
+
+                        <span>
+
+                            Don't have an account?
+
+                        </span>
+
+                        <button
+
+                            type="button"
+
+                            onClick={() =>
+
+                                navigate(
+                                    "/register"
+                                )
+
+                            }
+
+                            className="
+                                font-semibold
+
+                                text-blue-600
+                                dark:text-blue-400
+
+                                hover:underline
+                            "
+
+                        >
+
+                            Create Account
+
+                        </button>
+
+                    </div>
+
+                    {/* LOGIN BUTTON */}
+
+                    <button
+
+                        type="submit"
+
+                        disabled={loading}
+
+                        className="
+                            w-full
+
+                            p-3
+
+                            rounded-xl
+
+                            font-semibold
+
+                            text-white
+
+                            bg-blue-600
+                            hover:bg-blue-700
+
+                            disabled:opacity-70
+                            disabled:cursor-not-allowed
+
+                            transition-all
+                            duration-200
+                        "
+
+                    >
+
+                        {
+
+                            loading
+
+                            ?
+
+                            "Logging In..."
+
+                            :
+
+                            "Log In"
+
+                        }
+
+                    </button>
+
+                </form>
 
             </div>
 
-        
-
-            <form
-                className="space-y-5"
-                onSubmit={handleSubmit}
-            >
-
-                
-
-                <div>
-
-                    <label
-                        htmlFor="name"
-                        className="
-                            block
-                            mb-2
-
-                            text-sm
-                            font-semibold
-
-                            text-gray-700
-                            dark:text-slate-300
-                        "
-                    >
-
-                        Username
-
-                    </label>
-
-                    <input
-                        type="text"
-                        id="name"
-                        value={username}
-                        onChange={(e)=>
-                            setUsername(
-                                e.target.value
-                            )
-                        }
-
-                        placeholder="Enter your username"
-
-                        className="
-                            w-full
-
-                            p-3
-
-                            rounded-xl
-
-                            border
-                            border-gray-300
-                            dark:border-slate-600
-
-                            bg-white
-                            dark:bg-slate-700
-
-                            text-gray-800
-                            dark:text-white
-
-                            focus:outline-none
-                            focus:ring-2
-                            focus:ring-blue-500
-                        "
-                    />
-
-                </div>
-
-                
-
-                <div>
-
-                    <label
-                        htmlFor="password"
-                        className="
-                            block
-                            mb-2
-
-                            text-sm
-                            font-semibold
-
-                            text-gray-700
-                            dark:text-slate-300
-                        "
-                    >
-
-                        Password
-
-                    </label>
-
-                    <input
-                        type="password"
-                        id="password"
-
-                        value={password}
-
-                        onChange={(e)=>
-                            setPassword(
-                                e.target.value
-                            )
-                        }
-
-                        placeholder="Enter your password"
-
-                        className="
-                            w-full
-
-                            p-3
-
-                            rounded-xl
-
-                            border
-                            border-gray-300
-                            dark:border-slate-600
-
-                            bg-white
-                            dark:bg-slate-700
-
-                            text-gray-800
-                            dark:text-white
-
-                            focus:outline-none
-                            focus:ring-2
-                            focus:ring-blue-500
-                        "
-                    />
-
-                </div>
-                <div className="
-    flex
-    items-center
-    justify-center
-
-    text-sm
-
-    text-gray-500
-    dark:text-slate-400
-">
-
-    <span>
-
-        Don't have an account?
-
-    </span>
-
-    <button
-
-        type="button"
-
-        onClick={() =>
-            navigate(
-                "/register"
-            )
-        }
-
-        className="
-            ml-2
-
-            font-semibold
-
-            text-blue-600
-            dark:text-blue-400
-
-            hover:underline
-        "
-    >
-
-        Create Account
-
-    </button>
-
-</div>
-           
-                <button
-                    type="submit"
-
-                    className="
-                        w-full
-
-                        p-3
-
-                        rounded-xl
-
-                        font-semibold
-
-                        text-white
-
-                        bg-blue-600
-                        hover:bg-blue-700
-
-                        transition-all
-                        duration-200
-                    "
-                >
-
-                    Log In
-
-                </button>
-
-            </form>
-
         </div>
 
-    </div>
-);
+    );
+
 };
 
 export default Login;

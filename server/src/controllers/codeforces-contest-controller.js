@@ -2,7 +2,7 @@
 const axios = require('axios');
 const User = require('../models/user-credentials');
 
-const getCodeforcesContestData = async (req, res) => {
+const getCodeforcesContestData = async (req, res, next) => {
     const userId = req.user.userId;
     try{
         const user = await User.findById(userId);
@@ -52,8 +52,7 @@ const getCodeforcesContestData = async (req, res) => {
         })
 
     }catch(error){
-        console.error('Error fetching codeforces contest data:', error);
-        res.status(500).json({message: 'Internal server error'});
+       next(error);
     }
 }
 

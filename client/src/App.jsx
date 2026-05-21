@@ -1,123 +1,88 @@
-import { Routes, Route } from "react-router-dom"
-import Login from "./components/auth/Login"
+import {
+    Routes,
+    Route
+} from "react-router-dom";
+
+import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
-import Sidebar from "./components/layout/Sidebar";
-import Dashboard from "./pages/Dashboard"
-import Problems from "./pages/Problems"; 
+
+import AppLayout from "./components/layout/AppLayout";
+
+import Dashboard from "./pages/Dashboard";
+import Problems from "./pages/Problems";
 import Contests from "./pages/Contests";
 import Profile from "./pages/Profile";
-import ProtectedRoutes from "./components/auth/ProtectedRoutes";
 import Settings from "./pages/Settings";
+
 import useTheme from "./hooks/useTheme";
+
 function App() {
+
     useTheme();
-  return (
-    <>
-      =
-    <Routes>
 
+    return (
 
-    <Route
-        path="/"
-        element={
-            <ProtectedRoutes>
+        <Routes>
 
-                <div className="flex">
+            <Route
+                path="/"
+                element={
+                    <AppLayout>
+                        <Dashboard />
+                    </AppLayout>
+                }
+            />
 
-                    <Sidebar />
-                    <Dashboard />
+            <Route
+                path="/problems"
+                element={
+                    <AppLayout>
+                        <Problems />
+                    </AppLayout>
+                }
+            />
 
-                </div>
+            <Route
+                path="/contests"
+                element={
+                    <AppLayout>
+                        <Contests />
+                    </AppLayout>
+                }
+            />
 
-            </ProtectedRoutes>
-        }
-    />
+            <Route
+                path="/profile"
+                element={
+                    <AppLayout>
+                        <Profile />
+                    </AppLayout>
+                }
+            />
 
-    <Route
-        path="/login"
-        element={<Login />}
-    />
+            <Route
+                path="/settings"
+                element={
+                    <AppLayout>
+                        <Settings />
+                    </AppLayout>
+                }
+            />
 
-    <Route
-        path="/register"
-        element={<Register />}
-    />
+            <Route
+                path="/login"
+                element={<Login />}
+            />
 
-    
+            <Route
+                path="/register"
+                element={<Register />}
+            />
 
-    <Route
-        path="/problems"
-        element={
+        </Routes>
 
-            <ProtectedRoutes>
+    );
 
-                <div className="flex">
-
-                    <Sidebar />
-                    <Problems />
-
-                </div>
-
-            </ProtectedRoutes>
-        }
-    />
-
-
-    <Route
-        path="/contests"
-        element={
-
-            <ProtectedRoutes>
-
-                <div className="flex">
-
-                    <Sidebar />
-                    <Contests />
-
-                </div>
-
-            </ProtectedRoutes>
-        }
-    />
-
-   
-
-    <Route
-        path="/profile"
-        element={
-
-            <ProtectedRoutes>
-
-                <div className="flex">
-
-                    <Sidebar />
-                    <Profile />
-
-                </div>
-
-            </ProtectedRoutes>
-        }
-    />
-        <Route
-    path="/settings"
-    element={
-
-        <ProtectedRoutes>
-
-            <div className="flex">
-
-                <Sidebar />
-                <Settings />
-
-            </div>
-
-        </ProtectedRoutes>
-    }
-/>
-</Routes>
-    </>
-
-  )
 }
 
-export default App
+export default App;

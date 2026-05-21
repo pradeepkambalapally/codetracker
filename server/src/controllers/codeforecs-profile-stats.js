@@ -2,7 +2,7 @@
 const axios = require("axios");
 const User = require('../models/user-credentials');
 
-const getCodeforcesProfileStats = async (req, res) => {
+const getCodeforcesProfileStats = async (req, res, next) => {
     const userId = req.user.userId; // Assuming you have user authentication and the user ID is available in req.user
 
     try{
@@ -24,8 +24,7 @@ const getCodeforcesProfileStats = async (req, res) => {
             stats
         })
     } catch (error) {
-        console.error("Error fetching Codeforces profile stats:", error);
-        return res.status(500).json({message: "Internal server error"});
+        next(error)
     }
 }
 

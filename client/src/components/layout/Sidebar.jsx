@@ -97,25 +97,26 @@ const Sidebar = () => {
     return (
 
         <div className="
-            w-64
-            min-h-screen
+    w-64
 
-            px-5
-            py-6
+    min-h-screen
 
-            flex
-            flex-col
+    px-5
+    py-6
 
-            border-r
+    flex
+    flex-col
 
-            bg-white
-            dark:bg-slate-950
+    border-r
 
-            border-slate-200
-            dark:border-slate-800
+    bg-white
+    dark:bg-slate-950
 
-            transition-colors
-        ">
+    border-slate-200
+    dark:border-slate-800
+
+    transition-colors
+">
 
             {/* Logo */}
 

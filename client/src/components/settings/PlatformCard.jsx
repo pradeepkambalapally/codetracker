@@ -33,15 +33,23 @@ const PlatformCard = ({
 
             <div className="
                 flex
-                items-start
-                justify-between
+    flex-col
+    sm:flex-row
+
+    sm:items-start
+    sm:justify-between
+
+    gap-4
             ">
 
                
 
                 <div className="
                     flex
-                    gap-4
+    items-start
+    gap-4
+
+    min-w-0
                 ">
 
                     
@@ -95,10 +103,12 @@ const PlatformCard = ({
                         </h3>
 
                         <p className="
-                            mt-1
+                             mt-1
 
-                            text-slate-500
-                            dark:text-slate-300
+    break-all
+
+    text-slate-500
+    dark:text-slate-300
                         ">
 
                             {
@@ -198,20 +208,23 @@ const PlatformCard = ({
                     }
 
                     className="
-                    bg-blue-600
-                    hover:bg-blue-700
+bg-blue-600
+hover:bg-blue-700
 
-                    text-white
+text-white
 
-                    px-4
-                    py-2
+w-full
+sm:w-auto
 
-                    rounded-2xl
+px-4
+py-2
 
-                    font-semibold
+rounded-2xl
 
-                    transition-colors
-                    "
+font-semibold
+
+transition-colors
+"
                 >
 
                     {
@@ -245,8 +258,12 @@ const PlatformCard = ({
 
             <div className="
                 mt-5
-                flex
-                gap-3
+
+    flex
+    flex-col
+    sm:flex-row
+
+    gap-3
             ">
 
                 <input
@@ -310,20 +327,23 @@ const PlatformCard = ({
                     }
 
                     className="
-                    bg-green-600
-                    hover:bg-green-700
+bg-green-600
+hover:bg-green-700
 
-                    text-white
+text-white
 
-                    px-5
-                    py-3
+w-full
+sm:w-auto
 
-                    rounded-2xl
+px-5
+py-3
 
-                    font-semibold
+rounded-2xl
 
-                    transition-colors
-                    "
+font-semibold
+
+transition-colors
+"
                 >
 
                     Save

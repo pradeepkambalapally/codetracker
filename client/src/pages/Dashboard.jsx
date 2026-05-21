@@ -8,7 +8,7 @@ import Loading from "../components/ui/Loading";
 import RatingCharts from "../components/dashboard/RatingCharts";
 import SolvedProblemsChart from "../components/dashboard/SolvedProblemsChart";
 import PlatformFilter from "../components/ui/PlatformFilter";
-import ErrorMessage from "../components/ErrorMessage";
+import EmptyState from "../components/ui/EmptyState"
 
 import useProblems from "../hooks/useProblems";
 import useContests from "../hooks/useContests";
@@ -199,9 +199,15 @@ useEffect(() => {
 
         return (
 
-            <ErrorMessage
-                error={error}
-            />
+            <EmptyState
+
+    title="No Data Found"
+
+    description="
+        Connect to Codeforces/Leetcode account to view data analytics from settings page
+    "
+
+/>
 
         );
 

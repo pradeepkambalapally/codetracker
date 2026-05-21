@@ -53,9 +53,9 @@ const ContestPerformanceChart = ({
 
             {
 
-                attributes:true,
+                attributes: true,
 
-                attributeFilter:[
+                attributeFilter: [
                     "class"
                 ]
 
@@ -84,7 +84,9 @@ const ContestPerformanceChart = ({
             dark:bg-slate-800
 
             rounded-3xl
-            p-6
+
+            p-4
+            sm:p-6
 
             shadow-sm
 
@@ -94,8 +96,11 @@ const ContestPerformanceChart = ({
         ">
 
             <h2 className="
-                text-2xl
+                text-xl
+                sm:text-2xl
+
                 font-bold
+
                 mb-2
 
                 text-slate-800
@@ -108,6 +113,7 @@ const ContestPerformanceChart = ({
 
             <p className="
                 text-sm
+
                 mb-6
 
                 text-slate-500
@@ -118,185 +124,223 @@ const ContestPerformanceChart = ({
 
             </p>
 
-            <div className="
-                w-full
-                h-[320px]
-                min-h-[320px]
-            ">
+            {
 
-                {
+                chartData.length > 0
 
-                    chartData.length > 0
+                ?
 
-                    ?
-
-                    (
-
-                    <ResponsiveContainer
-                        width="100%"
-                        height="100%"
-                    >
-
-                        <BarChart
-                            data={chartData}
-                        >
-
-                            <CartesianGrid
-
-                                strokeDasharray="3 3"
-
-                                stroke={
-
-                                    isDark
-
-                                    ?
-
-                                    "#334155"
-
-                                    :
-
-                                    "#e2e8f0"
-
-                                }
-
-                            />
-
-                            <XAxis
-
-                                dataKey="name"
-
-                                tick={{
-                                    fontSize:12
-                                }}
-
-                                stroke={
-
-                                    isDark
-
-                                    ?
-
-                                    "#cbd5e1"
-
-                                    :
-
-                                    "#94a3b8"
-
-                                }
-
-                            />
-
-                            <YAxis
-
-                                stroke={
-
-                                    isDark
-
-                                    ?
-
-                                    "#cbd5e1"
-
-                                    :
-
-                                    "#94a3b8"
-
-                                }
-
-                            />
-
-                            <Tooltip
-
-                                contentStyle={{
-
-                                    borderRadius:
-                                        "16px",
-
-                                    border:
-
-                                        isDark
-
-                                        ?
-
-                                        "1px solid #475569"
-
-                                        :
-
-                                        "1px solid #e2e8f0",
-
-                                    backgroundColor:
-
-                                        isDark
-
-                                        ?
-
-                                        "#1e293b"
-
-                                        :
-
-                                        "#fff",
-
-                                    color:
-
-                                        isDark
-
-                                        ?
-
-                                        "#fff"
-
-                                        :
-
-                                        "#000"
-
-                                }}
-
-                            />
-
-                            <Bar
-
-                                dataKey="change"
-
-                                fill="#3b82f6"
-
-                                radius={[
-                                    8,
-                                    8,
-                                    0,
-                                    0
-                                ]}
-
-                            />
-
-                        </BarChart>
-
-                    </ResponsiveContainer>
-
-                    )
-
-                    :
-
-                    (
+                (
 
                     <div className="
-                        h-full
+                        w-full
 
+                        h-[320px]
+                        sm:h-[360px]
+
+                        overflow-hidden
+                    ">
+
+                        <ResponsiveContainer
+                            width="100%"
+                            height="100%"
+                        >
+
+                            <BarChart
+
+                                data={chartData}
+
+                                barCategoryGap={
+
+                                    window.innerWidth < 640
+
+                                    ?
+
+                                    "10%"
+
+                                    :
+
+                                    "20%"
+
+                                }
+
+                            >
+
+                                <CartesianGrid
+
+                                    strokeDasharray="3 3"
+
+                                    stroke={
+
+                                        isDark
+
+                                        ?
+
+                                        "#334155"
+
+                                        :
+
+                                        "#e2e8f0"
+
+                                    }
+
+                                />
+
+                                <XAxis
+
+                                    dataKey="name"
+
+                                    tick={{
+
+                                        fontSize:
+
+                                            window.innerWidth < 640
+
+                                            ?
+
+                                            10
+
+                                            :
+
+                                            12
+
+                                    }}
+
+                                    stroke={
+
+                                        isDark
+
+                                        ?
+
+                                        "#cbd5e1"
+
+                                        :
+
+                                        "#94a3b8"
+
+                                    }
+
+                                />
+
+                                <YAxis
+
+                                    stroke={
+
+                                        isDark
+
+                                        ?
+
+                                        "#cbd5e1"
+
+                                        :
+
+                                        "#94a3b8"
+
+                                    }
+
+                                />
+
+                                <Tooltip
+
+                                    contentStyle={{
+
+                                        borderRadius:
+                                            "16px",
+
+                                        border:
+
+                                            isDark
+
+                                            ?
+
+                                            "1px solid #475569"
+
+                                            :
+
+                                            "1px solid #e2e8f0",
+
+                                        backgroundColor:
+
+                                            isDark
+
+                                            ?
+
+                                            "#1e293b"
+
+                                            :
+
+                                            "#fff",
+
+                                        color:
+
+                                            isDark
+
+                                            ?
+
+                                            "#fff"
+
+                                            :
+
+                                            "#000"
+
+                                    }}
+
+                                />
+
+                                <Bar
+
+                                    dataKey="change"
+
+                                    fill="#3b82f6"
+
+                                    radius={[
+                                        8,
+                                        8,
+                                        0,
+                                        0
+                                    ]}
+
+                                />
+
+                            </BarChart>
+
+                        </ResponsiveContainer>
+
+                    </div>
+
+                )
+
+                :
+
+                (
+
+                    <div className="
                         flex
                         items-center
                         justify-center
 
-                        text-slate-500
-                        dark:text-slate-400
+                        py-20
                     ">
 
-                        No contest data available
+                        <p className="
+                            text-center
+
+                            text-slate-500
+                            dark:text-slate-400
+                        ">
+
+                            No contest performance data available
+
+                        </p>
 
                     </div>
 
-                    )
+                )
 
-                }
-
-            </div>
+            }
 
         </div>
+
     );
 
 };
