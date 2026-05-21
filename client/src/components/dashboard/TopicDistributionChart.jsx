@@ -3,7 +3,8 @@ import {
     Pie,
     Cell,
     Tooltip,
-    Legend
+    Legend,
+    ResponsiveContainer
 } from "recharts";
 
 const TopicDistributionChart = ({
@@ -11,13 +12,11 @@ const TopicDistributionChart = ({
 }) => {
 
     const isDark =
-        document.documentElement
-            .classList.contains(
-                "dark"
-            );
+        document.documentElement.classList.contains(
+            "dark"
+        );
 
     const COLORS = [
-
         "#84cc16",
         "#6366f1",
         "#f59e0b",
@@ -28,165 +27,153 @@ const TopicDistributionChart = ({
         "#06b6d4",
         "#8b5cf6",
         "#14b8a6"
-
     ];
 
     return (
 
-        <div className="
-            bg-white
-            dark:bg-slate-800
+        <div
+            className="
+                bg-white
+                dark:bg-slate-800
+                rounded-3xl
+                p-6
+                shadow-sm
+                border
+                border-slate-200
+                dark:border-slate-700
+                w-full
+            "
+        >
 
-            rounded-3xl
-            p-6
-
-            shadow-sm
-
-            border
-            border-slate-200
-            dark:border-slate-700
-        ">
-
-            <h2 className="
-                text-2xl
-                font-bold
-                mb-2
-                text-slate-800
-                dark:text-white
-            ">
-
+            <h2
+                className="
+                    text-2xl
+                    font-bold
+                    mb-2
+                    text-slate-800
+                    dark:text-white
+                "
+            >
                 Topic Distribution
-
             </h2>
 
-            <p className="
-                text-sm
-                mb-6
-                text-slate-500
-                dark:text-slate-400
-            ">
-
+            <p
+                className="
+                    text-sm
+                    mb-6
+                    text-slate-500
+                    dark:text-slate-400
+                "
+            >
                 Topics you solve most frequently
-
             </p>
 
-            <div className="
-    w-full
-    h-[320px]
-    sm:h-[400px]
+            <div
+                className="
+                    w-full
+                    h-[350px]
+                    md:h-[420px]
+                "
+            >
 
-    overflow-hidden
-">
+                <ResponsiveContainer
+                    width="100%"
+                    height="100%"
+                >
 
-    <PieChart
-        width={350}
-        height={320}
-    >
+                    <PieChart>
 
-                    <Pie
-                        data={
-                            chartData
-                        }
+                        <Pie
+                            data={chartData}
+    dataKey="value"
+    nameKey="name"
+    cx="35%"
+    cy="50%"
+    outerRadius="66%"
+    innerRadius="42%"
+    paddingAngle={2}
+    stroke="none"
+                        >
 
-                        dataKey=
-                            "value"
+                            {
+                                chartData.map(
+                                    (
+                                        entry,
+                                        index
+                                    ) => (
 
-                        nameKey=
-                            "name"
+                                        <Cell
+                                            key={`cell-${index}`}
 
-                        cx="42%"
-                        cy="50%"
-
-                        stroke="none"
-
-                        outerRadius={
-    window.innerWidth < 640
-        ? 70
-        : 90
-}
-                    >
-
-                        {
-
-                            chartData.map(
-                                (
-                                    entry,
-                                    index
-                                ) => (
-
-                                    <Cell
-                                        key={
-                                            index
-                                        }
-
-                                        fill={
-                                            COLORS[
-                                                index %
-                                                COLORS.length
-                                            ]
-                                        }
-                                    />
+                                            fill={
+                                                COLORS[
+                                                    index %
+                                                    COLORS.length
+                                                ]
+                                            }
+                                        />
+                                    )
                                 )
-                            )
+                            }
 
-                        }
+                        </Pie>
 
-                    </Pie>
+                        <Tooltip
+                            contentStyle={{
 
-                    <Tooltip
+                                borderRadius:
+                                    "16px",
 
-                        contentStyle={{
+                                border:
+                                    isDark
+                                        ? "1px solid #475569"
+                                        : "1px solid #e2e8f0",
 
-                            borderRadius:
-                                "16px",
+                                backgroundColor:
+                                    isDark
+                                        ? "#1e293b"
+                                        : "#ffffff",
 
-                            border:
-                                isDark
-                                ? "1px solid #475569"
-                                : "1px solid #e2e8f0",
+                                color:
+                                    isDark
+                                        ? "#fff"
+                                        : "#000",
 
-                            backgroundColor:
-                                isDark
-                                ? "#1e293b"
-                                : "#ffffff",
+                                boxShadow:
+                                    "0 4px 20px rgba(0,0,0,0.08)"
+                            }}
+                        />
 
-                            color:
-                                isDark
-                                ? "#fff"
-                                : "#000"
-                        }}
-                    />
+                        <Legend
 
-                   <Legend
+                            layout="vertical"
 
-    layout={
-        window.innerWidth < 640
-            ? "horizontal"
-            : "vertical"
-    }
+                            verticalAlign="middle"
 
-    align={
-        window.innerWidth < 640
-            ? "center"
-            : "right"
-    }
+                            align="right"
 
-    verticalAlign={
-        window.innerWidth < 640
-            ? "bottom"
-            : "middle"
-    }
+                            iconSize={12}
 
-                        wrapperStyle={{
+                            wrapperStyle={{
 
-                            color:
-                                isDark
-                                ? "#e2e8f0"
-                                : "#475569"
-                        }}
-                    />
+                                color:
+                                    isDark
+                                        ? "#e2e8f0"
+                                        : "#475569",
 
-                </PieChart>
+                                fontSize: "15px",
+
+                                lineHeight: "30px",
+
+                                paddingLeft: "40px",
+
+                                right: 0
+                            }}
+                        />
+
+                    </PieChart>
+
+                </ResponsiveContainer>
 
             </div>
 
