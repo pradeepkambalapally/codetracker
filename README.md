@@ -106,6 +106,12 @@ npm start
 
 ---
 
+### Demo Credentials
+
+Username : demo
+Password : demo321
+
+
 ## 🌐 Deployment
 
 - Frontend deployed on Vercel
@@ -115,19 +121,20 @@ npm start
 ---
 
 ## 📸 Screenshots
-## Login Page
+
+### Login Page
 
 ![Login](image-3.png)
 
-## Dashboard
+### Dashboard
 
 ![Dashboard](image.png)
 
-## Problems
+### Problems
 
 ![Problems](image-1.png)
 
-## Contests
+### Contests
 
 ![Contests](image-2.png)
 
