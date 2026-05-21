@@ -5,7 +5,7 @@ const app = express();
 const userRoutes = require('./routes/user-routes');
 const connectDB = require('./database/db');
 app.use(express.json());
-const errorHandler = require("./middleware/error-handler");
+const errorHandler = require("./middleWare/error-handler");
 connectDB();
 
 app.use(configureCors());
