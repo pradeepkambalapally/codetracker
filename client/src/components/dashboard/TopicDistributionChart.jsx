@@ -85,14 +85,14 @@ const TopicDistributionChart = ({
 
                         <Pie
                             data={chartData}
-    dataKey="value"
-    nameKey="name"
-    cx="35%"
-    cy="50%"
-    outerRadius="66%"
-    innerRadius="42%"
-    paddingAngle={2}
-    stroke="none"
+                           dataKey="value"
+                           nameKey="name"
+                           cx="35%"
+                           cy="50%"
+                           outerRadius="66%"
+                           innerRadius="42%"
+                           paddingAngle={2}
+                           stroke="none"
                         >
 
                             {
