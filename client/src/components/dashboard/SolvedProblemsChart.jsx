@@ -221,8 +221,8 @@ const SolvedProblemsChart = ({
                     (
 
                         <ResponsiveContainer
-                            width="100%"
-                            height="100%"
+                            width="99%"
+                            height={350}
                         >
 
                             <AreaChart

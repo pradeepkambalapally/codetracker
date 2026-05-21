@@ -188,6 +188,11 @@ const getLeetcodeProfile = async (req, res) => {
     }
 
 };
+let leetcodeCache = {};
+
+const CACHE_DURATION =
+    1000 * 60 * 10; // 10 minutes
+
 const getLeetcodeSubmissions = async (req, res) => {
 
     try {
@@ -226,7 +231,44 @@ const getLeetcodeSubmissions = async (req, res) => {
 
         }
 
-        // FETCH ACCEPTED SUBMISSIONS
+        // CACHE KEY
+
+        const cacheKey =
+            username;
+
+        const cachedData =
+            leetcodeCache[
+                cacheKey
+            ];
+
+        // RETURN CACHE IF VALID
+
+        if (
+
+            cachedData &&
+
+            Date.now() -
+            cachedData.timestamp
+            <
+            CACHE_DURATION
+
+        ) {
+
+            return res.status(200).json({
+
+                success: true,
+
+                submissions:
+                    cachedData.submissions,
+
+                totalSolved:
+                    cachedData.totalSolved
+
+            });
+
+        }
+
+        // FETCH USER SUBMISSIONS
 
         const submissionsResponse =
             await axios.get(
@@ -257,72 +299,6 @@ const getLeetcodeSubmissions = async (req, res) => {
 
         }
 
-        // FETCH PROBLEMS METADATA
-
-        const problemsResponse =
-            await axios.get(
-
-`https://alfa-leetcode-api.onrender.com/problems`
-
-            );
-
-        const problemsData =
-            problemsResponse.data?.problemsetQuestionList || [];
-
-        // CREATE LOOKUP MAP
-
-        const problemsMap = {};
-
-        problemsData.forEach(
-            (problem) => {
-
-                if (
-                    problem?.titleSlug
-                ) {
-
-                    problemsMap[
-                        problem.titleSlug
-                    ] = {
-
-                        difficulty:
-
-                            problem.difficulty ||
-
-                            "Unknown",
-
-                        tags:
-
-                            Array.isArray(
-                                problem.topicTags
-                            )
-
-                            ?
-
-                            problem.topicTags.map(
-                                (tag) =>
-
-                                    typeof tag === "string"
-
-                                    ?
-
-                                    tag
-
-                                    :
-
-                                    tag?.name
-                            )
-
-                            :
-
-                            []
-
-                    };
-
-                }
-
-            }
-        );
-
         // REMOVE DUPLICATES
 
         const solvedSet =
@@ -335,11 +311,7 @@ const getLeetcodeSubmissions = async (req, res) => {
 
                     if (
 
-                        !submission ||
-
-                        !submission.title ||
-
-                        !submission.titleSlug
+                        !submission?.titleSlug
 
                     ) {
 
@@ -347,10 +319,16 @@ const getLeetcodeSubmissions = async (req, res) => {
 
                     }
 
+                    const slug =
+
+                        submission.titleSlug
+                        .toLowerCase()
+                        .trim();
+
                     if (
 
                         solvedSet.has(
-                            submission.titleSlug
+                            slug
                         )
 
                     ) {
@@ -360,7 +338,7 @@ const getLeetcodeSubmissions = async (req, res) => {
                     }
 
                     solvedSet.add(
-                        submission.titleSlug
+                        slug
                     );
 
                     return true;
@@ -368,82 +346,90 @@ const getLeetcodeSubmissions = async (req, res) => {
                 }
             );
 
-        // FORMAT FINAL DATA
+        // FINAL SUBMISSIONS
 
         const submissions =
 
             uniqueSubmissions
             .slice(0, 50)
-            .map((submission) => {
+            .map(
 
-                const metadata =
+                (submission) => {
 
-                    problemsMap[
-                        submission.titleSlug
-                    ] || {};
+                    return {
 
-                return {
+                        platform:
+                            "LeetCode",
 
-                    platform:
-                        "LeetCode",
+                        problemName:
+                            submission.title,
 
-                    problemName:
-                        submission.title,
-
-                    problemLink:
+                        problemLink:
 
 `https://leetcode.com/problems/${submission.titleSlug}`,
 
-                    submissionTime:
+                        submissionTime:
 
-                        submission.timestamp
-
-                        ?
-
-                        Number(
                             submission.timestamp
-                        ) * 1000
 
-                        :
+                            ?
 
-                        null,
+                            Number(
+                                submission.timestamp
+                            ) * 1000
 
-                    programmingLanguage:
+                            :
 
-                        submission.lang ||
+                            null,
 
-                        "Unknown",
+                        programmingLanguage:
 
-                    verdict:
+                            submission.lang ||
 
-                        submission.statusDisplay ||
+                            "Unknown",
 
-                        "Accepted",
+                        verdict:
 
-                    difficulty:
+                            submission.statusDisplay ||
 
-                        metadata.difficulty ||
+                            "Accepted",
 
-                        "Unknown",
+                        difficulty:
+                            "Unknown",
 
-                    tags:
+                        tags:
+                            [],
 
-                        metadata.tags ||
+                        rating:
+                            null,
 
-                        [],
+                        contestId:
+                            null,
 
-                    rating:
-                        null,
+                        problemIndex:
+                            null
 
-                    contestId:
-                        null,
+                    };
 
-                    problemIndex:
-                        null
+                }
 
-                };
+            );
 
-            });
+        // SAVE CACHE
+
+        leetcodeCache[
+            cacheKey
+        ] = {
+
+            submissions,
+
+            totalSolved:
+                uniqueSubmissions.length,
+
+            timestamp:
+                Date.now()
+
+        };
 
         return res.status(200).json({
 
@@ -452,7 +438,7 @@ const getLeetcodeSubmissions = async (req, res) => {
             submissions,
 
             totalSolved:
-                submissions.length
+                uniqueSubmissions.length
 
         });
 
@@ -480,7 +466,6 @@ const getLeetcodeSubmissions = async (req, res) => {
     }
 
 };
-
 
 
 module.exports = {
