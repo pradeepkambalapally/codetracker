@@ -97,6 +97,8 @@ const TopicDistributionChart = ({
                         cx="42%"
                         cy="50%"
 
+                        stroke="none"
+
                         outerRadius={
     window.innerWidth < 640
         ? 70
