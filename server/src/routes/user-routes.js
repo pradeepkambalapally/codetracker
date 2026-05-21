@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const {registerUser, loginUser, updateProfiles, getUserData, updatePreferences, changePassword} = require('../controllers/user-controller');
 const {getCodeforcesData} = require('../controllers/codeforces-controller');
-const authMiddleware = require('../middleware/authmiddleware');
+const authmiddleware = require('../middleware/auth');
 const { getCodeforcesContestData } = require('../controllers/codeforces-contest-controller');
 const { getCodeforcesProfileStats } = require('../controllers/codeforecs-profile-stats');
 const {getLeetcodeProfile, getLeetcodeSubmissions} = require('../controllers//leetcode-controller');
@@ -12,19 +12,19 @@ const { getActivityHeatmap } = require('../controllers/activity-controller');
 
 router.post('/register',registerUser );
 router.post('/login', loginUser);
-router.put('/update-profile',authMiddleware, updateProfiles);
-router.get('/codeforces', authMiddleware, getCodeforcesData);
-router.get('/codeforces-contests', authMiddleware, getCodeforcesContestData)
-router.get('/codeforces-profile-stats', authMiddleware, getCodeforcesProfileStats);
-router.get("/me", authMiddleware, getUserData);
-router.put("/update-preferences",authMiddleware, updatePreferences);
-router.put("/change-password", authMiddleware, changePassword)
+router.put('/update-profile',authmiddleware, updateProfiles);
+router.get('/codeforces', authmiddleware, getCodeforcesData);
+router.get('/codeforces-contests', authmiddleware, getCodeforcesContestData)
+router.get('/codeforces-profile-stats', authmiddleware, getCodeforcesProfileStats);
+router.get("/me", authmiddleware, getUserData);
+router.put("/update-preferences",authmiddleware, updatePreferences);
+router.put("/change-password", authmiddleware, changePassword)
 
 
 
-router.get("/leetcode-profile",authMiddleware,getLeetcodeProfile);
-router.get("/leetcode-submissions",authMiddleware,getLeetcodeSubmissions);
+router.get("/leetcode-profile",authmiddleware,getLeetcodeProfile);
+router.get("/leetcode-submissions",authmiddleware,getLeetcodeSubmissions);
 
-router.get("/activity-heatmap",authMiddleware, getActivityHeatmap)
+router.get("/activity-heatmap",authmiddleware, getActivityHeatmap)
 
 module.exports = router;
