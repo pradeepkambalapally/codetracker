@@ -10,7 +10,7 @@ const ProtectedRoutes = ({
     if (!token) {
 
         return (
-            <Navigate to="/login" />
+            <Navigate to="/home" />
         );
     }
 

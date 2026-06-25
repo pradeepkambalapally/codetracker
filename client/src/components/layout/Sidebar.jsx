@@ -39,7 +39,7 @@ const Sidebar = () => {
         );
 
         navigate(
-            "/login"
+            "/home"
         );
     };
 

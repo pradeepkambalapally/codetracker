@@ -13,6 +13,7 @@ import Problems from "./pages/Problems";
 import Contests from "./pages/Contests";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import LandingPage from "./pages/LandingPage";
 
 import useTheme from "./hooks/useTheme";
 
@@ -23,7 +24,7 @@ function App() {
     return (
 
         <Routes>
-
+            <Route path ="/home" element =  {<LandingPage />} />
             <Route
                 path="/"
                 element={
